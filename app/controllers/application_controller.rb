@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
-  around_action :switch_locale
+  prepend_before_action :switch_locale # around_actions are always run after all before_actions.
+  before_action :authenticate_user!
 
   private
 
@@ -11,9 +12,8 @@ class ApplicationController < ActionController::Base
       I18n.default_locale
   end
 
-  def switch_locale(&action)
+  def switch_locale
     cookies[:locale] = params[:locale] if params[:locale]
-    locale = detect_locale
-    I18n.with_locale(locale, &action)
+    I18n.locale = detect_locale
   end
 end
