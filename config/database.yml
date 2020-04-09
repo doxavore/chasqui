@@ -30,6 +30,7 @@ local_default: &local_default
 
 development:
   <<: *local_default
+  host: postgres
   database: chasqui_development
 
   # The specified database role being used to connect to postgres.
