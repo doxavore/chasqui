@@ -19,12 +19,12 @@ default: &default
   encoding: unicode
   # For details on connection pooling, see Rails configuration guide
   # https://guides.rubyonrails.org/configuring.html#database-pooling
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS", 5) %>
 
 local_default: &local_default
   <<: *default
-  host: <%= ENV.fetch("DB_HOST") { 'localhost' } %>
-  port: 5432
+  host: <%= ENV.fetch("POSTGRES_HOST", "postgres") %>
+  port: <%= ENV.fetch("POSTGRES_PORT", 5432) %>
   username: root
   password: root
 
@@ -87,4 +87,4 @@ test:
 #
 production:
   <<: *default
-  url: <%= ENV['CHASQUI_DATABASE_URL'] %>
+  url: <%= ENV["CHASQUI_DATABASE_URL"] %>
