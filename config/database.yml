@@ -23,13 +23,14 @@ default: &default
 
 local_default: &local_default
   <<: *default
-  host: postgres
+  host: localhost
   port: 5432
   username: root
   password: root
 
 development:
   <<: *local_default
+  host: postgres
   database: chasqui_development
 
   # The specified database role being used to connect to postgres.
