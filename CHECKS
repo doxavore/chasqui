@@ -1,0 +1,3 @@
+WAIT=5
+ATTEMPTS=9
+/dokku/deploy_check deploy_ok
