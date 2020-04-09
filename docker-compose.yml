@@ -1,7 +1,7 @@
 ---
 version: "3"
 services:
-  app:
+  app: &app
     build: .
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
     volumes:
@@ -18,8 +18,20 @@ services:
     environment:
       - DB_HOST
 
+#  worker:
+#    <<: *app
+#    command: bash -c "bundle exec rake resque:work"
+#    ports: []
+#    depends_on:
+#      - postgres
+#      - redis
+#    environment:
+#      - QUEUE=*
+#      - DB_HOST
+#      - REDIS_URL
+
   postgres:
-    image: "postgres:11"
+    image: "postgres:11-alpine"
     ports:
       - "127.0.0.1:5432:5432"
     environment:
