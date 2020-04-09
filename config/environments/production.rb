@@ -73,6 +73,16 @@ Rails.application.configure do
     protocol: ENV.fetch("BASE_URL_PROTOCOL", "https")
   }
 
+  config.action_mailer.smtp_settings = {
+    address: ENV.fetch("RAILS_SMTP_ADDRESS"),
+    port: ENV.fetch("RAILS_SMTP_PORT"),
+    user_name: ENV.fetch("RAILS_SMTP_USER_NAME"),
+    password: ENV.fetch("RAILS_SMTP_PASSWORD"),
+    authentication: :plain,
+    enable_starttls_auto: ENV.fetch("RAILS_SMTP_ENABLE_STARTTLS_AUTO", "true") != "false",
+    openssl_verify_mode: ENV.fetch("RAILS_SMTP_OPENSSL_VERIFY_MODE", "peer")
+  }
+
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
   config.i18n.fallbacks = true
