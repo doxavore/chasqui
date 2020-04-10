@@ -4,7 +4,9 @@ version: "3.7"
 # Avoid building these, but make them available as references.
 x-disabled:
   app: &app
-    build: .
+    build:
+      context: .
+      target: development
     tmpfs:
       - /tmp
 
@@ -21,11 +23,11 @@ x-disabled:
       - rails_cache:/app/tmp/cache
     environment:
       - BOOTSNAP_CACHE_DIR=/bundle/bootsnap
-      - CHASQUI_DATABASE_URL
+      - DATABASE_URL
       - HISTFILE=/app/log/.bash_history
       - NODE_ENV=${NODE_ENV:-development}
       - POSTGRES_HOST=${POSTGRES_HOST:-postgres}
-      - POSTGRES_PORT
+      - POSTGRES_PORT=${POSTGRES_PORT:-5432}
       - PSQL_HISTFILE=/app/log/.psql_history
       - RAILS_ENV=${RAILS_ENV:-development}
       - REDIS_URL=${REDIS_URL:-redis://redis:6379}

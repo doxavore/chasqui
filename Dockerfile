@@ -1,3 +1,6 @@
+#######################
+#  base
+#######################
 ARG RUBY_VERSION=2.6.5
 FROM ruby:${RUBY_VERSION}-slim-buster AS base
 
@@ -15,6 +18,7 @@ ENV LANG=C.UFT-8 \
 CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]
 EXPOSE 3000
 
+# Install base requirements needed for other tooling (NodeJS, etc).
 RUN apt-get update -qq \
   && DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends \
       apt-transport-https \
@@ -39,6 +43,7 @@ RUN curl -sL https://deb.nodesource.com/setup_${NODE_MAJOR_VERSION}.x | bash -
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
   && echo "deb http://dl.yarnpkg.com/debian/ stable main" > /etc/apt/sources.list.d/yarn.list
 
+# Install selected version of tools.
 RUN apt-get update -qq \
   && DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends \
       libpq-dev \
@@ -55,5 +60,32 @@ RUN gem install bundler:${BUNDLER_VERSION}
 RUN mkdir -p /app
 WORKDIR /app
 
+#######################
+#  development
+#######################
 FROM base AS development
+
 RUN echo "alias be='bundle exec'" >> /root/.bashrc
+
+#######################
+#  production
+#######################
+FROM base AS production
+
+ENV RAILS_ENV=production \
+    NODE_ENV=production
+
+RUN mkdir -p tmp/downloads tmp/pids tmp/sockets
+
+COPY package.json yarn.lock /app/
+RUN yarn install --production \
+  && yarn cache clean
+
+COPY Gemfile Gemfile.lock /app/
+RUN bundle config no-cache true \
+  && bundle config deployment true \
+  && bundle install
+
+COPY . /app/
+
+RUN bundle exec rails assets:precompile
