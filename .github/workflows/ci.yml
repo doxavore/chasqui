@@ -1,13 +1,73 @@
 name: ci
 
 on:
-  - push
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
 env:
+  DOCKER_IMAGE_NAME: app
+  DOCKER_REGISTRY: docker.pkg.github.com
+  PACKAGE_REPO: doxavore/chasqui
   RAILS_ENV: test
 
 jobs:
-  ci:
+  build:
+    runs-on: ubuntu-18.04
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set full docker image name
+        run: echo "::set-env name=FULL_DOCKER_IMAGE::$DOCKER_REGISTRY/$PACKAGE_REPO/$DOCKER_IMAGE_NAME:$GITHUB_SHA"
+
+      - name: Build docker image
+        run: |
+          docker build -t "$FULL_DOCKER_IMAGE" .
+
+      - name: Push docker image to GitHub Package Registry
+        if: github.repository == env.PACKAGE_REPO
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login -u ${{ github.actor }} --password-stdin "$DOCKER_REGISTRY"
+          docker push "$FULL_DOCKER_IMAGE"
+
+      - name: Docker log out
+        if: always()
+        run: |
+          docker logout "$DOCKER_REGISTRY"
+
+  lint:
+    needs: build
+    runs-on: ubuntu-18.04
+
+    env:
+      RAILS_ENV: test
+
+    steps:
+      - name: Set full docker image name
+        run: echo ::set-env name=FULL_DOCKER_IMAGE::$DOCKER_REGISTRY/$PACKAGE_REPO/$DOCKER_IMAGE_NAME:$GITHUB_SHA
+
+      - name: Pull Docker image
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login -u ${{ github.actor }} --password-stdin "$DOCKER_REGISTRY"
+          docker pull "$FULL_DOCKER_IMAGE"
+
+      - name: Run rubocop
+        run: |
+          docker run --rm --env RAILS_ENV=$RAILS_ENV "$FULL_DOCKER_IMAGE" bundle exec rubocop
+
+      - name: Run brakeman
+        run: |
+          docker run --rm --env RAILS_ENV=$RAILS_ENV "$FULL_DOCKER_IMAGE" bundle exec brakeman
+
+      - name: Docker log out
+        if: always()
+        run: |
+          docker logout "$DOCKER_REGISTRY"
+
+  test:
+    needs: build
     runs-on: ubuntu-18.04
 
     services:
@@ -28,67 +88,49 @@ jobs:
         ports:
           - "6379:6379"
 
+    env:
+      POSTGRES_HOST: postgres
+      RAILS_ENV: test
+      RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+
     steps:
-      - uses: actions/checkout@v2
-
-      - name: Set up Ruby
-        uses: actions/setup-ruby@v1
-        with:
-          ruby-version: "2.6.x"
-
-      - name: Set up Node
-        uses: actions/setup-node@v1
-        with:
-          node-version: "12.x"
-
-      - name: Configure rubygems cache
-        uses: actions/cache@v1
-        with:
-          path: vendor/bundle
-          key: ${{ runner.os }}-rubygems-${{ hashFiles('**/Gemfile.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-rubygems-
-
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - name: Configure yarn cache
-        uses: actions/cache@v1
-        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
-
-      - name: Install app dependencies
+      - name: Set environment
+        # This doesn't currently work; it's always empty.
+        # echo ::set-env name=DOCKER_NETWORK::${{ job.services.network }}
         run: |
-          gem install bundler
-          bundle config path vendor/bundle
-          bundle install --jobs 4 --retry 3
-          yarn install
+          echo ::set-env name=FULL_DOCKER_IMAGE::$DOCKER_REGISTRY/$PACKAGE_REPO/$DOCKER_IMAGE_NAME:$GITHUB_SHA
+          echo ::set-env name=DOCKER_NETWORK::$(docker inspect -f '{{.HostConfig.NetworkMode}}' ${{ job.services.postgres.id }})
+          echo ::set-env name=POSTGRES_ID::${{ job.services.postgres.id }}
+          echo ::set-env name=POSTGRES_PORT::${{ job.services.postgres.ports[5432] }}
+          echo ::set-env name=REDIS_URL::redis://redis:${{ job.services.redis.ports[6379] }}
 
-      - name: Run linters
+      - name: Pull Docker image
         run: |
-          bundle exec rubocop
-          bundle exec brakeman
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login -u ${{ github.actor }} --password-stdin "$DOCKER_REGISTRY"
+          docker pull "$FULL_DOCKER_IMAGE"
 
       - name: Set up app
-        env:
-          POSTGRES_HOST: localhost
-          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
-          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
-          REDIS_URL: redis://localhost:${{ job.services.redis.ports[6379] }}
         run: |
-          bundle exec rails db:setup
+          docker run --rm --network "$DOCKER_NETWORK" \
+              -e RAILS_ENV -e POSTGRES_HOST -e POSTGRES_PORT -e REDIS_URL \
+              "$FULL_DOCKER_IMAGE" \
+              bundle exec rails db:setup
 
       - name: Run tests
-        env:
-          POSTGRES_HOST: localhost
-          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
-          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
-          REDIS_URL: redis://localhost:${{ job.services.redis.ports[6379] }}
         run: |
-          bundle exec rails test
-          bundle exec rails test:system
+          docker run --rm --network "$DOCKER_NETWORK" \
+              -e RAILS_ENV -e POSTGRES_HOST -e POSTGRES_PORT -e REDIS_URL \
+              "$FULL_DOCKER_IMAGE" \
+              bundle exec rails test
+
+      - name: Run system tests
+        run: |
+          docker run --rm --network "$DOCKER_NETWORK" \
+              -e RAILS_ENV -e POSTGRES_HOST -e POSTGRES_PORT -e REDIS_URL \
+              "$FULL_DOCKER_IMAGE" \
+              bundle exec rails test:system
+
+      - name: Docker log out
+        if: always()
+        run: |
+          docker logout "$DOCKER_REGISTRY"
