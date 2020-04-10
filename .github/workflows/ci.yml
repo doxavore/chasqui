@@ -12,7 +12,7 @@ jobs:
 
     services:
       postgres:
-        image: "postgres:11"
+        image: "postgres:11-alpine"
         ports:
           - "5432:5432"
         env:
@@ -23,6 +23,10 @@ jobs:
           --health-interval 1s
           --health-timeout 2s
           --health-retries 20
+      redis:
+        image: "redis:alpine"
+        ports:
+          - "6379:6379"
 
     steps:
       - uses: actions/checkout@v2
@@ -65,18 +69,26 @@ jobs:
           bundle install --jobs 4 --retry 3
           yarn install
 
-      - name: Set up app
-        run: |
-          bundle exec rails db:setup
-
       - name: Run linters
         run: |
           bundle exec rubocop
           bundle exec brakeman
 
+      - name: Set up app
+        env:
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
+          RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+          REDIS_URL: redis://localhost:${{ job.services.redis.ports[6379] }}
+        run: |
+          bundle exec rails db:setup
+
       - name: Run tests
         env:
+          POSTGRES_HOST: localhost
+          POSTGRES_PORT: ${{ job.services.postgres.ports[5432] }}
           RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
+          REDIS_URL: redis://localhost:${{ job.services.redis.ports[6379] }}
         run: |
           bundle exec rails test
           bundle exec rails test:system
