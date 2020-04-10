@@ -28,7 +28,7 @@ x-disabled:
       - POSTGRES_PORT
       - PSQL_HISTFILE=/app/log/.psql_history
       - RAILS_ENV=${RAILS_ENV:-development}
-      - REDIS_URL
+      - REDIS_URL=${REDIS_URL:-redis://redis:6379}
     depends_on:
       - postgres
       - redis
@@ -47,7 +47,7 @@ services:
 
   runner:
     <<: *backend
-    command: /bin/bash
+    command: bundle exec spring server
 
   postgres:
     image: postgres:11-alpine
