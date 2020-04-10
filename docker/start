@@ -1,4 +1,12 @@
 #!/bin/bash
+set -euo pipefail
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 docker-compose -p chasqui down
-docker-compose -p chasqui -f docker-compose.yml up --remove-orphans
+docker-compose -p chasqui build
+$DIR/run yarn install --check-files
+$DIR/run /bin/bash -c "bundle check || bundle install -j4"
+$DIR/run /bin/bash -c "bundle exec rake db:exists && bundle exec rake db:migrate || bundle exec rails db:setup"
+
+docker-compose -p chasqui up --remove-orphans

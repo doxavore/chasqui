@@ -1,55 +1,86 @@
 ---
-version: "3"
-services:
+version: "3.7"
+
+# Avoid building these, but make them available as references.
+x-disabled:
   app: &app
     build: .
-    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    tmpfs:
+      - /tmp
+
+  backend: &backend
+    <<: *app
+    stdin_open: true
+    tty: true
     volumes:
-      - .:/chasqui:cached
-      - ./tmp/downloads:/chasqui/tmp/downloads
-      - node_cache:/chasqui/node_modules
-      - bundle_cache:/bundle
-      - rails_cache:/chasqui/tmp/cache
-      - packs:/chasqui/public/packs
-    ports:
-      - "3000:3000"
+      - .:/app:cached
+      - bundle:/usr/local/bundle
+      - .psqlrc:/root/.psqlrc:ro
+      - node_modules:/app/node_modules
+      - packs:/app/public/packs
+      - rails_cache:/app/tmp/cache
+    environment:
+      - BOOTSNAP_CACHE_DIR=/bundle/bootsnap
+      - CHASQUI_DATABASE_URL
+      - HISTFILE=/app/log/.bash_history
+      - NODE_ENV=${NODE_ENV:-development}
+      - POSTGRES_HOST=${POSTGRES_HOST:-postgres}
+      - POSTGRES_PORT
+      - PSQL_HISTFILE=/app/log/.psql_history
+      - RAILS_ENV=${RAILS_ENV:-development}
+      - REDIS_URL
     depends_on:
       - postgres
       - redis
-    environment:
-      - DB_HOST
-      - REDIS_URL
 
-#  worker:
-#    <<: *app
-#    command: bash -c "bundle exec rake resque:work"
-#    ports: []
-#    depends_on:
-#      - postgres
-#      - redis
-#    environment:
-#      - QUEUE=*
-#      - DB_HOST
-#      - REDIS_URL
+services:
+  rails:
+    <<: *backend
+    command: bundle exec rails server -b 0.0.0.0
+    ports:
+      - "3000:3000"
+
+  resque:
+    <<: *backend
+    image: chasqui-dev:resque
+    command: env QUEUE=* bundle exec rake resque:work
+
+  runner:
+    <<: *backend
+    command: /bin/bash
 
   postgres:
-    image: "postgres:11-alpine"
+    image: postgres:11-alpine
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_USER: "root"
-      POSTGRES_PASSWORD: "root"
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - PSQL_HISTFILE=/root/log/.psql_history
     volumes:
-      - postgres-data:/var/lib/postgresql/data
+      - .psqlrc:/root/.psqlrc:ro
+      - postgres:/var/lib/postgresql/data
+      - ./log:/root/log:cached
+    healthcheck:
+      test: pg_isready -U root -h 127.0.0.1
+      interval: 1s
 
   redis:
-    image: "redis:alpine"
+    image: redis:5-alpine
     ports:
       - "6379:6379"
+    volumes:
+      - redis:/data
+    healthcheck:
+      test: redis-cli ping
+      interval: 1s
+      timeout: 3s
+      retries: 30
 
 volumes:
-  postgres-data:
-  node_cache:
-  bundle_cache:
+  bundle:
+  node_modules:
+  postgres:
   rails_cache:
+  redis:
   packs:
