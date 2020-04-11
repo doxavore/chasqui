@@ -55,11 +55,11 @@ jobs:
 
       - name: Run rubocop
         run: |
-          docker run --rm --env RAILS_ENV=$RAILS_ENV "$FULL_DOCKER_IMAGE" bundle exec rubocop
+          docker run --rm --env RAILS_ENV=$RAILS_ENV "$FULL_DOCKER_IMAGE" bin/rubocop
 
       - name: Run brakeman
         run: |
-          docker run --rm --env RAILS_ENV=$RAILS_ENV "$FULL_DOCKER_IMAGE" bundle exec brakeman
+          docker run --rm --env RAILS_ENV=$RAILS_ENV "$FULL_DOCKER_IMAGE" bin/brakeman
 
       - name: Docker log out
         if: always()
@@ -114,21 +114,14 @@ jobs:
           docker run --rm --network "$DOCKER_NETWORK" \
               -e RAILS_ENV -e POSTGRES_HOST -e POSTGRES_PORT -e REDIS_URL \
               "$FULL_DOCKER_IMAGE" \
-              bundle exec rails db:setup
+              bin/rails db:setup
 
       - name: Run tests
         run: |
           docker run --rm --network "$DOCKER_NETWORK" \
               -e RAILS_ENV -e POSTGRES_HOST -e POSTGRES_PORT -e REDIS_URL \
               "$FULL_DOCKER_IMAGE" \
-              bundle exec rails test
-
-      - name: Run system tests
-        run: |
-          docker run --rm --network "$DOCKER_NETWORK" \
-              -e RAILS_ENV -e POSTGRES_HOST -e POSTGRES_PORT -e REDIS_URL \
-              "$FULL_DOCKER_IMAGE" \
-              bundle exec rails test:system
+              bin/rspec
 
       - name: Docker log out
         if: always()

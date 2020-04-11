@@ -7,6 +7,7 @@ docker-compose -p chasqui down
 docker-compose -p chasqui build
 $DIR/run yarn install --check-files
 $DIR/run /bin/bash -c "bundle check || bundle install -j4"
-$DIR/run /bin/bash -c "bundle exec rake db:exists && bundle exec rake db:migrate || bundle exec rails db:setup"
+$DIR/run /bin/bash -c "bundle binstubs --all && bundle exec spring binstub --all"
+$DIR/run /bin/bash -c "bin/rake db:exists && bin/rake db:migrate || bin/rails db:setup"
 
 docker-compose -p chasqui up --remove-orphans

@@ -37,12 +37,13 @@ gem "bootsnap", ">= 1.4.2", require: false
 
 group :development, :test do
   gem "brakeman", require: false
+  gem "byebug", platforms: %i[mri mingw x64_mingw]
+  gem "factory_bot_rails"
+  gem "rspec-rails"
   gem "rubocop", require: false
   gem "rubocop-performance", require: false
   gem "rubocop-rails", require: false
-
-  # Call "byebug" anywhere in the code to stop execution and get a debugger console
-  gem "byebug", platforms: %i[mri mingw x64_mingw]
+  gem "rubocop-rspec", require: false
 end
 
 group :development do
@@ -51,6 +52,7 @@ group :development do
   gem "web-console", ">= 3.3.0"
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem "spring"
+  gem "spring-commands-rspec"
   gem "spring-watcher-listen", "~> 2.0.0"
 end
 
