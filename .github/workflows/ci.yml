@@ -114,14 +114,14 @@ jobs:
           docker run --rm --network "$DOCKER_NETWORK" \
               -e RAILS_ENV -e POSTGRES_HOST -e POSTGRES_PORT -e REDIS_URL \
               "$FULL_DOCKER_IMAGE" \
-              bin/rails db:setup
+              bundle exec rails db:setup
 
       - name: Run tests
         run: |
           docker run --rm --network "$DOCKER_NETWORK" \
               -e RAILS_ENV -e POSTGRES_HOST -e POSTGRES_PORT -e REDIS_URL \
               "$FULL_DOCKER_IMAGE" \
-              bin/rspec
+              bundle exec rspec
 
       - name: Docker log out
         if: always()

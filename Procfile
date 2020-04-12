@@ -1,2 +1,2 @@
-web: bin/puma -C config/puma.rb
-worker: env QUEUE=* bin/rake resque:work
+web: bundle exec puma -C config/puma.rb
+worker: env QUEUE=* bundle exec rake resque:work

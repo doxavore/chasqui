@@ -41,6 +41,7 @@ services:
     command: bin/rails server -b 0.0.0.0
     ports:
       - "3000:3000"
+      - "3035:3035"
 
   resque:
     <<: *backend

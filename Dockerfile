@@ -88,4 +88,4 @@ RUN bundle config no-cache true \
 
 COPY . /app/
 
-RUN bin/rails assets:precompile
+RUN bundle exec rails assets:precompile
