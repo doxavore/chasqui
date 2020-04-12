@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
 FactoryBot.define do
-  factory :collection_point do
-
-  end
+  factory :collection_point
 end

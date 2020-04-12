@@ -4,7 +4,7 @@ FactoryBot.define do
   factory :user do
     email                 { Faker::Internet.unique.email }
     confirmed_at          { Time.current }
-    password              { Faker::Hipster.words(number: 2).join('') }
+    password              { Faker::Hipster.words(number: 2).join("") }
     password_confirmation { password }
 
     after :build do |user|
