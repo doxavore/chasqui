@@ -9,6 +9,7 @@ class AddInitialLogisticsTables < ActiveRecord::Migration[6.0]
       t.integer :z_mm
       t.boolean :petg
       t.boolean :abs
+      t.timestamps
     end
 
     create_table :addresses do |t|
@@ -20,12 +21,14 @@ class AddInitialLogisticsTables < ActiveRecord::Migration[6.0]
       t.string :country
       t.string :lat
       t.string :lon
+      t.timestamps
     end
 
     create_table :collection_points do |t|
       t.string :name
       t.integer :coordinator_id
       t.integer :address_id
+      t.timestamps
     end
 
     add_foreign_key :collection_points, :users, column: :coordinator_id, index: true
@@ -35,6 +38,7 @@ class AddInitialLogisticsTables < ActiveRecord::Migration[6.0]
       t.string :name
       t.integer :user_id, index: true
       t.integer :printer_model_id
+      t.timestamps
     end
 
     add_foreign_key :printers, :users

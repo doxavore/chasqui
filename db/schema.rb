@@ -24,12 +24,16 @@ ActiveRecord::Schema.define(version: 2020_04_12_021713) do
     t.string "country"
     t.string "lat"
     t.string "lon"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "collection_points", force: :cascade do |t|
     t.string "name"
     t.integer "coordinator_id"
     t.integer "address_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "printer_models", force: :cascade do |t|
@@ -39,12 +43,16 @@ ActiveRecord::Schema.define(version: 2020_04_12_021713) do
     t.integer "z_mm"
     t.boolean "petg"
     t.boolean "abs"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "printers", force: :cascade do |t|
     t.string "name"
     t.integer "user_id"
     t.integer "printer_model_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_printers_on_user_id"
   end
 
