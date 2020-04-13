@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "i18n"
 
 module LocaleSpecHelper
@@ -10,7 +12,7 @@ module LocaleSpecHelper
   end
 
   module ExampleGroupMethods
-    def set_locale(new_locale)
+    def set_locale(new_locale) # rubocop:disable Naming/AccessorMethodName
       around do |example|
         with_locale(new_locale) { example.run }
       end
