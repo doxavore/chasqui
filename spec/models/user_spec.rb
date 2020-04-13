@@ -3,7 +3,7 @@
 require "rails_helper"
 
 RSpec.describe User, type: :model do
-  let!(:coordinator) { create(:user) }
+  let(:coordinator) { create(:user) }
 
   context "when coordinating users" do
     let!(:user) { create(:user, coordinator: coordinator) }
