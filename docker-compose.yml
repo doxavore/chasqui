@@ -36,21 +36,25 @@ x-disabled:
       - redis
 
 services:
+  runner:
+    <<: *backend
+    command: /bin/true
+    restart: "no"
+
   rails:
     <<: *backend
-    command: bin/rails server -b 0.0.0.0
+    command: bundle exec rails server -b 0.0.0.0
     ports:
       - "3000:3000"
       - "3035:3035"
 
   resque:
     <<: *backend
-    image: chasqui-dev:resque
-    command: env QUEUE=* bin/rake resque:work
+    command: env QUEUE=* bundle exec rake resque:work
 
-  runner:
+  spring:
     <<: *backend
-    command: bin/spring server
+    command: /bin/bash -c "bundle exec spring server > /dev/null"
 
   postgres:
     image: postgres:11-alpine

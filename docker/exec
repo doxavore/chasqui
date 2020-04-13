@@ -1,3 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
-docker-compose -p chasqui exec runner "$@"
+docker-compose -p chasqui exec spring "$@"
