@@ -1,0 +1,7 @@
+// simple_form-bootstrap only packages this as part of the asset pipeline, but we expect node modules.
+// Extracted from https://github.com/rafaelfranca/simple_form-bootstrap/tree/master/app/assets/stylesheets/simple_form-bootstrap
+
+// apply primary button style to buttons with only `btn` class
+[class="btn"] {
+  @extend .btn-primary;
+}
