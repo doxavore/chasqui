@@ -2,11 +2,15 @@
 <html>
   <head>
     <%= render "layouts/head" %>
+    <%= stylesheet_pack_tag "login", media: "all", "data-turbolinks-track": "reload" %>
+    <%= javascript_packs_with_chunks_tag "login", "data-turbolinks-track": "reload" %>
   </head>
 
   <body>
-    <%= render "shared/flashes" %>
+    <div class="login-container">
+      <%= render "shared/flashes" %>
 
-    <%= yield %>
+      <%= yield %>
+    </div>
   </body>
 </html>
