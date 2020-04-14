@@ -5,6 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          :confirmable, :lockable, :trackable
 
+  belongs_to :address, optional: true
   has_many :printers, dependent: :destroy
   has_many :overseen, class_name: "User", foreign_key: "coordinator_id", dependent: :nullify, inverse_of: :coordinator
   belongs_to :coordinator, class_name: "User", optional: true

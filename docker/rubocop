@@ -2,4 +2,10 @@
 set -euo pipefail
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-"$DIR"/exec bin/rubocop --parallel
+
+if [ "$#" -eq 0 ]; then
+  "$DIR"/exec bin/rubocop --parallel
+else
+  # Parallel is not compatible with autocorrect.
+  "$DIR"/exec bin/rubocop "$@"
+fi

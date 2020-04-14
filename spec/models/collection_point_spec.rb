@@ -3,15 +3,28 @@
 require "rails_helper"
 
 RSpec.describe CollectionPoint, type: :model do
-  let(:coordinator) { create(:user) }
-  let(:address) { create(:address) }
-  let(:cp) { create(:collection_point, coordinator: coordinator, address: address) }
+  subject(:collection_point) { create(:collection_point, coordinator: coordinator, address: address) }
 
-  it "can belong to a coordinator" do
-    expect(cp.coordinator.id).to eq(coordinator.id)
+  let(:address) { create(:address) }
+  let(:coordinator) { create(:user) }
+
+  describe "#address" do
+    it "has one address" do
+      expect(collection_point.address).to eq(address)
+    end
+
+    it "must have an address" do
+      expect { collection_point.update!(address: nil) }.to raise_error(ActiveRecord::RecordInvalid)
+    end
   end
 
-  it "can belong to an address" do
-    expect(cp.address.id).to eq(address.id)
+  describe "#coordinator" do
+    it "has one coordinator" do
+      expect(collection_point.coordinator).to eq(coordinator)
+    end
+
+    it "must have a coordinator" do
+      expect { collection_point.update!(coordinator: nil) }.to raise_error(ActiveRecord::RecordInvalid)
+    end
   end
 end
