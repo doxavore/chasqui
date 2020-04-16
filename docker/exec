@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
-set -euo pipefail
+set -uo pipefail
 
-docker-compose -p chasqui exec spring "$@"
+if docker-compose ps | grep -e "spring_1.*\sUp\s" > /dev/null ; then
+  CMD=exec
+else
+  CMD=run
+fi
+
+docker-compose -p chasqui $CMD spring "$@"
