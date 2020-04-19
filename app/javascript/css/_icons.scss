@@ -1,0 +1,16 @@
+.bi {
+  display: inline-block;
+  vertical-align: bottom;
+  height: 1em;
+  width: 1em;
+}
+
+// Only list used icons here.
+$bootstrap-icons: (
+);
+
+@each $icon in $bootstrap-icons {
+  .bi-#{$icon} {
+    background-image: url("~bootstrap-icons/icons/#{$icon}.svg");
+  }
+}
