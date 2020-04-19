@@ -1,3 +1,35 @@
 ---
 en:
+  active_admin:
+    dashboard: Dashboard
+    dashboard_welcome:
+      call_to_action: Call to action
+      welcome: Welcome
+  activerecord:
+    attributes:
+      printer:
+        name: Name
+        printer_model: Printer Model
+        user: User
+      user:
+        address: Address
+        company: Company
+        coordinator: Coordinator
+        first_name: First Name
+        last_name: Last Name
+        phone: Phone
+        printers: Printers
+    models:
+      address:
+        one: Address
+        other: Addresses
+      collection_point:
+        one: Collection Point
+        other: Collection Points
+      printer:
+        one: Printer
+        other: Printers
+      printer_model:
+        one: Printer Model
+        other: Printer Models
   welcome: Welcome!
