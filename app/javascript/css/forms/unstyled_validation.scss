@@ -1,0 +1,18 @@
+@mixin unstyled-validation {
+  .is-valid, .is-invalid {
+    border-color: $input-border-color;
+    background: $input-bg;
+
+    &:focus {
+      background: $input-focus-bg;
+      border-color: $input-focus-border-color;
+      box-shadow: $input-focus-box-shadow;
+      color: $input-focus-color;
+    }
+  }
+
+  .was-validated .form-check-input:valid ~ .form-check-label,
+  .form-check-input.is-valid ~ .form-check-label {
+    color: $input-color;
+  }
+}

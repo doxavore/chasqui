@@ -1,13 +1,28 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -euo pipefail
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
+echo
+echo ">>> Stopping old containers"
+echo
 docker-compose -p chasqui down
-docker-compose -p chasqui build
-$DIR/run yarn install --check-files
-$DIR/run /bin/bash -c "bundle check || bundle install -j4"
-$DIR/run /bin/bash -c "bundle binstubs --all && bundle exec spring binstub --all"
-$DIR/run /bin/bash -c "bin/rake db:exists && bin/rake db:migrate || bin/rails db:setup"
 
+echo
+echo ">>> Building images"
+echo
+docker-compose -p chasqui build --parallel
+
+echo
+echo ">>> Running development startup tasks"
+echo
+# On first start, we can't exec because Spring and our gems aren't installed, so run instead.
+"$DIR"/run /bin/bash -c "yarn install --check-files"
+"$DIR"/run /bin/bash -c "bundle check || bundle install -j4"
+"$DIR"/run /bin/bash -c "bundle binstubs --all && bundle exec spring binstub --all"
+"$DIR"/run /bin/bash -c "bin/rake db:exists && bin/rake db:migrate || bin/rails db:setup"
+
+echo
+echo ">>> Starting remaining services"
+echo
 docker-compose -p chasqui up --remove-orphans

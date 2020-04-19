@@ -8,6 +8,7 @@ ruby "2.6.5"
 gem "dotenv-rails"
 # Bundle edge Rails instead: gem "rails", github: "rails/rails"
 gem "rails", "~> 6.0.2", ">= 6.0.2.2"
+gem "rails-i18n", "~> 6.0.0"
 # Use postgresql as the database for Active Record
 gem "pg", ">= 0.18", "< 2.0"
 # Use Puma as the app server
@@ -35,6 +36,9 @@ gem "country_select"
 gem "devise"
 gem "devise-i18n"
 
+gem "country_select"
+gem "simple_form"
+
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", ">= 1.4.2", require: false
 
@@ -43,6 +47,7 @@ group :development, :test do
   gem "byebug", platforms: %i[mri mingw x64_mingw]
   gem "factory_bot_rails"
   gem "faker"
+  gem "i18n-tasks", "~> 0.9"
   gem "rspec-rails"
   gem "rubocop", require: false
   gem "rubocop-performance", require: false

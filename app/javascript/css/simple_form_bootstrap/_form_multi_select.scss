@@ -1,0 +1,20 @@
+// simple_form-bootstrap only packages this as part of the asset pipeline, but we expect node modules.
+// Extracted from https://github.com/rafaelfranca/simple_form-bootstrap/tree/master/app/assets/stylesheets/simple_form-bootstrap
+
+.custom-select,
+.form-control {
+  &.date,
+  &.datetime,
+  &.time {
+    &:first-of-type { margin-left: 0 !important; }
+    &:last-of-type { margin-right: 0 !important; }
+  }
+}
+
+.custom-select {
+  &[multiple],
+  &:only-child {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}

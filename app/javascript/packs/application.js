@@ -1,14 +1,4 @@
-import Rails from "@rails/ujs";
-import Turbolinks from "turbolinks";
+import "css/application";
+import { start } from "../common_entry";
 
-import "jquery";
-import("plugins"); // async
-
-import "css/site";
-
-Rails.start();
-Turbolinks.start();
-
-document.addEventListener("turbolinks:load", () => {
-  jQuery("[data-toggle='tooltip']").tooltip();
-});
+start();
