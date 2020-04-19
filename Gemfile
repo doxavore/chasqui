@@ -25,9 +25,6 @@ gem "redis", "~> 4.0"
 gem "resque"
 # ActiveAdmin provides an admin interface
 gem "activeadmin"
-# country selector
-gem "country_select"
-
 # Use Active Storage variant
 # gem "image_processing", "~> 1.2"
 
