@@ -22,6 +22,13 @@ gem "jbuilder", "~> 2.7"
 gem "redis", "~> 4.0"
 # Background jobs
 gem "resque"
+# ActiveAdmin provides an admin interface
+gem "activeadmin"
+# rails translation stuff
+gem "rails-i18n"
+# country selector
+gem "country_select"
+
 # Use Active Storage variant
 # gem "image_processing", "~> 1.2"
 

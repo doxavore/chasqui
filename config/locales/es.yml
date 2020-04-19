@@ -1,2 +1,30 @@
 es:
   welcome: "Bienvenidos!"
+  activerecord:
+    models:
+      address:
+        one: "Ubicacion"
+        other: "Ubicaciones"
+      printer_model:
+        one: "Modelo de Impresora"
+        other: "Modelos de Impresora"
+      printer:
+        one: "Impresora"
+        other: "Impresoras"
+      collection_point:
+        one: "Punto de Acopio"
+        other: "Puntos de Acopio"
+    attributes:
+      user:
+        coordinator: "Cordinador"
+        address: "Ubicacion"
+        printers: "Impresoras"
+        phone: "Celular"
+        company: "Compania"
+        first_name: "Nombres"
+        last_name: "Apellidos"
+      printer:
+        user: "Usuario"
+        printer_model: "Modelo de Impresora"
+        name: "Nombre"
+
