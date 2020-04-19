@@ -4,11 +4,6 @@ set -euo pipefail
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 echo
-echo ">>> Linting Ruby with rubocop"
-echo
-"$DIR"/exec bin/rubocop --parallel
-
-echo
 echo ">>> Normalizing translations; check for any working tree changes"
 echo
 "$DIR"/exec bin/i18n-tasks normalize
@@ -17,6 +12,16 @@ echo
 echo ">>> Checking translation health"
 echo
 "$DIR"/exec bin/i18n-tasks health
+
+echo
+echo ">>> Linting Ruby with rubocop"
+echo
+"$DIR"/exec bin/rubocop --parallel
+
+echo
+echo ">>> Linting Ruby with brakeman"
+echo
+"$DIR"/exec bin/brakeman -q --no-summary
 
 echo
 echo ">>> Running tests"
