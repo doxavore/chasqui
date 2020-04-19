@@ -25,8 +25,6 @@ gem "redis", "~> 4.0"
 gem "resque"
 # ActiveAdmin provides an admin interface
 gem "activeadmin"
-# rails translation stuff
-gem "rails-i18n"
 # country selector
 gem "country_select"
 
