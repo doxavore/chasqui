@@ -39,11 +39,13 @@ environment.loaders.get('sass').use.splice(-1, 0, {
   loader: "resolve-url-loader",
 });
 
-environment.splitChunks();
+// TODO(dtm): This is incompatible with ActiveAdmin. Its javascripts do not fully load.
+// environment.splitChunks();
 
 environment.plugins.prepend(
   "Provide",
   new webpack.ProvidePlugin({
+    $: "jquery",
     jQuery: "jquery",
     Popper: ["popper.js", "default"],
   }),

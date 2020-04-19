@@ -1,3 +1,35 @@
 ---
 es:
-  welcome: Bienvenidos!
+  active_admin:
+    dashboard: Panel De Control
+    dashboard_welcome:
+      call_to_action: Call to action
+      welcome: Bienvenido!
+  activerecord:
+    attributes:
+      printer:
+        name: Nombre
+        printer_model: Modelo de Impresora
+        user: Usuario
+      user:
+        address: Ubicacion
+        company: Compania
+        coordinator: Cordinador
+        first_name: Nombres
+        last_name: Apellidos
+        phone: Celular
+        printers: Impresoras
+    models:
+      address:
+        one: Ubicacion
+        other: Ubicaciones
+      collection_point:
+        one: Punto de Acopio
+        other: Puntos de Acopio
+      printer:
+        one: Impresora
+        other: Impresoras
+      printer_model:
+        one: Modelo de Impresora
+        other: Modelos de Impresora
+  welcome: Bienvenido!

@@ -40,3 +40,7 @@ Style/HashTransformKeys:
   Enabled: true
 Style/HashTransformValues:
   Enabled: true
+
+Metrics/BlockLength:
+  Exclude:
+    - "app/admin/**/*"
