@@ -7,10 +7,44 @@ en:
       welcome: Welcome
   activerecord:
     attributes:
+      address:
+        administrative_area: Region
+        country: Country
+        line_1: Line 1
+        line_2: Line 2
+        locality: City
+        postal_code: ZIP
+      collection_point:
+        address: Address
+        coordinator: Coordinator
+        name: Name
+      external_entity:
+        address: Address
+        name: Name
+        user: User
+      inventory_line:
+        product: Product
+        quantity_desired: Quantity Desired
+        quantity_present: Quantity Present
+      order:
+        external_entity: External Entity
+        state: State
       printer:
         name: Name
         printer_model: Printer Model
         user: User
+      product:
+        name: Name
+        producible: Producible
+      product_assignment:
+        product: Product
+      receipt:
+        destination: Destination
+        destination_identifier: Destination
+        inventory_line: Item
+        origen: Origin
+        origin_identifier: Origin
+        state: State
       user:
         address: Address
         company: Company
@@ -26,10 +60,34 @@ en:
       collection_point:
         one: Collection Point
         other: Collection Points
+      external_entity:
+        one: External Entity
+        other: External Entities
+      inventory_line:
+        one: Product
+        other: Products
+      order:
+        one: Order
+        other: Orders
       printer:
         one: Printer
         other: Printers
       printer_model:
         one: Printer Model
         other: Printer Models
+      product:
+        one: Product
+        other: Products
+      product_assignment:
+        one: Product Assignment
+        other: Product Assignments
+      receipt:
+        one: Receipt
+        other: Receipts
+  quantity: Quantity
+  users:
+    basic: Basic
+    config: Configuration
+    info: Info
+    production: Production
   welcome: Welcome!

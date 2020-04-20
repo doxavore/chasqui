@@ -21,34 +21,24 @@ class AddInitialLogisticsTables < ActiveRecord::Migration[6.0]
       t.string :country
       t.string :lat
       t.string :lon
+      t.references :addressable, polymorphic: true, index: true, null: false
       t.timestamps
     end
 
     create_table :collection_points do |t|
       t.string :name
-      t.integer :coordinator_id
-      t.integer :address_id
+      t.references :coordinator, foreign_key: { to_table: :users }, index: true, null: false
       t.timestamps
     end
-
-    add_foreign_key :collection_points, :users, column: :coordinator_id, index: true
-    add_foreign_key :collection_points, :addresses
 
     create_table :printers do |t|
       t.string :name
-      t.integer :user_id, index: true
-      t.integer :printer_model_id
+      t.references :user, index: true, null: false
+      t.references :printer_model, index: true
       t.timestamps
     end
 
-    add_foreign_key :printers, :users
-    add_foreign_key :printers, :printer_models, null: true
-
-    add_column :users, :coordinator_id, :integer, index: true
-    add_foreign_key :users, :users, column: :coordinator_id, null: true
-
-    add_column :users, :address_id, :integer
-    add_foreign_key :users, :addresses
+    add_reference :users, :coordinator, foreign_key: { to_table: :users }, index: true
 
     add_column :users, :admin, :boolean
   end

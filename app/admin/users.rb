@@ -12,8 +12,8 @@ ActiveAdmin.register User do
                 :address_id,
                 :coordinator_id,
                 printer_ids: [],
-                printers_attributes: %i[id name printer_model_id],
-                address_attribute: %i[
+                printers_attributes: %i[id name printer_model_id _destroy],
+                address_attributes: %i[
                   id
                   line_1
                   line_2
@@ -21,7 +21,8 @@ ActiveAdmin.register User do
                   administrative_area
                   postal_code
                   country
-                ]
+                ],
+                product_assignments_attributes: %i[id product_id _destroy]
 
   index do
     selectable_column
@@ -38,9 +39,10 @@ ActiveAdmin.register User do
   filter :phone
 
   form do |f|
+    f.semantic_errors
     tabs do
-      tab "Datos" do
-        f.inputs "Basicos" do
+      tab t("users.info") do
+        f.inputs t("users.basic") do
           f.input :email
           f.input :first_name
           f.input :last_name
@@ -52,23 +54,31 @@ ActiveAdmin.register User do
           f.input :coordinator
         end
 
-        f.inputs "Direccion" do
-          f.has_many :address do |af|
+        f.inputs t("activerecord.models.address.one") do
+          f.has_many :address, new_record: !f.object.address do |af|
             af.input :line_1
             af.input :line_2
             af.input :locality
-            af.input :administrative_area
+            af.input :administrative_area, as: :select, collection: Address::REGIONS
             af.input :postal_code
             af.input :country, priority_countries: ["Peru"]
           end
         end
       end
 
-      tab "Configuracion" do
+      tab t("users.config") do
         f.inputs do
           f.has_many :printers do |pf|
             pf.input :name
             pf.input :printer_model
+          end
+        end
+      end
+
+      tab t("users.production") do
+        f.inputs do
+          f.has_many :product_assignments, allow_destroy: true do |paf|
+            paf.input :product, collection: Product.producible
           end
         end
       end

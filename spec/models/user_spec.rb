@@ -24,8 +24,7 @@ RSpec.describe User, type: :model do
   context "when coordinating collection_points" do
     subject!(:coordinator) { create(:user) }
 
-    let(:address) { create(:address) }
-    let!(:collection_point) { create(:collection_point, coordinator: coordinator, address: address) }
+    let!(:collection_point) { create(:collection_point, coordinator: coordinator) }
 
     it "can have coordinated collection points" do
       expect(coordinator.collection_points.first).to eq(collection_point)

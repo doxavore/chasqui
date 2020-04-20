@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-ActiveAdmin.register CollectionPoint do
-  permit_params :coordinator_id,
+ActiveAdmin.register ExternalEntity do
+  permit_params :user_id,
                 :name,
                 address_attributes: %i[
                   id
@@ -16,7 +16,7 @@ ActiveAdmin.register CollectionPoint do
     f.semantic_errors(*f.object.errors.keys)
 
     f.inputs do
-      f.input :coordinator
+      f.input :user
       f.input :name
       f.has_many :address, new_record: !f.object.address do |af|
         af.input :line_1
@@ -29,5 +29,14 @@ ActiveAdmin.register CollectionPoint do
     end
 
     f.actions
+  end
+
+  show do
+    ee = external_entity
+    h3 ee.name
+    attributes_table do
+      row :user
+      row :address
+    end
   end
 end
