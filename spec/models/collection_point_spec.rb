@@ -3,18 +3,14 @@
 require "rails_helper"
 
 RSpec.describe CollectionPoint, type: :model do
-  subject(:collection_point) { create(:collection_point, coordinator: coordinator, address: address) }
+  subject(:collection_point) { create(:collection_point, coordinator: coordinator) }
 
-  let(:address) { create(:address) }
-  let(:coordinator) { create(:user) }
+  let!(:address) { create(:address, addressable: collection_point) }
+  let!(:coordinator) { create(:user) }
 
   describe "#address" do
     it "has one address" do
       expect(collection_point.address).to eq(address)
-    end
-
-    it "must have an address" do
-      expect { collection_point.update!(address: nil) }.to raise_error(ActiveRecord::RecordInvalid)
     end
   end
 

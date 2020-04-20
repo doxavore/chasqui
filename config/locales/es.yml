@@ -7,10 +7,44 @@ es:
       welcome: Bienvenido!
   activerecord:
     attributes:
+      address:
+        administrative_area: Region
+        country: Pais
+        line_1: Direccion
+        line_2: Urb/Zona
+        locality: Ciudad
+        postal_code: Codigo Postal
+      collection_point:
+        address: Ubicacion
+        coordinator: Cordinador
+        name: Nombre
+      external_entity:
+        address: Direccion
+        name: Nombre
+        user: Usuario
+      inventory_line:
+        product: Producto
+        quantity_desired: Cantidad Deseada
+        quantity_present: Cantidad Presente
+      order:
+        external_entity: Entidad Externa
+        state: Estado
       printer:
         name: Nombre
         printer_model: Modelo de Impresora
         user: Usuario
+      product:
+        name: Nombre
+        producible: Producible
+      product_assignment:
+        product: Producto
+      receipt:
+        destination: Destinatario
+        destination_identifier: Destinatario
+        inventory_line: Articulo
+        origen: Origen
+        origin_identifier: Origen
+        state: Estado
       user:
         address: Ubicacion
         company: Compania
@@ -26,10 +60,34 @@ es:
       collection_point:
         one: Punto de Acopio
         other: Puntos de Acopio
+      external_entity:
+        one: Entidad Externa
+        other: Entidades Externas
+      inventory_line:
+        one: Producto
+        other: Productos
+      order:
+        one: Pedido
+        other: Pedidos
       printer:
         one: Impresora
         other: Impresoras
       printer_model:
         one: Modelo de Impresora
         other: Modelos de Impresora
+      product:
+        one: Producto
+        other: Productos
+      product_assignment:
+        one: Asignacion de Producto
+        other: Asignaciones de Productos
+      receipt:
+        one: Recibo
+        other: Recibos
+  quantity: Cantidad
+  users:
+    basic: Basicos
+    config: Configuracion
+    info: Datos
+    production: Produccion
   welcome: Bienvenido!
