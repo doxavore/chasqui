@@ -90,4 +90,7 @@ es:
     config: Configuracion
     info: Datos
     production: Produccion
+  receipts:
+    origin: "Origen: %{origin}"
+    destination: "Destinatario: %{destination}"
   welcome: Bienvenido!

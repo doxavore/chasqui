@@ -16,4 +16,17 @@ ActiveAdmin.register Receipt do
 
     f.actions
   end
+
+  show do
+    columns do
+      column max_width: "600px" do
+        h2 t("receipts.origin", origin: receipt.origin)
+        h2 t("receipts.destination", destination: receipt.destination)
+        table_for receipt.inventory_lines do
+          column :product
+          column t("quantity"), :quantity_present
+        end
+      end
+    end
+  end
 end
