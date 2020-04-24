@@ -25,5 +25,4 @@ class ExternalEntity < ApplicationRecord
       end
     end
   end
-
 end

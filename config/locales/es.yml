@@ -84,13 +84,16 @@ es:
       receipt:
         one: Recibo
         other: Recibos
+  errors:
+    messages:
+      not_saved: Not saved
   quantity: Cantidad
+  receipts:
+    destination: 'Destinatario: %{destination}'
+    origin: 'Origen: %{origin}'
   users:
     basic: Basicos
     config: Configuracion
     info: Datos
     production: Produccion
-  receipts:
-    origin: "Origen: %{origin}"
-    destination: "Destinatario: %{destination}"
   welcome: Bienvenido!

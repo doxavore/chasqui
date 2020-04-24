@@ -84,7 +84,13 @@ en:
       receipt:
         one: Receipt
         other: Receipts
+  errors:
+    messages:
+      not_saved: Not saved
   quantity: Quantity
+  receipts:
+    destination: 'Destination: %{destination}'
+    origin: 'Origin: %{origin}'
   users:
     basic: Basic
     config: Configuration
