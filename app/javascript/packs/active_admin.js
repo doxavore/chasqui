@@ -3,5 +3,3 @@
 import "css/active_admin";
 
 import "@activeadmin/activeadmin";
-import '../imagesasd/logo.svg';
-require.context('../images', true);

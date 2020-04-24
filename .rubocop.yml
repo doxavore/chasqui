@@ -44,3 +44,4 @@ Style/HashTransformValues:
 Metrics/BlockLength:
   Exclude:
     - "app/admin/**/*"
+    - "spec/**/*"

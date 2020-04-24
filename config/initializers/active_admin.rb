@@ -335,5 +335,5 @@ ActiveAdmin.setup do |config|
   meta_tags_options = { viewport: 'width=device-width, initial-scale=1' }
   config.meta_tags = meta_tags_options
   config.meta_tags_for_logged_out_pages = meta_tags_options
-  config.site_title_image = ->(context) { image_pack_tag 'media/images/logo.svg' }
+  config.site_title_image = ->(context) { asset_pack_path 'media/images/logo.png' }
 end
