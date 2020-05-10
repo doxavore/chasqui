@@ -29,6 +29,8 @@ es:
       order:
         external_entity: Entidad Externa
         state: Estado
+        created_at: Fecha de Pedido
+        updated_at: Actualizado
       printer:
         name: Nombre
         printer_model: Modelo de Impresora
@@ -39,12 +41,15 @@ es:
       product_assignment:
         product: Producto
       receipt:
+        id: Numero
         destination: Destinatario
         destination_identifier: Destinatario
         inventory_line: Articulo
-        origen: Origen
+        origin: Origen
         origin_identifier: Origen
+        origin_type: Tipo de Origen
         state: Estado
+        updated_at: Actualizado
       user:
         address: Ubicacion
         company: Compania
@@ -53,6 +58,8 @@ es:
         last_name: Apellidos
         phone: Celular
         printers: Impresoras
+      version:
+        whodunnit: Usuario
     models:
       address:
         one: Ubicacion
@@ -84,13 +91,35 @@ es:
       receipt:
         one: Recibo
         other: Recibos
-  errors:
-    messages:
-      not_saved: Not saved
+  add_product: Agregar Producto
+  collection_point:
+    info: Datos
+    inventory: Inventario
+  intakes: Ingresos
+  inventory: Inventario
+  outlays: Salidas
   quantity: Cantidad
+  receipt:
+    order:
+      state: State
+  history: Historial
   receipts:
+    complete: Finalizar Recibo
+    completed: Recibo Finalizado
+    confirm_void: Esta seguro que quiere anular el recibo?
+    deliver: Enviar
+    delivery_begun: Entrega En Ruta!
     destination: 'Destinatario: %{destination}'
+    edit: Editar Recibo
+    new: Emitir Nuevo Recibo
     origin: 'Origen: %{origin}'
+    state:
+      completed: Finalizado
+      delivering: Envio En Progreso
+      draft: Iniciado
+      voided: Anulado
+    void: Anular Recibo
+    voided: Recibo Anulado
   users:
     basic: Basicos
     config: Configuracion

@@ -2,8 +2,8 @@
 
 class Receipt < ApplicationRecord
   include AASM
-
-  has_many :inventory_lines, as: :inventoried, dependent: :destroy
+  has_paper_trail
+  has_many :inventory_lines, as: :inventoried, dependent: :destroy, autosave: true
   accepts_nested_attributes_for :inventory_lines, allow_destroy: true
   belongs_to :origin, polymorphic: true
   belongs_to :destination, polymorphic: true
@@ -11,12 +11,22 @@ class Receipt < ApplicationRecord
   aasm(column: "state") do
     state :draft, initial: true
     state :completed
+    state :delivering
+    state :voided
+
+    event :begin_delivery do
+      transitions from: :draft, to: :delivering
+    end
+
+    event :void do
+      transitions from: %i[draft delivering], to: :voided
+    end
 
     event :complete do
       before do
         update_inventories
       end
-      transitions from: :draft, to: :completed
+      transitions from: :delivering, to: :completed
     end
   end
 
@@ -55,5 +65,14 @@ class Receipt < ApplicationRecord
   def update_inventories
     origin.debit_receipt(self) if origin.respond_to?(:debit_receipt)
     destination.credit_receipt(self)
+  end
+
+  def to_h
+    {
+      state: state,
+      origin: origin.to_s,
+      destination: destination.to_s,
+      inventory_lines: inventory_lines.map(&:to_h)
+    }
   end
 end

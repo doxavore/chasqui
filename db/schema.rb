@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_20_030757) do
+ActiveRecord::Schema.define(version: 2020_05_10_155615) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -64,8 +64,8 @@ ActiveRecord::Schema.define(version: 2020_04_20_030757) do
   create_table "inventory_lines", force: :cascade do |t|
     t.string "inventoried_type", null: false
     t.bigint "inventoried_id", null: false
-    t.integer "quantity_present"
-    t.integer "quantity_desired"
+    t.integer "quantity_present", default: 0, null: false
+    t.integer "quantity_desired", default: 0, null: false
     t.bigint "product_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -78,6 +78,8 @@ ActiveRecord::Schema.define(version: 2020_04_20_030757) do
     t.string "state"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "collection_point_id"
+    t.index ["collection_point_id"], name: "index_orders_on_collection_point_id"
     t.index ["external_entity_id"], name: "index_orders_on_external_entity_id"
   end
 
@@ -163,6 +165,29 @@ ActiveRecord::Schema.define(version: 2020_04_20_030757) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
+  create_table "version_associations", force: :cascade do |t|
+    t.integer "version_id"
+    t.string "foreign_key_name", null: false
+    t.integer "foreign_key_id"
+    t.string "foreign_type"
+    t.index ["foreign_key_name", "foreign_key_id", "foreign_type"], name: "index_version_associations_on_foreign_key"
+    t.index ["version_id"], name: "index_version_associations_on_version_id"
+  end
+
+  create_table "versions", force: :cascade do |t|
+    t.string "item_type", null: false
+    t.bigint "item_id", null: false
+    t.string "event", null: false
+    t.string "whodunnit"
+    t.text "object"
+    t.text "object_changes"
+    t.datetime "created_at"
+    t.integer "transaction_id"
+    t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
+    t.index ["transaction_id"], name: "index_versions_on_transaction_id"
+  end
+
   add_foreign_key "collection_points", "users", column: "coordinator_id"
+  add_foreign_key "orders", "collection_points"
   add_foreign_key "users", "users", column: "coordinator_id"
 end

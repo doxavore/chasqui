@@ -1,0 +1,10 @@
+# frozen_string_literal: true
+
+table_for assigns[:versions] do
+  column "Version" do |v|
+    v.index.to_i + 1
+  end
+  column :created_at
+  column :whodunnit
+  column("Changes", &:changeset)
+end

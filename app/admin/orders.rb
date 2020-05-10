@@ -15,4 +15,22 @@ ActiveAdmin.register Order do
     end
     f.actions
   end
+
+  show do
+    columns do
+      column max_width: "600px" do
+        attributes_table do
+          row :external_entity
+          row :created_at
+          row :updated_at
+        end
+
+        table_for order.inventory_lines do
+          column :product
+          column t("quantity_delivered"), :quantity_present
+          column t("quantity_ordered"), :quantity_desired
+        end
+      end
+    end
+  end
 end

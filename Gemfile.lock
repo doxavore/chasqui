@@ -1,3 +1,20 @@
+GIT
+  remote: https://github.com/Looooong/activeadmin.git
+  revision: 769c23275f318397f13aad518fb6fd08c97a1f35
+  ref: 769c23275f318397f13aad518fb6fd08c97a1f35
+  specs:
+    activeadmin (2.7.0)
+      arbre (~> 1.2, >= 1.2.1)
+      formtastic (~> 3.1)
+      formtastic_i18n (~> 0.4)
+      inherited_resources (~> 1.7)
+      jquery-rails (~> 4.2)
+      kaminari (~> 1.0, >= 1.0.1)
+      railties (>= 5.2, < 6.1)
+      ransack (~> 2.1, >= 2.1.1)
+      sassc-rails (~> 2.1)
+      sprockets (>= 3.0, < 4.1)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -39,17 +56,10 @@ GEM
       erubi (~> 1.4)
       rails-dom-testing (~> 2.0)
       rails-html-sanitizer (~> 1.1, >= 1.2.0)
-    activeadmin (2.7.0)
-      arbre (~> 1.2, >= 1.2.1)
-      formtastic (~> 3.1)
-      formtastic_i18n (~> 0.4)
-      inherited_resources (~> 1.7)
-      jquery-rails (~> 4.2)
-      kaminari (~> 1.0, >= 1.0.1)
-      railties (>= 5.2, < 6.1)
-      ransack (~> 2.1, >= 2.1.1)
-      sassc-rails (~> 2.1)
-      sprockets (>= 3.0, < 4.1)
+    activeadmin-audit (0.1.4)
+      activeadmin (>= 1.0.0)
+      paper_trail (>= 5.2.3)
+      rails (>= 4.0.0)
     activejob (6.0.2.2)
       activesupport (= 6.0.2.2)
       globalid (>= 0.3.6)
@@ -194,6 +204,10 @@ GEM
     nokogiri (1.10.9)
       mini_portile2 (~> 2.4.0)
     orm_adapter (0.5.0)
+    paper_trail (10.3.1)
+      activerecord (>= 4.2)
+      request_store (~> 1.1)
+    paper_trail-association_tracking (2.0.0)
     parallel (1.19.1)
     parser (2.7.1.0)
       ast (~> 2.4.0)
@@ -253,6 +267,8 @@ GEM
     redis-namespace (1.7.0)
       redis (>= 3.0.4)
     regexp_parser (1.7.0)
+    request_store (1.5.0)
+      rack (>= 1.4)
     responders (3.0.0)
       actionpack (>= 5.0)
       railties (>= 5.0)
@@ -300,7 +316,7 @@ GEM
     ruby2_keywords (0.0.2)
     ruby_dep (1.5.0)
     rubyzip (2.3.0)
-    sassc (2.2.1)
+    sassc (2.3.0)
       ffi (~> 1.9)
     sassc-rails (2.1.2)
       railties (>= 4.0.0)
@@ -376,7 +392,8 @@ PLATFORMS
 
 DEPENDENCIES
   aasm
-  activeadmin
+  activeadmin!
+  activeadmin-audit
   activerecord_where_assoc (~> 1.0)
   bootsnap (>= 1.4.2)
   brakeman
@@ -392,6 +409,8 @@ DEPENDENCIES
   jbuilder (~> 2.7)
   listen (>= 3.0.5, < 3.2)
   minitest (= 5.13.0)
+  paper_trail
+  paper_trail-association_tracking
   pg (>= 0.18, < 2.0)
   puma (~> 4.1)
   rails (~> 6.0.2, >= 6.0.2.2)

@@ -9,7 +9,7 @@ RSpec.describe Receipt, type: :model do
   let(:collection_point) { create(:collection_point, coordinator: coordinator) }
 
   describe "when transferring from external_entity to collection_point" do
-    let(:receipt) { create(:complete_receipt, origin: ee, destination: collection_point) }
+    let(:receipt) { create(:complete_receipt, origin: ee, destination: collection_point, state: :delivering) }
 
     it "creates a new line for each missing product" do
       receipt.complete
@@ -26,7 +26,7 @@ RSpec.describe Receipt, type: :model do
   end
 
   describe "when transferring from collection_point to external_entity " do
-    let(:receipt) { create(:complete_receipt, origin: collection_point, destination: ee) }
+    let(:receipt) { create(:complete_receipt, origin: collection_point, destination: ee, state: :delivering) }
 
     it "creates a new line for each missing product on the collection_point" do
       receipt.complete
@@ -43,7 +43,7 @@ RSpec.describe Receipt, type: :model do
 
     describe "when the external_entity has an order" do
       let!(:order) do
-        new_order = create(:order, external_entity: ee)
+        new_order = create(:order, external_entity: ee, state: :assigned)
         receipt.inventory_lines.each do |receipt_line|
           create(
             :inventory_line,
@@ -62,12 +62,17 @@ RSpec.describe Receipt, type: :model do
           expect(inv_line.quantity_remaining).to eq(0)
         end
       end
+
+      it "marks the order as complete" do
+        receipt.complete
+        expect(order.reload.state).to eq("completed")
+      end
     end
   end
 
   describe "when transferring from collection_point to user" do
     let(:user) { create(:user) }
-    let(:receipt) { create(:complete_receipt, origin: collection_point, destination: user) }
+    let(:receipt) { create(:complete_receipt, origin: collection_point, destination: user, state: :delivering) }
 
     before do
       receipt.inventory_lines.each do |receipt_line|
