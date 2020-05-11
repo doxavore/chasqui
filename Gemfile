@@ -24,7 +24,7 @@ gem "redis", "~> 4.0"
 # Background jobs
 gem "resque"
 # ActiveAdmin provides an admin interface
-gem "activeadmin"
+gem "activeadmin", github: "Looooong/activeadmin", ref: "769c23275f318397f13aad518fb6fd08c97a1f35"
 # Use Active Storage variant
 # gem "image_processing", "~> 1.2"
 gem "aasm"
@@ -33,6 +33,9 @@ gem "devise"
 gem "devise-i18n"
 
 gem "country_select"
+gem "paper_trail"
+gem "paper_trail-association_tracking"
+
 gem "simple_form"
 
 # Reduces boot times through caching; required in config/boot.rb

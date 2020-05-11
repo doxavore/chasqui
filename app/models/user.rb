@@ -12,6 +12,8 @@ class User < ApplicationRecord
   has_many :collection_points, foreign_key: "coordinator_id", dependent: :nullify, inverse_of: :coordinator
   has_many :product_assignments, as: :assigned, dependent: :destroy
   has_one :address, as: :addressable, dependent: :destroy
+  has_many :origin_receipts, as: :origin, class_name: "Receipt", dependent: :nullify
+  has_many :destination_receipts, as: :destination, class_name: "Receipt", dependent: :nullify
   accepts_nested_attributes_for :printers, allow_destroy: true
   accepts_nested_attributes_for :product_assignments, allow_destroy: true
   accepts_nested_attributes_for :address, allow_destroy: true

@@ -38,5 +38,42 @@ ActiveAdmin.register ExternalEntity do
       row :user
       row :address
     end
+
+    panel t("activerecord.models.order.other") do
+      table_for external_entity.orders do
+        column :id do |order|
+          link_to order.id, admin_order_path(order)
+        end
+        column :collection_point
+        column t("activerecord.attributes.order.state") do |o|
+          t("orders.state.#{o.state}")
+        end
+        column :updated_at
+      end
+    end
+
+    panel t("intakes") do
+      table_for external_entity.destination_receipts do
+        column t("active_admin.date") do |receipt|
+          link_to receipt.created_at, admin_receipt_path(receipt)
+        end
+
+        column :state do |receipt|
+          t("receipts.state.#{receipt.state}")
+        end
+      end
+    end
+
+    panel t("outlays") do
+      table_for external_entity.origin_receipts do
+        column t("active_admin.date") do |receipt|
+          link_to receipt.created_at, admin_receipt_path(receipt)
+        end
+
+        column :state do |receipt|
+          t("receipts.state.#{receipt.state}")
+        end
+      end
+    end
   end
 end

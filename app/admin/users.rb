@@ -38,6 +38,55 @@ ActiveAdmin.register User do
   filter :email
   filter :phone
 
+  show do
+    attributes_table do
+      row :email
+      row :first_name
+      row :last_name
+      row :address
+      row t("activerecord.attributes.user.product_assignments") do |u|
+        u.product_assignments.map(&:product).map(&:name)
+      end
+      row :printers
+    end
+
+    columns do
+      column max_width: "300px" do
+        h2 t("collection_point.inventory")
+        table_for user.inventory_lines do
+          column :product
+          column t("quantity"), :quantity_present
+        end
+      end
+
+      column max_width: "300px" do
+        h2 t("outlays")
+        table_for user.origin_receipts.completed do
+          column t("active_admin.date") do |receipt|
+            link_to receipt.created_at, admin_receipt_path(receipt)
+          end
+          column :destination
+          column :state do |receipt|
+            t("receipts.state.#{receipt.state}")
+          end
+        end
+      end
+
+      column max_width: "300px" do
+        h2 t("intakes")
+        table_for user.destination_receipts.completed do
+          column t("active_admin.date") do |receipt|
+            link_to receipt.created_at, admin_receipt_path(receipt)
+          end
+          column :origin
+          column :state do |receipt|
+            t("receipts.state.#{receipt.state}")
+          end
+        end
+      end
+    end
+  end
+
   form do |f|
     f.semantic_errors
     tabs do
@@ -80,6 +129,10 @@ ActiveAdmin.register User do
           f.has_many :product_assignments, allow_destroy: true do |paf|
             paf.input :product, collection: Product.producible
           end
+        end
+        f.has_many :inventory_lines, allow_destroy: true do |inv|
+          inv.input :product
+          inv.input :quantity_present, label: t("quantity")
         end
       end
     end

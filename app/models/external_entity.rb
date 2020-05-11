@@ -5,6 +5,8 @@ class ExternalEntity < ApplicationRecord
   has_many :inventory_lines, through: :orders
   belongs_to :user
   has_one :address, as: :addressable, dependent: :destroy
+  has_many :origin_receipts, as: :origin, class_name: "Receipt", dependent: :nullify
+  has_many :destination_receipts, as: :destination, class_name: "Receipt", dependent: :nullify
   accepts_nested_attributes_for :address, allow_destroy: true
 
   def to_s
@@ -15,13 +17,21 @@ class ExternalEntity < ApplicationRecord
   def credit_receipt(receipt)
     receipt.inventory_lines.each do |r_line|
       remaining = r_line.quantity_present
-      inventory_lines.where(product: r_line.product).find_each do |o_line|
-        debit_quantity = [remaining, o_line.quantity_remaining].min
-        break if debit_quantity.zero?
 
-        remaining -= debit_quantity
-        o_line.quantity_present += debit_quantity
-        o_line.save
+      orders.includes(:inventory_lines).assigned.each do |order|
+        break if remaining.zero?
+
+        order.inventory_lines.each do |o_line|
+          next if o_line.product_id != r_line.product_id
+
+          debit_quantity = [remaining, o_line.quantity_remaining].min
+          next if debit_quantity.zero?
+
+          remaining -= debit_quantity
+          o_line.quantity_present += debit_quantity
+          o_line.save
+        end
+        order.complete! if order.can_complete?
       end
     end
   end
