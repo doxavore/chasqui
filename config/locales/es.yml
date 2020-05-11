@@ -94,13 +94,11 @@ es:
       receipt:
         one: Recibo
         other: Recibos
-  add_product: Agregar Producto
   collection_point:
     info: Datos
     inventory: Inventario
   history: Historial
   intakes: Ingresos
-  inventory: Inventario
   orders:
     approve: Aprobar Pedido
     approved: Pedido Aprobado!
@@ -113,12 +111,10 @@ es:
   quantity: Cantidad
   quantity_delivered: Cantidad Entregada
   quantity_ordered: Cantidad Deseada
-  receipt:
-    order:
-      state: State
   receipts:
     complete: Finalizar Recibo
     completed: Recibo Finalizado
+    completion_instructions: Debe subir una foto del recibo antes de poder finalizarlo.
     confirm_void: Esta seguro que quiere anular el recibo?
     deliver: Enviar
     delivery_begun: Entrega En Ruta!
@@ -126,7 +122,6 @@ es:
     edit: Editar Recibo
     new: Emitir Nuevo Recibo
     origin: 'Origen: %{origin}'
-    completion_instructions: Debe subir una foto del recibo antes de poder finalizarlo.
     state:
       completed: Finalizado
       delivering: Envio En Progreso

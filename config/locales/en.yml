@@ -94,7 +94,6 @@ en:
       receipt:
         one: Receipt
         other: Receipts
-  add_product: Agregar Producto
   collection_point:
     info: Datos
     inventory: Inventario
@@ -166,7 +165,6 @@ en:
       not_saved: Not saved
   history: Historial
   intakes: Ingresos
-  inventory: Inventario
   orders:
     approve: Aprobar Pedido
     approved: Pedido Aprobado!
@@ -179,12 +177,10 @@ en:
   quantity: Quantity
   quantity_delivered: Quantity delivered
   quantity_ordered: Quantity ordered
-  receipt:
-    order:
-      state: State
   receipts:
     complete: Finalizar Recibo
     completed: Recibo Finalizado
+    completion_instructions: Debe subir una foto del recibo antes de poder finalizarlo.
     confirm_void: Esta seguro que quiere anular el recibo?
     deliver: Enviar
     delivery_begun: Entrega En Ruta!
