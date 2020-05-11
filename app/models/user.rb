@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class User < ApplicationRecord
+  include Receipts::Participant
   devise :database_authenticatable,
          :recoverable, :rememberable, :validatable,
          :confirmable, :lockable, :trackable
@@ -14,6 +15,9 @@ class User < ApplicationRecord
   accepts_nested_attributes_for :printers, allow_destroy: true
   accepts_nested_attributes_for :product_assignments, allow_destroy: true
   accepts_nested_attributes_for :address, allow_destroy: true
+
+  has_many :inventory_lines, as: :inventoried, dependent: :destroy
+  accepts_nested_attributes_for :inventory_lines, allow_destroy: true
 
   scope :printers, -> { where_assoc_exists(:printers) }
 
