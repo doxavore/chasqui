@@ -4,7 +4,7 @@ class User < ApplicationRecord
   include Receipts::Participant
   devise :database_authenticatable,
          :recoverable, :rememberable, :validatable,
-         :confirmable, :lockable, :trackable
+         :confirmable, :lockable, :trackable, :registerable
 
   has_many :printers, dependent: :destroy
   has_many :overseen, class_name: "User", foreign_key: "coordinator_id", dependent: :nullify, inverse_of: :coordinator
