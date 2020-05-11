@@ -4,11 +4,11 @@ require "rails_helper"
 
 RSpec.describe Receipt, type: :model do
   let(:ee) { create(:external_entity) }
-
   let(:coordinator) { create(:user) }
   let(:collection_point) { create(:collection_point, coordinator: coordinator) }
+
   before do
-    allow_any_instance_of(Receipt).to receive(:has_image?).and_return(true)
+    allow_any_instance_of(described_class).to receive(:image?).and_return(true) # rubocop:disable RSpec/AnyInstance
   end
 
   describe "when transferring from external_entity to collection_point" do

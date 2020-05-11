@@ -67,7 +67,6 @@ ActiveAdmin.register CollectionPoint do
         end
         column :updated_at
       end
-
     end
 
     columns do

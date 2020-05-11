@@ -27,7 +27,7 @@ class Receipt < ApplicationRecord
       before do
         update_inventories
       end
-      transitions from: :delivering, to: :completed, guard: :has_image?
+      transitions from: :delivering, to: :completed, guard: :image?
     end
   end
 
@@ -77,7 +77,7 @@ class Receipt < ApplicationRecord
     }
   end
 
-  def has_image?
+  def image?
     image.present?
   end
 end

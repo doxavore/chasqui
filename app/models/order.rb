@@ -46,8 +46,6 @@ class Order < ApplicationRecord
   end
 
   def check_collection_point_assignment
-    if pending_assignment? && collection_point.present?
-      assign!
-    end
+    assign! if pending_assignment? && collection_point.present?
   end
 end

@@ -26,7 +26,6 @@ ActiveAdmin.register Receipt do
       end
     end
 
-
     f.actions
   end
 

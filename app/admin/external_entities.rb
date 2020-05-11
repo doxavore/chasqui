@@ -50,7 +50,6 @@ ActiveAdmin.register ExternalEntity do
         end
         column :updated_at
       end
-
     end
 
     panel t("intakes") do
