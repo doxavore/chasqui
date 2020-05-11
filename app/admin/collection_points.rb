@@ -56,6 +56,20 @@ ActiveAdmin.register CollectionPoint do
       row :address
     end
 
+    panel t("activerecord.models.order.other") do
+      table_for collection_point.orders do
+        column :id do |order|
+          link_to order.id, admin_order_path(order)
+        end
+        column :external_entity
+        column t("activerecord.attributes.order.state") do |o|
+          t("orders.state.#{o.state}")
+        end
+        column :updated_at
+      end
+
+    end
+
     columns do
       column max_width: "300px" do
         h2 t("collection_point.inventory")
@@ -71,19 +85,23 @@ ActiveAdmin.register CollectionPoint do
           column t("date") do |receipt|
             link_to receipt.created_at, admin_receipt_path(receipt)
           end
-
-          column :state
+          column :destination
+          column :state do |receipt|
+            t("receipts.state.#{receipt.state}")
+          end
         end
       end
 
       column max_width: "300px" do
         h2 t("intakes")
-        table_for collection_point.origin_receipts do
+        table_for collection_point.destination_receipts do
           column t("date") do |receipt|
             link_to receipt.created_at, admin_receipt_path(receipt)
           end
-
-          column :state
+          column :origin
+          column :state do |receipt|
+            t("receipts.state.#{receipt.state}")
+          end
         end
       end
     end

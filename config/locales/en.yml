@@ -27,8 +27,10 @@ en:
         quantity_desired: Quantity Desired
         quantity_present: Quantity Present
       order:
+        created_at: Fecha de Pedido
         external_entity: External Entity
         state: State
+        updated_at: Actualizado
       printer:
         name: Name
         printer_model: Printer Model
@@ -41,11 +43,13 @@ en:
       receipt:
         destination: Destination
         destination_identifier: Destination
+        id: Numero
         inventory_line: Item
         origin: Origen
         origin_identifier: Origin
         origin_type: Tipo de Origen
         state: State
+        updated_at: Actualizado
       user:
         address: Address
         company: Company
@@ -54,6 +58,8 @@ en:
         last_name: Last Name
         phone: Phone
         printers: Printers
+      version:
+        whodunnit: Usuario
     models:
       address:
         one: Address
@@ -89,7 +95,6 @@ en:
   collection_point:
     info: Datos
     inventory: Inventario
-  date: Fecha
   devise:
     confirmations:
       new:
@@ -156,10 +161,13 @@ en:
   errors:
     messages:
       not_saved: Not saved
+  history: Historial
   intakes: Ingresos
   inventory: Inventario
   outlays: Salidas
   quantity: Quantity
+  quantity_delivered: Quantity delivered
+  quantity_ordered: Quantity ordered
   receipt:
     order:
       state: State

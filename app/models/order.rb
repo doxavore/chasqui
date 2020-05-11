@@ -7,6 +7,7 @@ class Order < ApplicationRecord
   belongs_to :collection_point, optional: true
   has_many :inventory_lines, as: :inventoried, dependent: :destroy
   accepts_nested_attributes_for :inventory_lines, allow_destroy: true
+  after_save :check_collection_point_assignment
 
   aasm(column: "state") do
     state :pending_approval, initial: true
@@ -20,7 +21,7 @@ class Order < ApplicationRecord
     end
 
     event :assign do
-      transitions from: :pending_assignment, to: :assigned, guard: :assign_collection_point
+      transitions from: :pending_assignment, to: :assigned, guard: :collection_point_assigned?
     end
 
     event :complete do
@@ -40,7 +41,13 @@ class Order < ApplicationRecord
     inventory_lines.inject(true) { |sum, l| sum && l.complete? }
   end
 
-  def assign_collection_point(assignee)
-    self.collection_point = assignee
+  def collection_point_assigned?
+    collection_point.present?
+  end
+
+  def check_collection_point_assignment
+    if pending_assignment? && collection_point.present?
+      assign!
+    end
   end
 end

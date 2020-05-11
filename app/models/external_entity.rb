@@ -5,6 +5,8 @@ class ExternalEntity < ApplicationRecord
   has_many :inventory_lines, through: :orders
   belongs_to :user
   has_one :address, as: :addressable, dependent: :destroy
+  has_many :origin_receipts, as: :origin, class_name: "Receipt", dependent: :nullify
+  has_many :destination_receipts, as: :destination, class_name: "Receipt", dependent: :nullify
   accepts_nested_attributes_for :address, allow_destroy: true
 
   def to_s
@@ -29,7 +31,7 @@ class ExternalEntity < ApplicationRecord
           o_line.quantity_present += debit_quantity
           o_line.save
         end
-        order.complete! if order.is_complete?
+        order.complete! if order.can_complete?
       end
     end
   end

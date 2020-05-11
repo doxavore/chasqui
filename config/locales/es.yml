@@ -27,10 +27,11 @@ es:
         quantity_desired: Cantidad Deseada
         quantity_present: Cantidad Presente
       order:
+        created_at: Fecha de Pedido
         external_entity: Entidad Externa
         state: Estado
-        created_at: Fecha de Pedido
         updated_at: Actualizado
+        collection_point: Punto de Acopio
       printer:
         name: Nombre
         printer_model: Modelo de Impresora
@@ -41,9 +42,9 @@ es:
       product_assignment:
         product: Producto
       receipt:
-        id: Numero
         destination: Destinatario
         destination_identifier: Destinatario
+        id: Numero
         inventory_line: Articulo
         origin: Origen
         origin_identifier: Origen
@@ -58,6 +59,7 @@ es:
         last_name: Apellidos
         phone: Celular
         printers: Impresoras
+        product_assignments: Productos Designados
       version:
         whodunnit: Usuario
     models:
@@ -95,14 +97,16 @@ es:
   collection_point:
     info: Datos
     inventory: Inventario
+  history: Historial
   intakes: Ingresos
   inventory: Inventario
   outlays: Salidas
   quantity: Cantidad
+  quantity_delivered: Cantidad Entregada
+  quantity_ordered: Cantidad Deseada
   receipt:
     order:
       state: State
-  history: Historial
   receipts:
     complete: Finalizar Recibo
     completed: Recibo Finalizado
@@ -120,6 +124,13 @@ es:
       voided: Anulado
     void: Anular Recibo
     voided: Recibo Anulado
+  orders:
+    approve: Aprobar Pedido
+    state:
+      pending_approval: Esperando aprobacion
+      pending_assignment: Esperando Asignacion
+      assigned: Asignado
+      completed: Completado
   users:
     basic: Basicos
     config: Configuracion

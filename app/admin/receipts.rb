@@ -33,11 +33,11 @@ ActiveAdmin.register Receipt do
   end
 
   show do
+    h2 t("receipts.origin", origin: receipt.origin)
+    h2 t("receipts.destination", destination: receipt.destination)
+    h2 t("activerecord.attributes.receipt.state") + ": " + t("receipts.state.#{receipt.state}")
     columns do
       column max_width: "600px" do
-        h2 t("receipts.origin", origin: receipt.origin)
-        h2 t("receipts.destination", destination: receipt.destination)
-        h2 t("receipts.state.#{receipt.state}")
         table_for receipt.inventory_lines do
           column :product
           column t("quantity"), :quantity_present
