@@ -7,6 +7,9 @@ RSpec.describe Receipt, type: :model do
 
   let(:coordinator) { create(:user) }
   let(:collection_point) { create(:collection_point, coordinator: coordinator) }
+  before do
+    allow_any_instance_of(Receipt).to receive(:has_image?).and_return(true)
+  end
 
   describe "when transferring from external_entity to collection_point" do
     let(:receipt) { create(:complete_receipt, origin: ee, destination: collection_point, state: :delivering) }

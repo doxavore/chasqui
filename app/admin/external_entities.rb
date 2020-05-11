@@ -55,7 +55,7 @@ ActiveAdmin.register ExternalEntity do
 
     panel t("intakes") do
       table_for external_entity.destination_receipts do
-        column t("date") do |receipt|
+        column t("active_admin.date") do |receipt|
           link_to receipt.created_at, admin_receipt_path(receipt)
         end
 
@@ -67,7 +67,7 @@ ActiveAdmin.register ExternalEntity do
 
     panel t("outlays") do
       table_for external_entity.origin_receipts do
-        column t("date") do |receipt|
+        column t("active_admin.date") do |receipt|
           link_to receipt.created_at, admin_receipt_path(receipt)
         end
 

@@ -5,6 +5,7 @@ en:
     dashboard_welcome:
       call_to_action: Call to action
       welcome: Welcome
+    date: Fecha
   activerecord:
     attributes:
       address:
@@ -27,6 +28,7 @@ en:
         quantity_desired: Quantity Desired
         quantity_present: Quantity Present
       order:
+        collection_point: Punto de Acopio
         created_at: Fecha de Pedido
         external_entity: External Entity
         state: State
@@ -58,6 +60,7 @@ en:
         last_name: Last Name
         phone: Phone
         printers: Printers
+        product_assignments: Productos Designados
       version:
         whodunnit: Usuario
     models:
@@ -164,6 +167,14 @@ en:
   history: Historial
   intakes: Ingresos
   inventory: Inventario
+  orders:
+    approve: Aprobar Pedido
+    approved: Pedido Aprobado!
+    state:
+      assigned: Asignado
+      completed: Completado
+      pending_approval: Esperando aprobacion
+      pending_assignment: Esperando Asignacion
   outlays: Salidas
   quantity: Quantity
   quantity_delivered: Quantity delivered

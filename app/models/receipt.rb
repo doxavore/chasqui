@@ -7,6 +7,7 @@ class Receipt < ApplicationRecord
   accepts_nested_attributes_for :inventory_lines, allow_destroy: true
   belongs_to :origin, polymorphic: true
   belongs_to :destination, polymorphic: true
+  has_one_attached :image
 
   aasm(column: "state") do
     state :draft, initial: true
@@ -26,7 +27,7 @@ class Receipt < ApplicationRecord
       before do
         update_inventories
       end
-      transitions from: :delivering, to: :completed
+      transitions from: :delivering, to: :completed, guard: :has_image?
     end
   end
 
@@ -74,5 +75,9 @@ class Receipt < ApplicationRecord
       destination: destination.to_s,
       inventory_lines: inventory_lines.map(&:to_h)
     }
+  end
+
+  def has_image?
+    image.present?
   end
 end

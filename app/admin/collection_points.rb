@@ -82,7 +82,7 @@ ActiveAdmin.register CollectionPoint do
       column max_width: "300px" do
         h2 t("outlays")
         table_for collection_point.origin_receipts do
-          column t("date") do |receipt|
+          column t("active_admin.date") do |receipt|
             link_to receipt.created_at, admin_receipt_path(receipt)
           end
           column :destination
@@ -95,7 +95,7 @@ ActiveAdmin.register CollectionPoint do
       column max_width: "300px" do
         h2 t("intakes")
         table_for collection_point.destination_receipts do
-          column t("date") do |receipt|
+          column t("active_admin.date") do |receipt|
             link_to receipt.created_at, admin_receipt_path(receipt)
           end
           column :origin

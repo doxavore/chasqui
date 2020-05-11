@@ -5,6 +5,7 @@ es:
     dashboard_welcome:
       call_to_action: Call to action
       welcome: Bienvenido!
+    date: Fecha
   activerecord:
     attributes:
       address:
@@ -27,11 +28,11 @@ es:
         quantity_desired: Cantidad Deseada
         quantity_present: Cantidad Presente
       order:
+        collection_point: Punto de Acopio
         created_at: Fecha de Pedido
         external_entity: Entidad Externa
         state: Estado
         updated_at: Actualizado
-        collection_point: Punto de Acopio
       printer:
         name: Nombre
         printer_model: Modelo de Impresora
@@ -100,6 +101,14 @@ es:
   history: Historial
   intakes: Ingresos
   inventory: Inventario
+  orders:
+    approve: Aprobar Pedido
+    approved: Pedido Aprobado!
+    state:
+      assigned: Asignado
+      completed: Completado
+      pending_approval: Esperando aprobacion
+      pending_assignment: Esperando Asignacion
   outlays: Salidas
   quantity: Cantidad
   quantity_delivered: Cantidad Entregada
@@ -117,6 +126,7 @@ es:
     edit: Editar Recibo
     new: Emitir Nuevo Recibo
     origin: 'Origen: %{origin}'
+    completion_instructions: Debe subir una foto del recibo antes de poder finalizarlo.
     state:
       completed: Finalizado
       delivering: Envio En Progreso
@@ -124,13 +134,6 @@ es:
       voided: Anulado
     void: Anular Recibo
     voided: Recibo Anulado
-  orders:
-    approve: Aprobar Pedido
-    state:
-      pending_approval: Esperando aprobacion
-      pending_assignment: Esperando Asignacion
-      assigned: Asignado
-      completed: Completado
   users:
     basic: Basicos
     config: Configuracion

@@ -8,16 +8,24 @@ ActiveAdmin.register Receipt do
 
   permit_params :origin_identifier,
                 :destination_identifier,
+                :image,
                 inventory_lines_attributes: %i[id product_id quantity_present _destroy]
   form do |f|
-    f.inputs do
-      f.input :origin_identifier, collection: Receipt.participants.map { |i| [i.to_s, "#{i.class}-#{i.id}"] }
-      f.input :destination_identifier, collection: Receipt.participants.map { |i| [i.to_s, "#{i.class}-#{i.id}"] }
-      f.has_many :inventory_lines, allow_destroy: true do |inv|
-        inv.input :product
-        inv.input :quantity_present, label: t("quantity")
+    if f.object.draft?
+      f.inputs do
+        f.input :origin_identifier, collection: Receipt.participants.map { |i| [i.to_s, "#{i.class}-#{i.id}"] }
+        f.input :destination_identifier, collection: Receipt.participants.map { |i| [i.to_s, "#{i.class}-#{i.id}"] }
+        f.has_many :inventory_lines, allow_destroy: true do |inv|
+          inv.input :product
+          inv.input :quantity_present, label: t("quantity")
+        end
+      end
+    elsif f.object.delivering?
+      f.inputs do
+        f.input :image, as: :file
       end
     end
+
 
     f.actions
   end
@@ -36,6 +44,13 @@ ActiveAdmin.register Receipt do
     h2 t("receipts.origin", origin: receipt.origin)
     h2 t("receipts.destination", destination: receipt.destination)
     h2 t("activerecord.attributes.receipt.state") + ": " + t("receipts.state.#{receipt.state}")
+    if receipt.image.present?
+      a href: url_for(receipt.image) do
+        img src: url_for(receipt.image), style: "max-width: 400p; max-height: 400px"
+      end
+    else
+      i t("receipts.completion_instructions")
+    end
     columns do
       column max_width: "600px" do
         table_for receipt.inventory_lines do
@@ -46,7 +61,7 @@ ActiveAdmin.register Receipt do
     end
   end
 
-  action_item :complete, only: :show, if: proc { receipt.delivering? } do
+  action_item :complete, only: :show, if: proc { receipt.delivering? && receipt.image.present? } do
     link_to t("receipts.complete"), complete_admin_receipt_path(receipt), method: :put
   end
 
@@ -58,7 +73,7 @@ ActiveAdmin.register Receipt do
     link_to t("receipts.void"), void_admin_receipt_path(receipt), method: :put
   end
 
-  action_item :edit, only: :show, if: proc { receipt.draft? } do
+  action_item :edit, only: :show, if: proc { receipt.draft? || receipt.delivering? } do
     link_to t("receipts.edit"), edit_admin_receipt_path(receipt), method: :get
   end
 
