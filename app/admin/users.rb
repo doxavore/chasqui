@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register User do
+  includes :address
   permit_params :email,
                 :password,
                 :password_confirmation,
@@ -27,6 +28,14 @@ ActiveAdmin.register User do
   index do
     selectable_column
     id_column
+    column t('activerecord.attributes.address.administrative_area') do |u|
+      u.address&.administrative_area
+    end
+
+    column t('activerecord.attributes.address.locality') do |u|
+      u.address&.locality
+    end
+    column :status
     column :first_name
     column :last_name
     column :email
@@ -41,6 +50,8 @@ ActiveAdmin.register User do
   show do
     attributes_table do
       row :email
+      row :status
+      row :profession
       row :first_name
       row :last_name
       row :address
@@ -85,6 +96,8 @@ ActiveAdmin.register User do
         end
       end
     end
+
+    active_admin_comments
   end
 
   form do |f|
@@ -98,6 +111,8 @@ ActiveAdmin.register User do
           f.input :phone
           f.input :company
           f.input :admin
+          f.input :status
+          f.input :profession
           f.input :password
           f.input :password_confirmation
           f.input :coordinator

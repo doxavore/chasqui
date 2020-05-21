@@ -28,7 +28,7 @@ es:
         quantity_desired: Cantidad Deseada
         quantity_present: Cantidad Presente
       order:
-        collection_point: Punto de Acopio
+        collection_point: Centro de Acopio
         created_at: Fecha de Pedido
         external_entity: Entidad Externa
         state: Estado
@@ -68,8 +68,8 @@ es:
         one: Ubicacion
         other: Ubicaciones
       collection_point:
-        one: Punto de Acopio
-        other: Puntos de Acopio
+        one: Centro de Acopio
+        other: Centros de Acopio
       external_entity:
         one: Entidad Externa
         other: Entidades Externas
