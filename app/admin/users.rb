@@ -46,6 +46,8 @@ ActiveAdmin.register User do
 
   filter :email
   filter :phone
+  filter :first_name
+  filter :status
 
   show do
     attributes_table do

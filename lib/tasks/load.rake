@@ -35,6 +35,19 @@ namespace :load do
     end
   end
 
+  task :fix_status do
+    Rake::Task['environment'].invoke
+    arr = CSV.read("#{Rails.root}/lib/tasks/makers.csv")
+    arr.each do |row|
+      email = row[9].to_s.downcase.strip
+      next unless email.length > 5
+      user = User.find_by(email: email)
+      next unless user
+      user.status = row[1]&.titleize
+      user.save
+    end
+  end
+
   task :makers do
     Rake::Task['environment'].invoke
     arr = CSV.read("#{Rails.root}/lib/tasks/makers.csv")
