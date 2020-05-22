@@ -35,6 +35,7 @@ gem "devise-i18n"
 gem "country_select"
 gem "paper_trail"
 gem "paper_trail-association_tracking"
+gem "pundit"
 
 gem "simple_form"
 

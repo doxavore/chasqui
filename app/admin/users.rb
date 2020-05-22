@@ -160,8 +160,13 @@ ActiveAdmin.register User do
     def update
       model = :user
       %w[password password_confirmation].each { |p| params[model].delete(p) } if params[model][:password].blank?
-
+      params[:user][:email_confirmation] = params[:user][:email]
       super
     end
+  end
+
+  before_save do |user|
+    user.skip_confirmation!
+    user.skip_reconfirmation!
   end
 end
