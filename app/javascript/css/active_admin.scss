@@ -16,3 +16,16 @@
 // For example, to change the default status-tag color:
 //
 //   .status_tag { background: #6090DB; }
+
+$green_status: #43a047;
+$yellow_status: #f9a825;
+$blue_status: #6090DB;
+$red_status: #d32f2f;
+.status_tag {
+  &.pending_assignment { background: $yellow_status; }
+  &.assigned { background: $blue_status; }
+  &.completed { background: $green_status; }
+  &.pending_approval { background: $red_status; }
+  &.draft { background: $blue_status; }
+  &.delivering { background: $yellow_status; }
+}

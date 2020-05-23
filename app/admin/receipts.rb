@@ -31,9 +31,10 @@ ActiveAdmin.register Receipt do
 
   index do
     id_column
-    column t("activerecord.attributes.receipt.state") do |r|
-      t("receipts.state.#{r.state}")
-    end
+    state_column(
+      :state,
+      states: Order.aasm.states.map(&:name).index_with(&:to_s)
+    )
     column :updated_at
     column :origin
     column :destination

@@ -32,6 +32,11 @@ en:
         created_at: Fecha de Pedido
         external_entity: External Entity
         state: State
+        state/assigned: Asignado
+        state/completed: Completado
+        state/pending_approval: Esperando Aprobacion
+        state/pending_assignment: Esperando Asignacion
+        state/voided: Anulado
         updated_at: Actualizado
       printer:
         name: Name
@@ -51,6 +56,10 @@ en:
         origin_identifier: Origin
         origin_type: Tipo de Origen
         state: State
+        state/completed: Completado
+        state/delivering: Entregando
+        state/draft: Borrador
+        state/voided: Anulado
         updated_at: Actualizado
       user:
         address: Address
@@ -173,6 +182,7 @@ en:
       completed: Completado
       pending_approval: Esperando aprobacion
       pending_assignment: Esperando Asignacion
+      voided: Anulado
   outlays: Salidas
   quantity: Quantity
   quantity_delivered: Quantity delivered

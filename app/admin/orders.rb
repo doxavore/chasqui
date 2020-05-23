@@ -46,9 +46,10 @@ ActiveAdmin.register Order do
   index do
     id_column
     column :external_entity
-    column t("activerecord.attributes.order.state") do |o|
-      t("orders.state.#{o.state}")
-    end
+    state_column(
+      :state,
+      states: Order.aasm.states.map(&:name).index_with(&:to_s)
+    )
     column :collection_point
     column :updated_at
   end
