@@ -41,6 +41,18 @@ Style/HashTransformKeys:
 Style/HashTransformValues:
   Enabled: true
 
+Layout/EmptyLinesAroundAttributeAccessor:
+  Enabled: true
+Layout/SpaceAroundMethodCallOperator:
+  Enabled: true
+Lint/DeprecatedOpenSSLConstant:
+  Enabled: true
+Style/ExponentialNotation:
+  Enabled: true
+Style/SlicingWithRange:
+  Enabled: true
+
+
 Metrics/BlockLength:
   Exclude:
     - "app/admin/**/*"

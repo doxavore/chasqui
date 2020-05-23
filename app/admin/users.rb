@@ -28,11 +28,11 @@ ActiveAdmin.register User do
   index do
     selectable_column
     id_column
-    column t('activerecord.attributes.address.administrative_area') do |u|
+    column t("activerecord.attributes.address.administrative_area") do |u|
       u.address&.administrative_area
     end
 
-    column t('activerecord.attributes.address.locality') do |u|
+    column t("activerecord.attributes.address.locality") do |u|
       u.address&.locality
     end
     column :status

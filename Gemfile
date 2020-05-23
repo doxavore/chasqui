@@ -28,8 +28,8 @@ gem "activeadmin", github: "Looooong/activeadmin", ref: "769c23275f318397f13aad5
 # Use Active Storage variant
 # gem "image_processing", "~> 1.2"
 gem "aasm"
-gem "activerecord_where_assoc", "~> 1.0"
 gem "activeadmin_addons"
+gem "activerecord_where_assoc", "~> 1.0"
 gem "devise"
 gem "devise-i18n"
 
