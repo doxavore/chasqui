@@ -4,6 +4,9 @@ ActiveAdmin.register Order do
   permit_params :external_entity_id, :collection_point_id,
                 inventory_lines_attributes: %i[id product_id quantity_desired _destroy]
 
+  filter :state, collection: proc { Order.aasm.states.map { |s| [t("orders.state.#{s}"), s] } }, as: :select
+  filter :updated_at, as: :date_range
+  filter :external_entity
   form do |f|
     f.semantic_errors
     f.inputs do

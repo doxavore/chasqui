@@ -48,6 +48,7 @@ environment.plugins.prepend(
   new webpack.ProvidePlugin({
     $: "jquery",
     jQuery: "jquery",
+    select2: "select2",
     Popper: ["popper.js", "default"],
   }),
 );

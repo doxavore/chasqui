@@ -104,8 +104,9 @@ es:
     approved: Pedido Aprobado!
     state:
       assigned: Asignado
+      voided: Anulado
       completed: Completado
-      pending_approval: Esperando aprobacion
+      pending_approval: Esperando Aprobacion
       pending_assignment: Esperando Asignacion
   outlays: Salidas
   quantity: Cantidad
