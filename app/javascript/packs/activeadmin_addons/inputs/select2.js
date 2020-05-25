@@ -17,7 +17,6 @@ var initializer = function() {
     });
 
     function setupSelect2(select) {
-      console.log('hai')
       var selectConfig = {
         placeholder: '',
         width: '80%',

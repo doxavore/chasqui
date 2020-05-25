@@ -8,4 +8,3 @@ var initializer = function() {
 
 $(initializer);
 $(document).on('turbolinks:load', initializer);
-console.log('moo')

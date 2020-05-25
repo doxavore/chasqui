@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_21_121454) do
+ActiveRecord::Schema.define(version: 2020_05_25_125603) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -150,6 +150,7 @@ ActiveRecord::Schema.define(version: 2020_05_21_121454) do
     t.string "state"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.datetime "delivered_at"
     t.index ["destination_type", "destination_id"], name: "index_receipts_on_destination_type_and_destination_id"
     t.index ["origin_type", "origin_id"], name: "index_receipts_on_origin_type_and_origin_id"
   end

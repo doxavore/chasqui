@@ -27,6 +27,7 @@ RUN apt-get update -qq \
       git \
       gnupg2 \
       lsb-release \
+      libvips \
   && apt-get clean \
   && apt-get autoremove \
   && rm -rf /var/lib/apt/lists/* /var/cache/apt/archives/* /tmp/* /var/tmp/* \

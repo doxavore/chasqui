@@ -8,6 +8,7 @@ class Receipt < ApplicationRecord
   belongs_to :origin, polymorphic: true
   belongs_to :destination, polymorphic: true
   has_one_attached :image
+  has_many_attached :delivery_images
 
   aasm(column: "state") do
     state :draft, initial: true
@@ -26,6 +27,7 @@ class Receipt < ApplicationRecord
     event :complete do
       before do
         update_inventories
+        self.delivered_at = Time.now
       end
       transitions from: :delivering, to: :completed, guard: :image?
     end

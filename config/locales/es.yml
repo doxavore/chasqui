@@ -48,6 +48,8 @@ es:
       product_assignment:
         product: Producto
       receipt:
+        delivered_at: Fecha de entrega
+        delivery_images: Imagenes De Entrega
         destination: Destinatario
         destination_identifier: Destinatario
         id: Numero

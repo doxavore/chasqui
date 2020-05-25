@@ -1,5 +1,5 @@
 // import "select2.full";
-// import "jquery.xdan.datetimepicker.full";
+import "jquery-datetimepicker";
 // import "palette-color-picker";
 //
 import "./config";

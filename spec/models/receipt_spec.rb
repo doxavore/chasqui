@@ -108,5 +108,10 @@ RSpec.describe Receipt, type: :model do
         expect(receipt_line.quantity_present).to eq(inv_line.quantity_present)
       end
     end
+
+    it "sets the delivery date" do
+      receipt.complete!
+      expect(receipt.reload.delivered_at).to_not be_nil
+    end
   end
 end

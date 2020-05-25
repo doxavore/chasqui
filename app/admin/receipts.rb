@@ -9,7 +9,9 @@ ActiveAdmin.register Receipt do
   permit_params :origin_identifier,
                 :destination_identifier,
                 :image,
-                inventory_lines_attributes: %i[id product_id quantity_present _destroy]
+                :delivered_at,
+                inventory_lines_attributes: %i[id product_id quantity_present _destroy],
+                delivery_images: []
   form do |f|
     if f.object.draft?
       f.inputs do
@@ -24,6 +26,11 @@ ActiveAdmin.register Receipt do
       f.inputs do
         f.input :image, as: :file
       end
+    elsif f.object.completed?
+      f.inputs do
+        f.input :delivered_at, input_html: { class: 'default-select'}
+        f.input :delivery_images, as: :file, input_html: { multiple: true }
+      end
     end
 
     f.actions
@@ -35,6 +42,7 @@ ActiveAdmin.register Receipt do
       :state,
       states: Order.aasm.states.map(&:name).index_with(&:to_s)
     )
+    column :delivered_at
     column :updated_at
     column :origin
     column :destination
@@ -44,12 +52,25 @@ ActiveAdmin.register Receipt do
     h2 t("receipts.origin", origin: receipt.origin)
     h2 t("receipts.destination", destination: receipt.destination)
     h2 t("activerecord.attributes.receipt.state") + ": " + t("receipts.state.#{receipt.state}")
+    if receipt.completed?
+      h2 "#{t("activerecord.attributes.receipt.delivered_at")}: #{receipt.delivered_at}"
+    end
+
     if receipt.image.present?
       a href: url_for(receipt.image) do
-        img src: url_for(receipt.image), style: "max-width: 400p; max-height: 400px"
+        img src: url_for(receipt.image.variant(resize_to_limit: [100, 100])), style: "max-width: 400p; max-height: 400px"
       end
     else
       i t("receipts.completion_instructions")
+    end
+
+    if receipt.delivery_images.any?
+      h2 t("activerecord.attributes.receipt.delivery_images")
+      receipt.delivery_images.each do |image|
+        a href: url_for(image) do
+          img src: url_for(image.variant(resize_to_limit: [100, 100])), style: "max-width: 400p; max-height: 400px"
+        end
+      end
     end
     columns do
       column max_width: "600px" do
@@ -73,7 +94,7 @@ ActiveAdmin.register Receipt do
     link_to t("receipts.void"), void_admin_receipt_path(receipt), method: :put
   end
 
-  action_item :edit, only: :show, if: proc { receipt.draft? || receipt.delivering? } do
+  action_item :edit, only: :show do
     link_to t("receipts.edit"), edit_admin_receipt_path(receipt), method: :get
   end
 
