@@ -28,7 +28,7 @@ ActiveAdmin.register Receipt do
       end
     elsif f.object.completed?
       f.inputs do
-        f.input :delivered_at, input_html: { class: 'default-select'}
+        f.input :delivered_at, input_html: { class: "default-select" }
         f.input :delivery_images, as: :file, input_html: { multiple: true }
       end
     end
@@ -52,13 +52,11 @@ ActiveAdmin.register Receipt do
     h2 t("receipts.origin", origin: receipt.origin)
     h2 t("receipts.destination", destination: receipt.destination)
     h2 t("activerecord.attributes.receipt.state") + ": " + t("receipts.state.#{receipt.state}")
-    if receipt.completed?
-      h2 "#{t("activerecord.attributes.receipt.delivered_at")}: #{receipt.delivered_at}"
-    end
+    h2 "#{t('activerecord.attributes.receipt.delivered_at')}: #{receipt.delivered_at}" if receipt.completed?
 
     if receipt.image.present?
       a href: url_for(receipt.image) do
-        img src: url_for(receipt.image.variant(resize_to_limit: [100, 100])), style: "max-width: 400p; max-height: 400px"
+        img src: url_for(receipt.image.variant(resize_to_limit: [300, 300]))
       end
     else
       i t("receipts.completion_instructions")
@@ -68,7 +66,7 @@ ActiveAdmin.register Receipt do
       h2 t("activerecord.attributes.receipt.delivery_images")
       receipt.delivery_images.each do |image|
         a href: url_for(image) do
-          img src: url_for(image.variant(resize_to_limit: [100, 100])), style: "max-width: 400p; max-height: 400px"
+          img src: url_for(image.variant(resize_to_limit: [300, 300]))
         end
       end
     end

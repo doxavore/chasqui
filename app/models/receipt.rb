@@ -27,7 +27,7 @@ class Receipt < ApplicationRecord
     event :complete do
       before do
         update_inventories
-        self.delivered_at = Time.now
+        self.delivered_at = Time.now.utc
       end
       transitions from: :delivering, to: :completed, guard: :image?
     end

@@ -27,6 +27,7 @@ gem "resque"
 gem "activeadmin", github: "Looooong/activeadmin", ref: "769c23275f318397f13aad518fb6fd08c97a1f35"
 # Use Active Storage variant
 gem "image_processing"
+
 gem "aasm"
 gem "activeadmin_addons"
 gem "activerecord_where_assoc", "~> 1.0"

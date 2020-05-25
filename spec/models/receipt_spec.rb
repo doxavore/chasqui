@@ -111,7 +111,7 @@ RSpec.describe Receipt, type: :model do
 
     it "sets the delivery date" do
       receipt.complete!
-      expect(receipt.reload.delivered_at).to_not be_nil
+      expect(receipt.reload.delivered_at).not_to be_nil
     end
   end
 end
