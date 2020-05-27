@@ -55,8 +55,8 @@ ActiveAdmin.register Receipt do
     h2 "#{t('activerecord.attributes.receipt.delivered_at')}: #{receipt.delivered_at}" if receipt.completed?
 
     if receipt.image.present?
-      a href: url_for(receipt.image) do
-        img src: url_for(receipt.image.variant(resize_to_limit: [300, 300]))
+      a href: rails_blob_path(receipt.image, disposition: "attachment") do
+        "Descargar Recibo Firmado"
       end
     else
       i t("receipts.completion_instructions")
