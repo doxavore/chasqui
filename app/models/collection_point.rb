@@ -2,6 +2,7 @@
 
 class CollectionPoint < ApplicationRecord
   include Receipts::Participant
+  include Taggable
   has_one :address, as: :addressable, dependent: :destroy
   accepts_nested_attributes_for :address, allow_destroy: true
   has_many :orders, dependent: :nullify

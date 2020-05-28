@@ -2,6 +2,7 @@
 
 class Order < ApplicationRecord
   include AASM
+  include Taggable
   has_paper_trail
   belongs_to :external_entity
   belongs_to :collection_point, optional: true

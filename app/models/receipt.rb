@@ -2,6 +2,7 @@
 
 class Receipt < ApplicationRecord
   include AASM
+  include Taggable
   has_paper_trail
   has_many :inventory_lines, as: :inventoried, dependent: :destroy, autosave: true
   accepts_nested_attributes_for :inventory_lines, allow_destroy: true

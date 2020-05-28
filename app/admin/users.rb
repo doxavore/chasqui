@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register User do
-  includes :address
+  includes :address, :tags
   permit_params :email,
                 :password,
                 :password_confirmation,
@@ -12,7 +12,10 @@ ActiveAdmin.register User do
                 :phone,
                 :address_id,
                 :coordinator_id,
+                :status,
+                :profession,
                 printer_ids: [],
+                tag_ids: [],
                 printers_attributes: %i[id name printer_model_id _destroy],
                 address_attributes: %i[
                   id
@@ -25,6 +28,15 @@ ActiveAdmin.register User do
                 ],
                 product_assignments_attributes: %i[id product_id _destroy]
 
+  filter :email
+  filter :phone
+  filter :first_name
+  filter :status
+  filter :address_administrative_area,
+         as: :string,
+         label: proc { I18n.t("activerecord.attributes.address.administrative_area") }
+  filter :tags
+
   index do
     selectable_column
     id_column
@@ -35,19 +47,18 @@ ActiveAdmin.register User do
     column t("activerecord.attributes.address.locality") do |u|
       u.address&.locality
     end
-    column :status
     column :first_name
     column :last_name
     column :email
     column :phone
     column :company
-    actions
+    column :tags do |obj|
+      obj.tags.each do |tag|
+        status_tag(tag.name, style: "background-color: #{tag.color}")
+      end
+      nil
+    end
   end
-
-  filter :email
-  filter :phone
-  filter :first_name
-  filter :status
 
   show do
     attributes_table do
@@ -62,6 +73,12 @@ ActiveAdmin.register User do
         u.product_assignments.map(&:product).map(&:name)
       end
       row :printers
+      row :tags do |u|
+        u.tags.each do |tag|
+          status_tag(tag.name, style: "background-color: #{tag.color}")
+        end
+        nil
+      end
     end
 
     columns do
@@ -119,6 +136,7 @@ ActiveAdmin.register User do
           f.input :password
           f.input :password_confirmation
           f.input :coordinator
+          f.input :tag_ids, as: :tags, collection: Tag.all, label: t("activerecord.attributes.order.tags")
         end
 
         f.inputs t("activerecord.models.address.one") do
@@ -162,6 +180,7 @@ ActiveAdmin.register User do
       model = :user
       %w[password password_confirmation].each { |p| params[model].delete(p) } if params[model][:password].blank?
       params[:user][:email_confirmation] = params[:user][:email]
+      params[:user][:tag_ids] = params[:user][:tag_ids].reject(&:empty?)
       super
     end
   end

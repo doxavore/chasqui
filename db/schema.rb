@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_05_25_125603) do
+ActiveRecord::Schema.define(version: 2020_05_28_112626) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -153,6 +153,25 @@ ActiveRecord::Schema.define(version: 2020_05_25_125603) do
     t.datetime "delivered_at"
     t.index ["destination_type", "destination_id"], name: "index_receipts_on_destination_type_and_destination_id"
     t.index ["origin_type", "origin_id"], name: "index_receipts_on_origin_type_and_origin_id"
+  end
+
+  create_table "taggings", force: :cascade do |t|
+    t.string "name"
+    t.string "color"
+    t.string "taggable_type", null: false
+    t.bigint "taggable_id", null: false
+    t.bigint "tag_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["tag_id"], name: "index_taggings_on_tag_id"
+    t.index ["taggable_type", "taggable_id"], name: "index_taggings_on_taggable_type_and_taggable_id"
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string "name"
+    t.string "color"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "users", force: :cascade do |t|

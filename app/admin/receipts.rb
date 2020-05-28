@@ -2,39 +2,19 @@
 
 ActiveAdmin.register Receipt do
   config.clear_action_items!
-
-  filter :state, collection: proc { Receipt.aasm.states.map { |s| [t("receipts.state.#{s}"), s] } }, as: :select
-  filter :updated_at, as: :date_range
+  includes :tags
 
   permit_params :origin_identifier,
                 :destination_identifier,
                 :image,
                 :delivered_at,
+                tag_ids: [],
                 inventory_lines_attributes: %i[id product_id quantity_present _destroy],
                 delivery_images: []
-  form do |f|
-    if f.object.draft?
-      f.inputs do
-        f.input :origin_identifier, collection: Receipt.participants.map { |i| [i.to_s, "#{i.class}-#{i.id}"] }
-        f.input :destination_identifier, collection: Receipt.participants.map { |i| [i.to_s, "#{i.class}-#{i.id}"] }
-        f.has_many :inventory_lines, allow_destroy: true do |inv|
-          inv.input :product
-          inv.input :quantity_present, label: t("quantity")
-        end
-      end
-    elsif f.object.delivering?
-      f.inputs do
-        f.input :image, as: :file
-      end
-    elsif f.object.completed?
-      f.inputs do
-        f.input :delivered_at, input_html: { class: "default-select" }
-        f.input :delivery_images, as: :file, input_html: { multiple: true }
-      end
-    end
 
-    f.actions
-  end
+  filter :state, collection: proc { Receipt.aasm.states.map { |s| [t("receipts.state.#{s}"), s] } }, as: :select
+  filter :updated_at, as: :date_range
+  filter :tags
 
   index do
     id_column
@@ -46,6 +26,12 @@ ActiveAdmin.register Receipt do
     column :updated_at
     column :origin
     column :destination
+    column :tags do |obj|
+      obj.tags.each do |tag|
+        status_tag(tag.name, style: "background-color: #{tag.color}")
+      end
+      nil
+    end
   end
 
   show do
@@ -54,6 +40,9 @@ ActiveAdmin.register Receipt do
     h2 t("activerecord.attributes.receipt.state") + ": " + t("receipts.state.#{receipt.state}")
     h2 "#{t('activerecord.attributes.receipt.delivered_at')}: #{receipt.delivered_at}" if receipt.completed?
 
+    receipt.tags.each do |tag|
+      status_tag(tag.name, style: "background-color: #{tag.color}")
+    end
     if receipt.image.present?
       a href: rails_blob_path(receipt.image, disposition: "attachment") do
         "Descargar Recibo Firmado"
@@ -78,6 +67,36 @@ ActiveAdmin.register Receipt do
         end
       end
     end
+
+    active_admin_comments
+  end
+
+  form do |f|
+    if f.object.draft?
+      f.inputs do
+        f.input :origin_identifier, collection: Receipt.participants.map { |i| [i.to_s, "#{i.class}-#{i.id}"] }
+        f.input :destination_identifier, collection: Receipt.participants.map { |i| [i.to_s, "#{i.class}-#{i.id}"] }
+        f.has_many :inventory_lines, allow_destroy: true do |inv|
+          inv.input :product
+          inv.input :quantity_present, label: t("quantity")
+        end
+      end
+    elsif f.object.delivering?
+      f.inputs do
+        f.input :image, as: :file
+      end
+    elsif f.object.completed?
+      f.inputs do
+        f.input :delivered_at, input_html: { class: "default-select" }
+        f.input :delivery_images, as: :file, input_html: { multiple: true }
+      end
+    end
+
+    f.inputs do
+      f.input :tag_ids, as: :tags, collection: Tag.all, label: t("activerecord.attributes.order.tags")
+    end
+
+    f.actions
   end
 
   action_item :complete, only: :show, if: proc { receipt.delivering? && receipt.image.present? } do
