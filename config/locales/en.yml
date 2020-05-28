@@ -19,9 +19,11 @@ en:
         address: Address
         coordinator: Coordinator
         name: Name
+        tags: Etiquetas
       external_entity:
         address: Address
         name: Name
+        tags: Etiquetas
         user: User
       inventory_line:
         product: Product
@@ -37,6 +39,7 @@ en:
         state/pending_approval: Esperando Aprobacion
         state/pending_assignment: Esperando Asignacion
         state/voided: Anulado
+        tags: Etiquetas
         updated_at: Actualizado
       printer:
         name: Name
@@ -45,6 +48,7 @@ en:
       product:
         name: Name
         producible: Producible
+        tags: Etiquetas
       product_assignment:
         product: Product
       receipt:
@@ -62,7 +66,11 @@ en:
         state/delivering: Entregando
         state/draft: Borrador
         state/voided: Anulado
+        tags: Etiquetas
         updated_at: Actualizado
+      tag:
+        color: Color
+        name: Nombre
       user:
         address: Address
         company: Company
@@ -72,6 +80,7 @@ en:
         phone: Phone
         printers: Printers
         product_assignments: Productos Designados
+        tags: Etiquetas
       version:
         whodunnit: Usuario
     models:
@@ -105,6 +114,9 @@ en:
       receipt:
         one: Receipt
         other: Receipts
+      tag:
+        one: Etiqueta
+        other: Etiquetas
   collection_point:
     info: Datos
     inventory: Inventario

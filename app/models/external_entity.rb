@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class ExternalEntity < ApplicationRecord
+  include Taggable
   has_many :orders, dependent: :destroy
   has_many :inventory_lines, through: :orders
   belongs_to :user

@@ -2,6 +2,7 @@
 
 class User < ApplicationRecord
   include Receipts::Participant
+  include Taggable
   devise :database_authenticatable,
          :recoverable, :rememberable, :validatable,
          :confirmable, :lockable, :trackable, :registerable

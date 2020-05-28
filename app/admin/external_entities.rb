@@ -1,8 +1,11 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register ExternalEntity do
+  includes :tags, :address
+
   permit_params :user_id,
                 :name,
+                tag_ids: [],
                 address_attributes: %i[
                   id
                   line_1
@@ -12,23 +15,31 @@ ActiveAdmin.register ExternalEntity do
                   postal_code
                   country
                 ]
-  form do |f|
-    f.semantic_errors(*f.object.errors.keys)
 
-    f.inputs do
-      f.input :user
-      f.input :name
-      f.has_many :address, new_record: !f.object.address do |af|
-        af.input :line_1
-        af.input :line_2
-        af.input :locality
-        af.input :administrative_area, as: :select, collection: Address::REGIONS
-        af.input :postal_code
-        af.input :country, priority_countries: ["Peru"]
-      end
+  filter :name
+  filter :user
+  filter :address_administrative_area,
+         as: :string,
+         label: proc { I18n.t("activerecord.attributes.address.administrative_area") }
+  filter :tags
+
+  index do
+    id_column
+    column :name
+    column t("activerecord.attributes.address.administrative_area") do |u|
+      u.address&.administrative_area
     end
 
-    f.actions
+    column t("activerecord.attributes.address.locality") do |u|
+      u.address&.locality
+    end
+
+    column :tags do |obj|
+      obj.tags.each do |tag|
+        status_tag(tag.name, style: "background-color: #{tag.color}")
+      end
+      nil
+    end
   end
 
   show do
@@ -37,6 +48,12 @@ ActiveAdmin.register ExternalEntity do
     attributes_table do
       row :user
       row :address
+      row :tags do |obj|
+        obj.tags.each do |tag|
+          status_tag(tag.name, style: "background-color: #{tag.color}")
+        end
+        nil
+      end
     end
 
     panel t("activerecord.models.order.other") do
@@ -77,5 +94,25 @@ ActiveAdmin.register ExternalEntity do
     end
 
     active_admin_comments
+  end
+
+  form do |f|
+    f.semantic_errors(*f.object.errors.keys)
+
+    f.inputs do
+      f.input :user
+      f.input :name
+      f.input :tag_ids, as: :tags, collection: Tag.all, label: t("activerecord.attributes.order.tags")
+      f.has_many :address, new_record: !f.object.address do |af|
+        af.input :line_1
+        af.input :line_2
+        af.input :locality
+        af.input :administrative_area, as: :select, collection: Address::REGIONS
+        af.input :postal_code
+        af.input :country, priority_countries: ["Peru"]
+      end
+    end
+
+    f.actions
   end
 end
