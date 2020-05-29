@@ -63,11 +63,12 @@ ActiveAdmin.setup do |config|
   # ensure that there is a user with proper rights. You can use
   # CanCanAdapter or make your own. Please refer to documentation.
   # config.authorization_adapter = ActiveAdmin::CanCanAdapter
+  config.authorization_adapter = ActiveAdmin::PunditAdapter
 
   # In case you prefer Pundit over other solutions you can here pass
   # the name of default policy class. This policy will be used in every
   # case when Pundit is unable to find suitable policy.
-  # config.pundit_default_policy = "MyDefaultPunditPolicy"
+  config.pundit_default_policy = "ApplicationPolicy"
 
   # If you wish to maintain a separate set of Pundit policies for admin
   # resources, you may set a namespace here that Pundit will search
@@ -335,6 +336,10 @@ ActiveAdmin.setup do |config|
   config.namespace :admin do |admin|
     admin.build_menu :utility_navigation do |menu|
       menu.add label: "Español", url: "/?locale=es"
+      menu.add id: 'current_user',
+                 label: -> { display_name current_active_admin_user },
+                 url: -> { url_for(current_active_admin_user) },
+                 if: :current_active_admin_user?
       admin.add_current_user_to_menu  menu
       admin.add_logout_button_to_menu menu
     end
@@ -344,4 +349,5 @@ ActiveAdmin.setup do |config|
   config.meta_tags = meta_tags_options
   config.meta_tags_for_logged_out_pages = meta_tags_options
   config.site_title_image = ->(context) { asset_pack_path 'media/images/logo.png' }
+  config.footer = "Chasqui v0.2"
 end
