@@ -25,7 +25,7 @@ class User < ApplicationRecord
   scope :printers, -> { where_assoc_exists(:printers) }
 
   def send_devise_notification(notification, *args)
-    # devise_mailer.send(notification, self, *args).deliver_later
+    devise_mailer.send(notification, self, *args).deliver_later
   end
 
   def to_s
