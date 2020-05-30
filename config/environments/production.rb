@@ -83,8 +83,8 @@ Rails.application.configure do
     user_name: ENV["RAILS_SMTP_USER_NAME"],
     password: ENV["RAILS_SMTP_PASSWORD"],
     authentication: :plain,
-    ssl: ENV.fetch("RAILS_SMTP_SSL", "true") != "false",
     enable_starttls_auto: ENV.fetch("RAILS_SMTP_ENABLE_STARTTLS_AUTO", "true") != "false",
+    tls: ENV.fetch("RAILS_SMTP_TLS", "true") != "false",
     openssl_verify_mode: ENV.fetch("RAILS_SMTP_OPENSSL_VERIFY_MODE", "peer")
   }
 
