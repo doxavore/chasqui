@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register Order do
-  includes :external_entity, :tags
+  includes :external_entity, :tags, :address
   permit_params :external_entity_id, :collection_point_id,
                 tag_ids: [],
                 inventory_lines_attributes: %i[id product_id quantity_desired _destroy]

@@ -11,6 +11,9 @@ class Receipt < ApplicationRecord
   has_one_attached :image
   has_many_attached :delivery_images
 
+  scope :active, -> { where.not(state: :voided) }
+  scope :active, -> { where.not(state: :voided) }
+
   aasm(column: "state") do
     state :draft, initial: true
     state :completed
@@ -41,7 +44,7 @@ class Receipt < ApplicationRecord
   end
 
   def self.participants
-    User.printers + CollectionPoint.all + ExternalEntity.all
+    User.all + CollectionPoint.all + ExternalEntity.all
   end
 
   def origin_identifier

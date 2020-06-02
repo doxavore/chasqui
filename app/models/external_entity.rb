@@ -41,7 +41,7 @@ class ExternalEntity < ApplicationRecord
     receipt.inventory_lines.each do |r_line|
       remaining = r_line.quantity_present
 
-      orders.includes(:inventory_lines).where(state: ['completed', 'assigned']).each do |order|
+      orders.includes(:inventory_lines).where(state: %w[completed assigned]).find_each do |order|
         break if remaining.zero?
 
         order.inventory_lines.each do |o_line|

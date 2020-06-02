@@ -70,33 +70,43 @@ RSpec.describe Receipt, type: :model do
         receipt.complete
         expect(order.reload.state).to eq("completed")
       end
+    end
 
-      describe "when voiding a completed order" do
-        before do
-          receipt.complete!
+    describe "when voiding a completed order" do
+      let!(:order) do
+        new_order = create(:order, external_entity: ee, state: :assigned)
+        receipt.inventory_lines.each do |receipt_line|
+          create(
+            :inventory_line,
+            inventoried: new_order,
+            product: receipt_line.product,
+            quantity_desired: receipt_line.quantity_present
+          )
         end
 
-        it "puts the order quantites back into collection_point inventory" do
-          collection_point.inventory_lines.reload.each do |inv_line|
-            expect(inv_line.quantity_present).to eq(-10)
-          end
-          receipt.void!
-          collection_point.inventory_lines.reload.each do |inv_line|
-            expect(inv_line.quantity_present).to eq(0)
-          end
-        end
+        new_order
+      end
 
-        it "unmarks the order as completed" do
-          receipt.void!
-          expect(order.reload.assigned?).to eq(true)
-        end
+      before do
+        receipt.complete!
+      end
 
-        it "debits the quantities from the order" do
-          receipt.void!
-          order.inventory_lines.reload.each do |inv_line|
-            expect(inv_line.quantity_present).to eq(0)
-            expect(inv_line.quantity_desired).to eq(10)
-          end
+      it "puts the order quantites back into collection_point inventory" do
+        receipt.void!
+        collection_point.inventory_lines.reload.each do |inv_line|
+          expect(inv_line.quantity_present).to eq(0)
+        end
+      end
+
+      it "unmarks the order as completed" do
+        receipt.void!
+        expect(order.reload.assigned?).to eq(true)
+      end
+
+      it "debits the quantities from the order" do
+        receipt.void!
+        order.inventory_lines.reload.each do |inv_line|
+          expect(inv_line.quantity_present).to eq(0)
         end
       end
     end

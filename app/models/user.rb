@@ -15,7 +15,7 @@ class User < ApplicationRecord
   has_one :address, as: :addressable, dependent: :destroy
   has_many :origin_receipts, as: :origin, class_name: "Receipt", dependent: :nullify
   has_many :destination_receipts, as: :destination, class_name: "Receipt", dependent: :nullify
-  has_many :external_entities
+  has_many :external_entities, dependent: :nullify
   accepts_nested_attributes_for :printers, allow_destroy: true
   accepts_nested_attributes_for :product_assignments, allow_destroy: true
   accepts_nested_attributes_for :address, allow_destroy: true
@@ -24,6 +24,7 @@ class User < ApplicationRecord
   accepts_nested_attributes_for :inventory_lines, allow_destroy: true
 
   scope :printers, -> { where_assoc_exists(:printers) }
+  scope :admins, -> { where(admin: true) }
 
   def send_devise_notification(notification, *args)
     devise_mailer.send(notification, self, *args).deliver_later
@@ -34,14 +35,34 @@ class User < ApplicationRecord
   end
 
   def cp_coordinator?
+    return @cp_coordinator if defined?(@cp_coordinator)
+
     @cp_coordinator ||= collection_points.any?
   end
 
   def marketing?
-    @marketing ||= tags.map(&:name).map(&:downcase).include?('marketing')
+    return @marketing if defined?(@marketing)
+
+    @marketing ||= tags.map(&:name).map(&:downcase).include?("marketing")
+  end
+
+  def logistics?
+    return @logistics if defined?(@logistics)
+
+    @logistics ||= tags.map(&:name).map(&:downcase).include?("logistica")
+  end
+
+  def planning?
+    return @planning if defined?(@planning)
+
+    @planning ||= tags.map(&:name).map(&:downcase).include?("plan")
+  end
+
+  def volunteer?
+    cp_coordinator? || marketing? || logistics? || planning? || admin?
   end
 
   def concerned_records
-    @concerned_records ||= external_entities + collection_points + overseen + self
+    @concerned_records ||= external_entities + collection_points + overseen + [self]
   end
 end

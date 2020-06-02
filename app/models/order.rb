@@ -5,6 +5,7 @@ class Order < ApplicationRecord
   include Taggable
   has_paper_trail
   belongs_to :external_entity
+  has_one :address, through: :external_entity
   belongs_to :collection_point, optional: true
   has_many :inventory_lines, as: :inventoried, dependent: :destroy
   accepts_nested_attributes_for :inventory_lines, allow_destroy: true

@@ -1,50 +1,57 @@
 # frozen_string_literal: true
 
 class UserPolicy < ApplicationPolicy
+  ADMIN_ATTRIBUTES = %i[
+    email
+    password
+    password_confirmation
+    admin
+    first_name
+    last_name
+    company
+    phone
+    address_id
+    coordinator_id
+    status
+    profession
+    printer_ids
+    tag_ids
+    printers_attributes
+    address_attributes
+    product_assignments_attributes
+  ].freeze
+
+  OWN_ATTRIBUTES = %i[
+    password
+    password_confirmation
+    first_name
+    last_name
+    company
+    phone
+    address_id
+    status
+    profession
+    printer_ids
+    printers_attributes
+    address_attributes
+  ].freeze
 
   def permitted_attributes
     if user.admin?
-      %i[
-        email
-        password
-        password_confirmation
-        admin
-        first_name
-        last_name
-        company
-        phone
-        address_id
-        coordinator_id
-        status
-        profession
-        printer_ids
-        tag_ids
-        printers_attributes
-        address_attributes
-        product_assignments_attributes
-      ]
+      ADMIN_ATTRIBUTES
     elsif self?
-      %i[
-        password
-        password_confirmation
-        first_name
-        last_name
-        company
-        phone
-        address_id
-        status
-        profession
-        printer_ids
-        printers_attributes
-        address_attributes
-      ]
+      OWN_ATTRIBUTES
     else
       []
     end
   end
 
+  def index?
+    user.admin? || user.volunteer?
+  end
+
   def show?
-    self? || user.admin?
+    self? || user.admin? || user.volunteer?
   end
 
   def update?
@@ -52,7 +59,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def edit?
-    self? || user.admin?
+    update?
   end
 
   def self?
@@ -63,9 +70,5 @@ class UserPolicy < ApplicationPolicy
     def resolve
       scope.all
     end
-  end
-
-  def update?
-    record.id == user.id || user.admin?
   end
 end

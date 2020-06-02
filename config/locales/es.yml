@@ -1,5 +1,6 @@
 ---
 es:
+  active: Activos
   active_admin:
     dashboard: Panel De Control
     dashboard_welcome:
@@ -117,6 +118,7 @@ es:
       tag:
         one: Etiqueta
         other: Etiquetas
+  admins: Administradores
   collection_point:
     info: Datos
     inventory: Inventario
@@ -158,4 +160,11 @@ es:
     config: Configuracion
     info: Datos
     production: Produccion
+  voided: Anulados
   welcome: Bienvenido!
+  destination_user: Usuario Destinatario
+  destination_cp: Entidad Destinatario
+  destination_ee: CDA Destinatario
+  origin_user: Usuario Origen
+  origin_cp: Entidad Origen
+  origin_ee: CDA Origen

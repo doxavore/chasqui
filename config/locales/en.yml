@@ -1,5 +1,6 @@
 ---
 en:
+  active: Activos
   active_admin:
     dashboard: Dashboard
     dashboard_welcome:
@@ -117,9 +118,13 @@ en:
       tag:
         one: Etiqueta
         other: Etiquetas
+  admins: Administradores
   collection_point:
     info: Datos
     inventory: Inventario
+  destination_cp: Entidad Destinatario
+  destination_ee: CDA Destinatario
+  destination_user: Usuario Destinatario
   devise:
     confirmations:
       new:
@@ -197,6 +202,9 @@ en:
       pending_approval: Esperando aprobacion
       pending_assignment: Esperando Asignacion
       voided: Anulado
+  origin_cp: Entidad Origen
+  origin_ee: CDA Origen
+  origin_user: Usuario Origen
   outlays: Salidas
   quantity: Quantity
   quantity_delivered: Quantity delivered
@@ -224,4 +232,5 @@ en:
     config: Configuration
     info: Info
     production: Production
+  voided: Anulados
   welcome: Welcome!

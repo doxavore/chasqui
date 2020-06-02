@@ -2,6 +2,7 @@
 
 ActiveAdmin.register User do
   includes :address, :tags
+  scope I18n.t("admins"), :admins
   permit_params :email,
                 :password,
                 :password_confirmation,
@@ -136,7 +137,9 @@ ActiveAdmin.register User do
           f.input :password
           f.input :password_confirmation
           f.input :coordinator if current_user.admin?
-          f.input :tag_ids, as: :tags, collection: Tag.all, label: t("activerecord.attributes.order.tags")  if current_user.admin?
+          if current_user.admin?
+            f.input :tag_ids, as: :tags, collection: Tag.all, label: t("activerecord.attributes.order.tags")
+          end
         end
 
         f.inputs t("activerecord.models.address.one") do
