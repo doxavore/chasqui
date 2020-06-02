@@ -9,6 +9,14 @@ class ReceiptPolicy < ApplicationPolicy
     show?
   end
 
+  def new?
+    user.admin? || user.cp_coordinator? || user.logistics?
+  end
+
+  def create?
+    user.admin? || user.cp_coordinator? || user.logistics?
+  end
+
   def edit?
     return true if user.admin?
 
