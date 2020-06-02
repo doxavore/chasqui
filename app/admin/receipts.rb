@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register Receipt do
+  scope I18n.t("active"), :active, default: true
+  scope I18n.t("voided"), :voided
   config.clear_action_items!
-  includes :tags
+  includes :tags, :origin, :destination
 
   permit_params :origin_identifier,
                 :destination_identifier,
@@ -14,6 +16,18 @@ ActiveAdmin.register Receipt do
 
   filter :state, collection: proc { Receipt.aasm.states.map { |s| [t("receipts.state.#{s}"), s] } }, as: :select
   filter :updated_at, as: :date_range
+  filter :origin_of_User_type_id,
+         as: :select, collection: -> { User.all }, label: I18n.t("origin_user")
+  filter :origin_of_CollectionPoint_type_id,
+         as: :select, collection: -> { CollectionPoint.all }, label: I18n.t("origin_cp")
+  filter :origin_of_ExternalEntity_type_id,
+         as: :select, collection: -> { ExternalEntity.all }, label: I18n.t("origin_ee")
+  filter :destination_of_User_type_id,
+         as: :select, collection: -> { User.all }, label: I18n.t("destination_user")
+  filter :destination_of_CollectionPoint_type_id,
+         as: :select, collection: -> { CollectionPoint.all }, label: I18n.t("destination_cp")
+  filter :destination_of_ExternalEntity_type_id,
+         as: :select, collection: -> { ExternalEntity.all }, label: I18n.t("destination_ee")
   filter :tags
 
   index do

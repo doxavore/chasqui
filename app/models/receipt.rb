@@ -11,6 +11,9 @@ class Receipt < ApplicationRecord
   has_one_attached :image
   has_many_attached :delivery_images
 
+  scope :active, -> { where.not(state: :voided) }
+  scope :active, -> { where.not(state: :voided) }
+
   aasm(column: "state") do
     state :draft, initial: true
     state :completed
@@ -22,7 +25,13 @@ class Receipt < ApplicationRecord
     end
 
     event :void do
-      transitions from: %i[draft delivering], to: :voided
+      before do
+        if completed?
+          revert_inventories
+          self.delivered_at = nil
+        end
+      end
+      transitions from: %i[draft delivering completed], to: :voided
     end
 
     event :complete do
@@ -35,7 +44,7 @@ class Receipt < ApplicationRecord
   end
 
   def self.participants
-    User.printers + CollectionPoint.all + ExternalEntity.all
+    User.all + CollectionPoint.all + ExternalEntity.all
   end
 
   def origin_identifier
@@ -71,6 +80,11 @@ class Receipt < ApplicationRecord
     destination.credit_receipt(self)
   end
 
+  def revert_inventories
+    destination.debit_receipt(self) if origin.respond_to?(:debit_receipt)
+    origin.credit_receipt(self)
+  end
+
   def to_h
     {
       state: state,
@@ -82,5 +96,9 @@ class Receipt < ApplicationRecord
 
   def image?
     image.present?
+  end
+
+  def participants
+    [origin, destination]
   end
 end
