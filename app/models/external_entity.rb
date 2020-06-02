@@ -36,4 +36,26 @@ class ExternalEntity < ApplicationRecord
       end
     end
   end
+
+  def debit_receipt(receipt)
+    receipt.inventory_lines.each do |r_line|
+      remaining = r_line.quantity_present
+
+      orders.includes(:inventory_lines).where(state: ['completed', 'assigned']).each do |order|
+        break if remaining.zero?
+
+        order.inventory_lines.each do |o_line|
+          next if o_line.product_id != r_line.product_id
+
+          debit_quantity = [remaining, o_line.quantity_present].min
+          next if debit_quantity.zero?
+
+          remaining -= debit_quantity
+          o_line.quantity_present -= debit_quantity
+          o_line.save
+        end
+        order.uncomplete! if order.completed?
+      end
+    end
+  end
 end

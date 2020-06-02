@@ -33,6 +33,10 @@ class Order < ApplicationRecord
       end
     end
 
+    event :uncomplete do
+      transitions from: :completed, to: :assigned
+    end
+
     event :void do
       transitions from: %i[pending_approval pending_assignment assigned], to: :voided
     end

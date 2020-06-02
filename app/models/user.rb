@@ -15,6 +15,7 @@ class User < ApplicationRecord
   has_one :address, as: :addressable, dependent: :destroy
   has_many :origin_receipts, as: :origin, class_name: "Receipt", dependent: :nullify
   has_many :destination_receipts, as: :destination, class_name: "Receipt", dependent: :nullify
+  has_many :external_entities
   accepts_nested_attributes_for :printers, allow_destroy: true
   accepts_nested_attributes_for :product_assignments, allow_destroy: true
   accepts_nested_attributes_for :address, allow_destroy: true
@@ -30,5 +31,17 @@ class User < ApplicationRecord
 
   def to_s
     "#{first_name} #{last_name} #{email}"
+  end
+
+  def cp_coordinator?
+    @cp_coordinator ||= collection_points.any?
+  end
+
+  def marketing?
+    @marketing ||= tags.map(&:name).map(&:downcase).include?('marketing')
+  end
+
+  def concerned_records
+    @concerned_records ||= external_entities + collection_points + overseen + self
   end
 end

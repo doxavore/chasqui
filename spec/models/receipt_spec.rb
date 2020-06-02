@@ -70,6 +70,35 @@ RSpec.describe Receipt, type: :model do
         receipt.complete
         expect(order.reload.state).to eq("completed")
       end
+
+      describe "when voiding a completed order" do
+        before do
+          receipt.complete!
+        end
+
+        it "puts the order quantites back into collection_point inventory" do
+          collection_point.inventory_lines.reload.each do |inv_line|
+            expect(inv_line.quantity_present).to eq(-10)
+          end
+          receipt.void!
+          collection_point.inventory_lines.reload.each do |inv_line|
+            expect(inv_line.quantity_present).to eq(0)
+          end
+        end
+
+        it "unmarks the order as completed" do
+          receipt.void!
+          expect(order.reload.assigned?).to eq(true)
+        end
+
+        it "debits the quantities from the order" do
+          receipt.void!
+          order.inventory_lines.reload.each do |inv_line|
+            expect(inv_line.quantity_present).to eq(0)
+            expect(inv_line.quantity_desired).to eq(10)
+          end
+        end
+      end
     end
   end
 

@@ -22,7 +22,13 @@ class Receipt < ApplicationRecord
     end
 
     event :void do
-      transitions from: %i[draft delivering], to: :voided
+      before do
+        if completed?
+          revert_inventories
+          self.delivered_at = nil
+        end
+      end
+      transitions from: %i[draft delivering completed], to: :voided
     end
 
     event :complete do
@@ -71,6 +77,11 @@ class Receipt < ApplicationRecord
     destination.credit_receipt(self)
   end
 
+  def revert_inventories
+    destination.debit_receipt(self) if origin.respond_to?(:debit_receipt)
+    origin.credit_receipt(self)
+  end
+
   def to_h
     {
       state: state,
@@ -82,5 +93,9 @@ class Receipt < ApplicationRecord
 
   def image?
     image.present?
+  end
+
+  def participants
+    [origin, destination]
   end
 end

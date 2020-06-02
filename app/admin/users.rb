@@ -130,13 +130,13 @@ ActiveAdmin.register User do
           f.input :last_name
           f.input :phone
           f.input :company
-          f.input :admin
-          f.input :status
+          f.input :admin if current_user.admin?
+          f.input :status if current_user.admin?
           f.input :profession
           f.input :password
           f.input :password_confirmation
-          f.input :coordinator
-          f.input :tag_ids, as: :tags, collection: Tag.all, label: t("activerecord.attributes.order.tags")
+          f.input :coordinator if current_user.admin?
+          f.input :tag_ids, as: :tags, collection: Tag.all, label: t("activerecord.attributes.order.tags")  if current_user.admin?
         end
 
         f.inputs t("activerecord.models.address.one") do
@@ -159,16 +159,17 @@ ActiveAdmin.register User do
           end
         end
       end
-
-      tab t("users.production") do
-        f.inputs do
-          f.has_many :product_assignments, allow_destroy: true do |paf|
-            paf.input :product, collection: Product.producible
+      if current_user.admin?
+        tab t("users.production") do
+          f.inputs do
+            f.has_many :product_assignments, allow_destroy: true do |paf|
+              paf.input :product, collection: Product.producible
+            end
           end
-        end
-        f.has_many :inventory_lines, allow_destroy: true do |inv|
-          inv.input :product
-          inv.input :quantity_present, label: t("quantity")
+          f.has_many :inventory_lines, allow_destroy: true do |inv|
+            inv.input :product
+            inv.input :quantity_present, label: t("quantity")
+          end
         end
       end
     end
