@@ -122,6 +122,9 @@ es:
   collection_point:
     info: Datos
     inventory: Inventario
+  destination_cp: Entidad Destinatario
+  destination_ee: CDA Destinatario
+  destination_user: Usuario Destinatario
   history: Historial
   intakes: Ingresos
   orders:
@@ -133,6 +136,9 @@ es:
       pending_approval: Esperando Aprobacion
       pending_assignment: Esperando Asignacion
       voided: Anulado
+  origin_cp: Entidad Origen
+  origin_ee: CDA Origen
+  origin_user: Usuario Origen
   outlays: Salidas
   quantity: Cantidad
   quantity_delivered: Cantidad Entregada
@@ -162,9 +168,3 @@ es:
     production: Produccion
   voided: Anulados
   welcome: Bienvenido!
-  destination_user: Usuario Destinatario
-  destination_cp: Entidad Destinatario
-  destination_ee: CDA Destinatario
-  origin_user: Usuario Origen
-  origin_cp: Entidad Origen
-  origin_ee: CDA Origen
