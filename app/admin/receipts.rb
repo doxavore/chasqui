@@ -121,7 +121,7 @@ ActiveAdmin.register Receipt do
     link_to t("receipts.deliver"), begin_delivery_admin_receipt_path(receipt), method: :put
   end
 
-  action_item :void, only: :show, if: proc { receipt.draft? || receipt.delivering? } do
+  action_item :void, only: :show do
     link_to t("receipts.void"), void_admin_receipt_path(receipt), method: :put
   end
 
