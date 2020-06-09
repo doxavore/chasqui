@@ -11,6 +11,14 @@ namespace :load do
 
   end
 
+  task :providers do
+    Rake::Task['environment'].invoke
+    arr = CSV.read("#{Rails.root}/lib/tasks/proveedores.csv", headers: true)
+    arr.each do |row|
+      load_provider_row(row)
+    end
+  end
+
   task :clean_users do
     Rake::Task['environment'].invoke
     User.find_each do |user|
@@ -174,6 +182,76 @@ namespace :load do
       comm.namespace = 'admin'
       comm.save!
     end
+  end
+
+  def load_provider_row(row)
+    user = nil
+
+    email = if row['CORREO'].present? && row['CORREO'] != '-'
+              row['CORREO'].downcase
+            else
+              row['EMPRESA'].parameterize + '@fakemail.com'
+            end
+
+    user = User.find_by(email: email)
+    pp email
+    unless user
+      user = User.create!(
+               email: email,
+               first_name: row['CONTACTO'].split(' ')[0].titleize,
+               last_name: row['CONTACTO'].split(' ')[1..].join(' ').titleize,
+               phone: row['Cel.1'],
+               password: '2n9n2dn21233d2d',
+               password_confirmation: '2n9n2dn21233d2d'
+             )
+
+    end
+
+    raise unless user
+
+    entity = ExternalEntity.find_by(name: row['EMPRESA'].titleize)
+
+    unless entity
+      entity = ExternalEntity.create!(
+        name: row['EMPRESA'].titleize,
+        user: user,
+        ruc: row['RUC']
+      )
+    end
+    raise unless entity
+    unless entity.address
+      Address.create!(
+        line_1: row['DIRECCION'],
+        locality: row['DISTRITO'],
+        administrative_area: row['FILIALES'],
+        country: "PE",
+        addressable: entity
+      )
+    end
+
+    unless entity.user
+      entity.user = user
+      entity.save!
+    end
+
+    if entity.user.id != user.id
+      comm = ActiveAdmin::Comment.new
+      comm.resource = entity
+      comm.body = "Contacto Adicional: #{row['CONTACTO']} - #{row['Cel.1']}"
+      comm.author = User.first
+      comm.namespace = 'admin'
+      comm.save!
+    end
+
+    comm = ActiveAdmin::Comment.new
+    comm.resource = entity
+    comm.body = "INFO HOJA\n"
+    row.each do |val|
+      comm.body += val.to_s + "\n"
+    end
+    comm.author = User.first
+    comm.namespace = 'admin'
+    comm.save!
   end
 end
 # rubocop:enable all

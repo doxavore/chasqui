@@ -5,6 +5,7 @@ ActiveAdmin.register ExternalEntity do
 
   permit_params :user_id,
                 :name,
+                :ruc,
                 tag_ids: [],
                 address_attributes: %i[
                   id
@@ -26,6 +27,7 @@ ActiveAdmin.register ExternalEntity do
   index do
     id_column
     column :name
+    column :ruc
     column t("activerecord.attributes.address.administrative_area") do |u|
       u.address&.administrative_area
     end
@@ -47,6 +49,7 @@ ActiveAdmin.register ExternalEntity do
     h3 ee.name
     attributes_table do
       row :user
+      row :ruc
       row :address
       row :tags do |obj|
         obj.tags.each do |tag|
