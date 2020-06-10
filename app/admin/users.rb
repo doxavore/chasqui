@@ -184,7 +184,7 @@ ActiveAdmin.register User do
       model = :user
       %w[password password_confirmation].each { |p| params[model].delete(p) } if params[model][:password].blank?
       params[:user][:email_confirmation] = params[:user][:email]
-      params[:user][:tag_ids] = params[:user][:tag_ids].reject(&:empty?)
+      params[:user][:tag_ids] = params[:user][:tag_ids].reject(&:empty?) if params[:user][:tag_ids]
       params[:user] = params[:user].slice(*policy(resource).permitted_attributes)
       super
     end

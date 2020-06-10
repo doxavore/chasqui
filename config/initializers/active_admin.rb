@@ -349,5 +349,5 @@ ActiveAdmin.setup do |config|
   config.meta_tags = meta_tags_options
   config.meta_tags_for_logged_out_pages = meta_tags_options
   config.site_title_image = ->(context) { asset_pack_path 'media/images/logo.png' }
-  config.footer = "Chasqui v0.2"
+  config.footer = "Chasqui v0.3 - Si necesitas ayuda, whatsapp 914-929-335"
 end
