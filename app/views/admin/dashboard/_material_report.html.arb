@@ -1,0 +1,21 @@
+# frozen_string_literal: true
+
+h2 "#{report[:start_date]} - #{report[:end_date]} - #{report[:receipt_count]} Entregas"
+
+h3 "Material Entregado"
+table_for report[:material_delivered] do
+  column("Articulo") { |r| r[0] }
+  column("Cantidad") { |r| r[1] }
+end
+
+h3 "Makers Que Recibieron"
+table_for report[:recipients] do
+  column("Usuario") { |r| r[0] }
+  column("Cantidad Entregada") { |r| r[1] }
+end
+
+h3 "CDA Repartidores"
+table_for report[:collection_points] do
+  column("CDA") { |r| r[0] }
+  column("Cantidad Entregada") { |r| r[1] }
+end

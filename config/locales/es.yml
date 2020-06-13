@@ -163,6 +163,11 @@ es:
       voided: Anulado
     void: Anular Recibo
     voided: Recibo Anulado
+  reports:
+    all: Total
+    daily: Hoy
+    monthly: Ultimo Mes
+    weekly: Ultima Semana
   users:
     admins: Administradores
     all: Todos
