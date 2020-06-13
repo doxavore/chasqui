@@ -118,7 +118,6 @@ es:
       tag:
         one: Etiqueta
         other: Etiquetas
-
   collection_point:
     info: Datos
     inventory: Inventario
@@ -130,8 +129,6 @@ es:
   orders:
     approve: Aprobar Pedido
     approved: Pedido Aprobado!
-    void: Anular Pedido
-    voided: Pedido ha sido anulado!
     edit: Editar Pedido
     state:
       assigned: Asignado
@@ -139,6 +136,8 @@ es:
       pending_approval: Esperando Aprobacion
       pending_assignment: Esperando Asignacion
       voided: Anulado
+    void: Anular Pedido
+    voided: Pedido ha sido anulado!
   origin_cp: Entidad Origen
   origin_ee: CDA Origen
   origin_user: Usuario Origen
@@ -165,11 +164,11 @@ es:
     void: Anular Recibo
     voided: Recibo Anulado
   users:
+    admins: Administradores
+    all: Todos
     basic: Basicos
     config: Configuracion
     info: Datos
     production: Produccion
-    admins: Administradores
-    all: Todos
   voided: Anulados
   welcome: Bienvenido!
