@@ -11,6 +11,9 @@ class Order < ApplicationRecord
   accepts_nested_attributes_for :inventory_lines, allow_destroy: true
   after_save :check_collection_point_assignment
 
+  scope :active, -> { where.not(state: :voided) }
+  scope :voided, -> { where(state: :voided) }
+
   aasm(column: "state") do
     state :pending_approval, initial: true
     state :pending_assignment

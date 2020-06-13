@@ -2,7 +2,8 @@
 
 ActiveAdmin.register User do
   includes :address, :tags
-  scope I18n.t("admins"), :admins
+  scope I18n.t("users.all"), :all, default: true
+  scope I18n.t("users.admins"), :admins
   permit_params :email,
                 :password,
                 :password_confirmation,

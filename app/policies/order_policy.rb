@@ -12,4 +12,20 @@ class OrderPolicy < ApplicationPolicy
   def create?
     update?
   end
+
+  def approve?
+    update?
+  end
+
+  def void?
+    update?
+  end
+
+  def complete?
+    update?
+  end
+
+  def uncomplete?
+    update?
+  end
 end

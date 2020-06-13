@@ -12,7 +12,7 @@ class Receipt < ApplicationRecord
   has_many_attached :delivery_images
 
   scope :active, -> { where.not(state: :voided) }
-  scope :active, -> { where.not(state: :voided) }
+  scope :voided, -> { where(state: :voided) }
 
   aasm(column: "state") do
     state :draft, initial: true

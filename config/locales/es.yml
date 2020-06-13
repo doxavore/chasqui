@@ -118,7 +118,7 @@ es:
       tag:
         one: Etiqueta
         other: Etiquetas
-  admins: Administradores
+
   collection_point:
     info: Datos
     inventory: Inventario
@@ -130,6 +130,9 @@ es:
   orders:
     approve: Aprobar Pedido
     approved: Pedido Aprobado!
+    void: Anular Pedido
+    voided: Pedido ha sido anulado!
+    edit: Editar Pedido
     state:
       assigned: Asignado
       completed: Completado
@@ -166,5 +169,7 @@ es:
     config: Configuracion
     info: Datos
     production: Produccion
+    admins: Administradores
+    all: Todos
   voided: Anulados
   welcome: Bienvenido!

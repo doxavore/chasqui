@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register Order do
+  scope I18n.t("active"), :active, default: true
+  scope I18n.t("voided"), :voided
   includes :external_entity, :tags, :address
   permit_params :external_entity_id, :collection_point_id,
                 tag_ids: [],
@@ -14,6 +16,7 @@ ActiveAdmin.register Order do
          label: proc { I18n.t("activerecord.attributes.address.administrative_area") }
   filter :tags
 
+  config.clear_action_items!
   index do
     id_column
     column :external_entity
@@ -82,7 +85,20 @@ ActiveAdmin.register Order do
     redirect_to resource_path(resource), notice: t("orders.approved")
   end
 
+  member_action :void, method: :put do
+    resource.void!
+    redirect_to resource_path(resource), notice: t("orders.voided")
+  end
+
   action_item :approve, only: :show, if: proc { order.pending_approval? } do
     link_to t("orders.approve"), approve_admin_order_path(order), method: :put
+  end
+
+  action_item :void, only: :show do
+    link_to t("orders.void"), void_admin_order_path(order), method: :put
+  end
+
+  action_item :edit, only: :show do
+    link_to t("orders.edit"), edit_admin_order_path(order), method: :get
   end
 end
