@@ -1,0 +1,15 @@
+# frozen_string_literal: true
+
+h2 "#{report[:start_date]} - #{report[:end_date]} - #{report[:receipt_count]} Entregas"
+
+h3 "Articulos Producidos"
+table_for report[:products_produced] do
+  column("Articulo") { |r| r[0] }
+  column("Cantidad") { |r| r[1] }
+end
+
+h3 "Fabricantes"
+table_for report[:producers] do
+  column("Usuario") { |r| r[0] }
+  column("Cantidad Fabricada") { |r| r[1] }
+end
