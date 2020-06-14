@@ -2,6 +2,8 @@
 
 module ExternalForm
   class OrderController < ExternalForm::BaseController
+    after_action :allow_iframe
+
     def new
       @order = ExternalForm::Order.new
     end
@@ -10,8 +12,10 @@ module ExternalForm
       @order = ExternalForm::Order.new(order_data)
       @order.register
 
-      respond_with @order, location: "/"
+      respond_with @order
     end
+
+    def success; end
 
     def order_data
       params.require(:external_form_order).permit(

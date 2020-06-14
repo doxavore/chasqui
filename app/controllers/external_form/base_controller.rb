@@ -4,5 +4,11 @@ module ExternalForm
   class BaseController < ApplicationController
     skip_before_action :authenticate_user!
     respond_to :html
+
+    private
+
+    def allow_iframe
+      response.headers.delete "X-Frame-Options"
+    end
   end
 end
