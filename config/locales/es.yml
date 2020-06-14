@@ -7,6 +7,25 @@ es:
       call_to_action: Call to action
       welcome: Bienvenido!
     date: Fecha
+  activemodel:
+    attributes:
+      external_form/order:
+        administrative_area: Departamento
+        email: Email
+        email_confirmation: Confirmacion de Email
+        entity: Entidad
+        first_name: Nombres
+        last_name: Apellidos
+        line_1: Dirección de entrega
+        line_2: Distrito
+        locality: Provincia
+        phone: Celular
+        phone_confirmation: Confirmacion de Celular
+        product: Material a solicitar
+        quantity: Cantidad a solicitar
+        ref: Referencia
+        role: Cargo
+        sumbit: Enviar Solicitud
   activerecord:
     attributes:
       address:
@@ -48,7 +67,8 @@ es:
         user: Usuario
       product:
         name: Nombre
-        producible: Producible
+        orderable: Se puede pedir?
+        producible: Se puede fabricar?
         tags: Etiquetas
       product_assignment:
         product: Producto
@@ -168,6 +188,10 @@ es:
     daily: Hoy
     monthly: Ultimo Mes
     weekly: Ultima Semana
+  simple_form:
+    labels:
+      order:
+        entity: Entidad
   users:
     admins: Administradores
     all: Todos
