@@ -1,0 +1,18 @@
+<%= simple_form_for @order, url: external_form_order_index_path do |f| %>
+  <%= f.input :entity, :as => :string %>
+  <%= f.input :first_name %>
+  <%= f.input :last_name %>
+  <%= f.input :profession %>
+  <%= f.input :phone %>
+  <%= f.input :phone_confirmation %>
+  <%= f.input :email %>
+  <%= f.input :email_confirmation %>
+  <%= f.input :administrative_area, as: :select, collection: Address::REGIONS %>
+  <%= f.input :locality %>
+  <%= f.input :line_2 %>
+  <%= f.input :line_1 %>
+  <%= f.input :ref %>
+  <%= f.input :product, as: :select, collection: Product.orderable %>
+  <%= f.input :quantity, as: :integer %>
+  <%= f.button :submit, "Enviar Solicitud" %>
+<% end %>
