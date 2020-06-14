@@ -7,7 +7,7 @@ module ExternalForm
       :entity,
       :first_name,
       :last_name,
-      :role,
+      :profession,
       :phone,
       :email,
       :administrative_area,
@@ -22,7 +22,7 @@ module ExternalForm
     validates :entity, presence: true
     validates :first_name, presence: true
     validates :last_name, presence: true
-    validates :role, presence: true
+    validates :profession, presence: true
     validates :phone, presence: true, confirmation: true, length: { minimum: 9 }
     validates :phone_confirmation, presence: true
     validates :email_confirmation, presence: true
@@ -97,7 +97,7 @@ module ExternalForm
         phone: phone,
         password: pw,
         password_confirmation: pw,
-        profession: role
+        profession: profession
       )
     end
   end

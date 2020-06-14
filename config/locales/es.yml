@@ -24,7 +24,7 @@ es:
         product: Material a solicitar
         quantity: Cantidad a solicitar
         ref: Referencia
-        role: Cargo
+        profession: Cargo
         sumbit: Enviar Solicitud
   activerecord:
     attributes:

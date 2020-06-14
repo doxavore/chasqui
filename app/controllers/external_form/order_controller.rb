@@ -15,7 +15,7 @@ module ExternalForm
 
     def order_data
       params.require(:external_form_order).permit(
-        :entity, :first_name, :last_name, :role, :phone, :email, :email_confirmation,
+        :entity, :first_name, :last_name, :profession, :phone, :email, :email_confirmation,
         :administrative_area, :locality, :line_2, :line_1, :ref,
         :product, :quantity, :phone_confirmation
       )
