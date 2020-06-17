@@ -69,6 +69,7 @@ ActiveAdmin.register User do
       row :profession
       row :first_name
       row :last_name
+      row :phone
       row :address
       row :last_sign_in_at
       row t("activerecord.attributes.user.product_assignments") do |u|
