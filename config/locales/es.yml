@@ -22,9 +22,9 @@ es:
         phone: Celular
         phone_confirmation: Confirmacion de Celular
         product: Material a solicitar
+        profession: Cargo
         quantity: Cantidad a solicitar
         ref: Referencia
-        profession: Cargo
         sumbit: Enviar Solicitud
   activerecord:
     attributes:
