@@ -73,7 +73,7 @@ ActiveAdmin.register Order do
       f.input :collection_point
       f.input :tag_ids, as: :tags, collection: Tag.all, label: t("activerecord.attributes.order.tags")
       f.has_many :inventory_lines, allow_destroy: true do |ilf|
-        ilf.input :product, collection: Product.producible
+        ilf.input :product, collection: Product.all
         ilf.input :quantity_desired
       end
     end
