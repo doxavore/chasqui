@@ -115,4 +115,8 @@ ActiveAdmin.register Order do
   action_item :edit, only: :show do
     link_to t("orders.edit"), edit_admin_order_path(order), method: :get
   end
+
+  action_item :new, only: :index do
+    link_to t("orders.new"), new_admin_order_path, method: :get
+  end
 end

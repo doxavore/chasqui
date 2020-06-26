@@ -216,6 +216,7 @@ en:
     approve: Aprobar Pedido
     approved: Pedido Aprobado!
     edit: Editar Pedido
+    new: Crear Pedido
     state:
       assigned: Asignado
       completed: Completado
