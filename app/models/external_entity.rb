@@ -4,7 +4,8 @@ class ExternalEntity < ApplicationRecord
   include Taggable
   has_many :orders, dependent: :destroy
   has_many :inventory_lines, through: :orders
-  belongs_to :user
+  has_many :external_entity_users, dependent: :destroy
+  has_many :users, through: :external_entity_users
   has_one :address, as: :addressable, dependent: :destroy
   has_many :origin_receipts, as: :origin, class_name: "Receipt", dependent: :nullify
   has_many :destination_receipts, as: :destination, class_name: "Receipt", dependent: :nullify

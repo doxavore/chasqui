@@ -3,10 +3,10 @@
 ActiveAdmin.register ExternalEntity do
   includes :tags, :address
 
-  permit_params :user_id,
-                :name,
+  permit_params :name,
                 :ruc,
                 tag_ids: [],
+                user_ids: [],
                 address_attributes: %i[
                   id
                   line_1
@@ -48,7 +48,7 @@ ActiveAdmin.register ExternalEntity do
     ee = external_entity
     h3 ee.name
     attributes_table do
-      row :user
+      row :users
       row :ruc
       row :address
       row :tags do |obj|
@@ -103,9 +103,14 @@ ActiveAdmin.register ExternalEntity do
     f.semantic_errors(*f.object.errors.keys)
 
     f.inputs do
-      f.input :user
+      f.input :user_ids,
+              as: :selected_list,
+              display_name: :name,
+              fields: %i[first_name last_name email],
+              collection: User.all,
+              label: t("activerecord.attributes.external_entity.users")
       f.input :name
-      f.input :tag_ids, as: :tags, collection: Tag.all, label: t("activerecord.attributes.order.tags")
+      f.input :tag_ids, as: :tags, collection: Tag.all, label: t("activerecord.attributes.external_entity.tags")
       f.has_many :address, new_record: !f.object.address do |af|
         af.input :line_1
         af.input :line_2

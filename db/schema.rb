@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_14_165245) do
+ActiveRecord::Schema.define(version: 2020_06_27_114329) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -81,6 +81,13 @@ ActiveRecord::Schema.define(version: 2020_06_14_165245) do
     t.datetime "updated_at", precision: 6, null: false
     t.string "ruc"
     t.index ["user_id"], name: "index_external_entities_on_user_id"
+  end
+
+  create_table "external_entity_users", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "external_entity_id", null: false
+    t.index ["external_entity_id"], name: "index_external_entity_users_on_external_entity_id"
+    t.index ["user_id"], name: "index_external_entity_users_on_user_id"
   end
 
   create_table "inventory_lines", force: :cascade do |t|

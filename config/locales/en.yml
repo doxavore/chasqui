@@ -44,7 +44,7 @@ en:
         address: Address
         name: Name
         tags: Etiquetas
-        user: User
+        users: Users
       inventory_line:
         product: Product
         quantity_desired: Quantity Desired

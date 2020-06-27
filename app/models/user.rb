@@ -15,7 +15,8 @@ class User < ApplicationRecord
   has_one :address, as: :addressable, dependent: :destroy
   has_many :origin_receipts, as: :origin, class_name: "Receipt", dependent: :nullify
   has_many :destination_receipts, as: :destination, class_name: "Receipt", dependent: :nullify
-  has_many :external_entities, dependent: :nullify
+  has_many :external_entity_users, dependent: :destroy
+  has_many :external_entities, through: :external_entity_users
   accepts_nested_attributes_for :printers, allow_destroy: true
   accepts_nested_attributes_for :product_assignments, allow_destroy: true
   accepts_nested_attributes_for :address, allow_destroy: true
@@ -33,6 +34,7 @@ class User < ApplicationRecord
   def to_s
     "#{first_name} #{last_name} #{email}"
   end
+  alias name to_s
 
   def cp_coordinator?
     return @cp_coordinator if defined?(@cp_coordinator)
@@ -64,5 +66,11 @@ class User < ApplicationRecord
 
   def concerned_records
     @concerned_records ||= external_entities + collection_points + overseen + [self]
+  end
+
+  def as_json(options = {})
+    super(
+      options.merge(methods: :name)
+    )
   end
 end
