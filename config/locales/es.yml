@@ -44,7 +44,7 @@ es:
         address: Direccion
         name: Nombre
         tags: Etiquetas
-        user: Usuario
+        users: Usuarios
       inventory_line:
         product: Producto
         quantity_desired: Cantidad Deseada

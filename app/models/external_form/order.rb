@@ -60,7 +60,7 @@ module ExternalForm
     def external_entity
       return @external_entity if defined?(@external_entity)
 
-      @external_entity = ExternalEntity.create!(name: entity, user: user)
+      @external_entity = ExternalEntity.create!(name: entity, users: [user])
       create_address
       @external_entity
     end
