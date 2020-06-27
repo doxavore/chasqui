@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_27_114329) do
+ActiveRecord::Schema.define(version: 2020_06_27_195630) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -109,8 +109,10 @@ ActiveRecord::Schema.define(version: 2020_06_27_114329) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "collection_point_id"
     t.string "legacy_order_number"
+    t.bigint "user_id"
     t.index ["collection_point_id"], name: "index_orders_on_collection_point_id"
     t.index ["external_entity_id"], name: "index_orders_on_external_entity_id"
+    t.index ["user_id"], name: "index_orders_on_user_id"
   end
 
   create_table "printer_models", force: :cascade do |t|
@@ -244,5 +246,6 @@ ActiveRecord::Schema.define(version: 2020_06_27_114329) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "collection_points", "users", column: "coordinator_id"
   add_foreign_key "orders", "collection_points"
+  add_foreign_key "orders", "users"
   add_foreign_key "users", "users", column: "coordinator_id"
 end
