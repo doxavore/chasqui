@@ -3,6 +3,6 @@
 FactoryBot.define do
   factory :external_entity do
     name { Faker::Hipster.unique.words(number: 2).join(" ") }
-    user { create(:user) }
+    users { [create(:user)] }
   end
 end
