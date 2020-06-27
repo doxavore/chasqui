@@ -9,7 +9,7 @@ class MigrateEeUsers < ActiveRecord::Migration[6.0]
 
     statement = <<-SQL
       INSERT INTO external_entity_users (user_id, external_entity_id)
-      SELECT user_id, id FROM external_entities
+      SELECT user_id, id FROM external_entities WHERE user_id IS NOT NULL
     SQL
 
     ActiveRecord::Base.connection.execute(statement)
