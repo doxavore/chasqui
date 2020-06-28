@@ -16,6 +16,7 @@ class User < ApplicationRecord
   has_many :origin_receipts, as: :origin, class_name: "Receipt", dependent: :nullify
   has_many :destination_receipts, as: :destination, class_name: "Receipt", dependent: :nullify
   has_many :external_entity_users, dependent: :destroy
+  has_many :orders, dependent: :nullify
   has_many :external_entities, through: :external_entity_users
   accepts_nested_attributes_for :printers, allow_destroy: true
   accepts_nested_attributes_for :product_assignments, allow_destroy: true

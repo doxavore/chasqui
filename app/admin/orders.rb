@@ -29,6 +29,7 @@ ActiveAdmin.register Order do
     )
     column :collection_point
     column :updated_at
+    column :user
     column :tags do |obj|
       obj.tags.each do |tag|
         status_tag(tag.name, style: "background-color: #{tag.color}")
@@ -46,6 +47,9 @@ ActiveAdmin.register Order do
           row :updated_at
           row :state do |order|
             t("orders.state.#{order.state}")
+          end
+          row :user do |order|
+            render "/admin/user/card", { user: order.user }
           end
           row :tags do |obj|
             obj.tags.each do |tag|

@@ -61,6 +61,7 @@ en:
         state/voided: Anulado
         tags: Etiquetas
         updated_at: Actualizado
+        user: Usuario
       printer:
         name: Name
         printer_model: Printer Model

@@ -7,6 +7,7 @@ class Order < ApplicationRecord
   belongs_to :external_entity
   has_one :address, through: :external_entity
   belongs_to :collection_point, optional: true
+  belongs_to :user, optional: true
   has_many :inventory_lines, as: :inventoried, dependent: :destroy
   accepts_nested_attributes_for :inventory_lines, allow_destroy: true
   after_save :check_collection_point_assignment

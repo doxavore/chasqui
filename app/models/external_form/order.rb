@@ -49,6 +49,7 @@ module ExternalForm
     def create_order!
       order = ::Order.new
       order.external_entity = external_entity
+      order.user = user
       order.save!
       InventoryLine.create!(
         inventoried: order,
