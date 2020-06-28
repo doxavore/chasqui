@@ -48,7 +48,12 @@ ActiveAdmin.register ExternalEntity do
     ee = external_entity
     h3 ee.name
     attributes_table do
-      row :users
+      row :users do |obj|
+        obj.users.each do |user|
+          render "/admin/user/card", { user: user }
+        end
+        nil
+      end
       row :ruc
       row :address
       row :tags do |obj|

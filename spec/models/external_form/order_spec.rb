@@ -52,4 +52,9 @@ RSpec.describe ExternalForm::Order, type: :model do
     register
     expect(ExternalEntity.last.users.first.email).to eq(email)
   end
+
+  it "adds the user to the order" do
+    register
+    expect(::Order.last.user.email).to eq(email)
+  end
 end

@@ -1,0 +1,13 @@
+# frozen_string_literal: true
+
+panel "#{user.first_name} #{user.last_name}" do
+  span "#{t('activerecord.attributes.user.phone')}: #{user.phone}"
+  br
+  span "#{t('activerecord.attributes.user.email')}: #{user.email}"
+  if user.address.present?
+    br
+    span "#{t('activerecord.attributes.user.address')}: #{user.address}"
+  end
+  br
+  a(href: admin_user_path(user)) { "ver" }
+end
