@@ -15,6 +15,15 @@ ActiveAdmin.register ExternalEntity do
                   administrative_area
                   postal_code
                   country
+                ],
+                product_providers_attributes: %i[
+                  id
+                  product_id
+                  brand
+                  price
+                  discount
+                  stock
+                  notes
                 ]
 
   filter :name
@@ -63,17 +72,31 @@ ActiveAdmin.register ExternalEntity do
         nil
       end
     end
+    if external_entity.orders.any?
+      panel t("activerecord.models.order.other") do
+        table_for external_entity.orders do
+          column :id do |order|
+            link_to order.id, admin_order_path(order)
+          end
+          column :collection_point
+          column t("activerecord.attributes.order.state") do |o|
+            t("orders.state.#{o.state}")
+          end
+          column :updated_at
+        end
+      end
+    end
 
-    panel t("activerecord.models.order.other") do
-      table_for external_entity.orders do
-        column :id do |order|
-          link_to order.id, admin_order_path(order)
+    if external_entity.product_providers.any?
+      panel t("activerecord.models.product_provider.other") do
+        table_for external_entity.product_providers do
+          column :product
+          column :brand
+          column :price
+          column :discount
+          column :stock
+          column :notes
         end
-        column :collection_point
-        column t("activerecord.attributes.order.state") do |o|
-          t("orders.state.#{o.state}")
-        end
-        column :updated_at
       end
     end
 
@@ -124,6 +147,15 @@ ActiveAdmin.register ExternalEntity do
         af.input :administrative_area, as: :select, collection: Address::REGIONS
         af.input :postal_code
         af.input :country, priority_countries: ["Peru"]
+      end
+
+      f.has_many :product_providers do |pf|
+        pf.input :product
+        pf.input :brand
+        pf.input :price
+        pf.input :discount
+        pf.input :stock
+        pf.input :notes
       end
     end
 

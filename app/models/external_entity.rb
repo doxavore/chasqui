@@ -10,6 +10,8 @@ class ExternalEntity < ApplicationRecord
   has_many :origin_receipts, as: :origin, class_name: "Receipt", dependent: :nullify
   has_many :destination_receipts, as: :destination, class_name: "Receipt", dependent: :nullify
   accepts_nested_attributes_for :address, allow_destroy: true
+  has_many :product_providers, dependent: :destroy
+  accepts_nested_attributes_for :product_providers, allow_destroy: true
 
   def to_s
     "#{name} (#{address&.administrative_area})"

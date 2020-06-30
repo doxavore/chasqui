@@ -43,6 +43,7 @@ en:
       external_entity:
         address: Address
         name: Name
+        product_providers: Productos Vendidos
         tags: Etiquetas
         users: Users
       inventory_line:
@@ -70,9 +71,18 @@ en:
         name: Name
         orderable: Se puede pedir?
         producible: Producible
+        product_providers: Proveedores
         tags: Etiquetas
       product_assignment:
         product: Product
+      product_provider:
+        brand: Marca
+        discount: Descuento
+        external_entity: Proveedor
+        notes: Notas
+        price: Precio
+        product: Producto
+        stock: Stock
       receipt:
         delivered_at: Fecha de entrega
         delivery_images: Imagenes De Entrega
@@ -133,12 +143,16 @@ en:
       product_assignment:
         one: Product Assignment
         other: Product Assignments
+      product_provider:
+        one: Producto
+        other: Productos
       receipt:
         one: Receipt
         other: Receipts
       tag:
         one: Etiqueta
         other: Etiquetas
+  add_provider: Nuevo Proveedor
   collection_point:
     info: Datos
     inventory: Inventario

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_27_195630) do
+ActiveRecord::Schema.define(version: 2020_06_30_120508) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -143,6 +143,18 @@ ActiveRecord::Schema.define(version: 2020_06_27_195630) do
     t.index ["assigned_type", "assigned_id", "product_id"], name: "idx_pa_at_ai_pi", unique: true
     t.index ["assigned_type", "assigned_id"], name: "index_product_assignments_on_assigned_type_and_assigned_id"
     t.index ["product_id"], name: "index_product_assignments_on_product_id"
+  end
+
+  create_table "product_providers", force: :cascade do |t|
+    t.bigint "external_entity_id", null: false
+    t.bigint "product_id", null: false
+    t.string "brand"
+    t.decimal "price", precision: 10, scale: 3
+    t.decimal "discount", precision: 10, scale: 3
+    t.integer "stock"
+    t.string "notes"
+    t.index ["external_entity_id"], name: "index_product_providers_on_external_entity_id"
+    t.index ["product_id"], name: "index_product_providers_on_product_id"
   end
 
   create_table "products", force: :cascade do |t|
