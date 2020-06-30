@@ -115,6 +115,7 @@ ActiveAdmin.register ExternalEntity do
               collection: User.all,
               label: t("activerecord.attributes.external_entity.users")
       f.input :name
+      f.input :ruc
       f.input :tag_ids, as: :tags, collection: Tag.all, label: t("activerecord.attributes.external_entity.tags")
       f.has_many :address, new_record: !f.object.address do |af|
         af.input :line_1
