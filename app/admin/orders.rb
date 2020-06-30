@@ -4,7 +4,7 @@ ActiveAdmin.register Order do
   scope I18n.t("active"), :active, default: true
   scope I18n.t("voided"), :voided
   includes :external_entity, :tags, :address
-  permit_params :external_entity_id, :collection_point_id,
+  permit_params :external_entity_id, :collection_point_id, :user_id,
                 tag_ids: [],
                 inventory_lines_attributes: %i[id product_id quantity_desired _destroy]
 
@@ -75,6 +75,7 @@ ActiveAdmin.register Order do
     f.inputs do
       f.input :external_entity
       f.input :collection_point
+      f.input :user
       f.input :tag_ids, as: :tags, collection: Tag.all, label: t("activerecord.attributes.order.tags")
       f.has_many :inventory_lines, allow_destroy: true do |ilf|
         ilf.input :product, collection: Product.all
