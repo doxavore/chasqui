@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class ExternalEntityPolicy < ApplicationPolicy
+class ProductPolicy < ApplicationPolicy
   def update?
     user.admin? || user.planning? || user.logistics?
   end
