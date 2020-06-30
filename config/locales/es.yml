@@ -142,8 +142,8 @@ es:
   collection_point:
     info: Datos
     inventory: Inventario
-  destination_cp: Entidad Destinatario
-  destination_ee: CDA Destinatario
+  destination_cp: CDA Destinatario
+  destination_ee: Entidad Destinatario
   destination_user: Usuario Destinatario
   history: Historial
   intakes: Ingresos
@@ -160,8 +160,8 @@ es:
       voided: Anulado
     void: Anular Pedido
     voided: Pedido ha sido anulado!
-  origin_cp: Entidad Origen
-  origin_ee: CDA Origen
+  origin_cp: CDA Origen
+  origin_ee: Entidad Origen
   origin_user: Usuario Origen
   outlays: Salidas
   quantity: Cantidad
