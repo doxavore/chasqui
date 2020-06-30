@@ -13,6 +13,7 @@ ActiveAdmin.register Product do
                   discount
                   stock
                   notes
+                  _destroy
                 ]
   show do
     attributes_table do
@@ -42,6 +43,7 @@ ActiveAdmin.register Product do
       f.input :orderable
 
       f.has_many :product_providers,
+                 allow_destroy: true,
                  heading: t("activerecord.attributes.product.product_providers"),
                  new_record: t("add_provider") do |pf|
         pf.input :external_entity

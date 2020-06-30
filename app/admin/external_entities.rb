@@ -24,6 +24,7 @@ ActiveAdmin.register ExternalEntity do
                   discount
                   stock
                   notes
+                  _destroy
                 ]
 
   filter :name
@@ -149,7 +150,7 @@ ActiveAdmin.register ExternalEntity do
         af.input :country, priority_countries: ["Peru"]
       end
 
-      f.has_many :product_providers do |pf|
+      f.has_many :product_providers, allow_destroy: true do |pf|
         pf.input :product
         pf.input :brand
         pf.input :price
