@@ -49,7 +49,7 @@ ActiveAdmin.register Order do
             t("orders.state.#{order.state}")
           end
           row :user do |order|
-            render "/admin/user/card", { user: order.user }
+            render "/admin/user/card", { user: order.user } if order.user
           end
           row :tags do |obj|
             obj.tags.each do |tag|
