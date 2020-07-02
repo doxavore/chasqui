@@ -182,10 +182,11 @@ ActiveAdmin.register User do
   end
 
   controller do
-    def update
+    def update # rubocop:disable Metrics/AbcSize
       model = :user
       %w[password password_confirmation].each { |p| params[model].delete(p) } if params[model][:password].blank?
       params[:user][:email_confirmation] = params[:user][:email]
+      params[:user][:phone_confirmation] = params[:user][:phone]
       params[:user][:tag_ids] = params[:user][:tag_ids].reject(&:empty?) if params[:user][:tag_ids]
       params[:user] = params[:user].slice(*policy(resource).permitted_attributes)
       super

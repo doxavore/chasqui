@@ -107,12 +107,17 @@ en:
         address: Address
         company: Company
         coordinator: Coordinator
+        email_confirmation: Confirmación de email
         first_name: First Name
         last_name: Last Name
+        number_of_printers: Cantidad de Impresoras
         phone: Phone
+        phone_confirmation: Confirmación de Celular
+        printer_type: Tipo(s) de impresora
         printers: Printers
         product_assignments: Productos Designados
         tags: Etiquetas
+        work_area: Rubro en que deseas voluntariar
       version:
         whodunnit: Usuario
     models:

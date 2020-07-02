@@ -25,6 +25,11 @@ class User < ApplicationRecord
   has_many :inventory_lines, as: :inventoried, dependent: :destroy
   accepts_nested_attributes_for :inventory_lines, allow_destroy: true
 
+  attr_accessor :phone_confirmation, :email_confirmation, :number_of_printers, :printer_type, :work_area
+
+  # validates :phone, presence: true, confirmation: true, length: { minimum: 9 }
+  # validates :phone_confirmation, presence: true
+
   scope :printers, -> { where_assoc_exists(:printers) }
   scope :admins, -> { where(admin: true) }
 

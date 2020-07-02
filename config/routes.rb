@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   get "dokku/deploy_check", to: "dokku#deploy_check"
   namespace :external_form do
     resources :order, only: [:create, :new]
+    resources :volunteer, only: [:create, :new]
   end
 
 end

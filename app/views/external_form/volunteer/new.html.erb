@@ -1,0 +1,21 @@
+<%= simple_form_for @user, url: external_form_volunteer_index_path do |f| %>
+  <%= f.input :first_name, required: true %>
+  <%= f.input :last_name, required: true %>
+  <%= f.input :profession, required: true %>
+  <%= f.input :phone, required: true %>
+  <%= f.input :phone_confirmation, required: true %>
+  <%= f.input :email, required: true %>
+  <%= f.input :email_confirmation, required: true %>
+  <%= f.input :password, required: true %>
+  <%= f.input :password_confirmation, required: true %>
+  <%= f.simple_fields_for :address do |af| %>
+    <%= af.input :administrative_area, as: :select, collection: Address::REGIONS %>
+    <%= af.input :locality %>
+    <%= af.input :line_2 %>
+    <%= af.input :line_1 %>
+  <% end %>
+  <%= f.input :number_of_printers, as: :integer, hint: "No es necesario tener impresora, hay muchas maneras de apoyar!" %>
+  <%= f.input :printer_type %>
+  <%= f.input :work_area, as: :text, placeholder: "Dinos en que rubro prefieres trabajar, como logistica, administracion, comunicaciones, etc." %>
+  <%= f.button :submit, "Enviar Aplicacion" %>
+<% end %>
