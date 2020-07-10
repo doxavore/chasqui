@@ -7,4 +7,5 @@ class Product < ApplicationRecord
   has_many :product_providers, dependent: :destroy
   has_many :external_entities, through: :product_providers
   accepts_nested_attributes_for :product_providers, allow_destroy: true
+  has_many :product_recipes
 end

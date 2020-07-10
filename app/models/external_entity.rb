@@ -17,8 +17,9 @@ class ExternalEntity < ApplicationRecord
     "#{name} (#{address&.administrative_area})"
   end
 
-  # this is a special case since we don't want to create orders
+  # this is a special case since we don't want to create inventory lines
   def credit_receipt(receipt)
+    inv_map = receipt.inventory_lines.map{ |i| [i.product_id, i.quantity_present] }.to_h
     receipt.inventory_lines.each do |r_line|
       remaining = r_line.quantity_present
 

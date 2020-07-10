@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_30_120508) do
+ActiveRecord::Schema.define(version: 2020_07_02_205954) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -90,6 +90,14 @@ ActiveRecord::Schema.define(version: 2020_06_30_120508) do
     t.index ["user_id"], name: "index_external_entity_users_on_user_id"
   end
 
+  create_table "ingredients", force: :cascade do |t|
+    t.integer "quantity"
+    t.bigint "product_recipe_id", null: false
+    t.bigint "product_id", null: false
+    t.index ["product_id"], name: "index_ingredients_on_product_id"
+    t.index ["product_recipe_id"], name: "index_ingredients_on_product_recipe_id"
+  end
+
   create_table "inventory_lines", force: :cascade do |t|
     t.string "inventoried_type", null: false
     t.bigint "inventoried_id", null: false
@@ -155,6 +163,12 @@ ActiveRecord::Schema.define(version: 2020_06_30_120508) do
     t.string "notes"
     t.index ["external_entity_id"], name: "index_product_providers_on_external_entity_id"
     t.index ["product_id"], name: "index_product_providers_on_product_id"
+  end
+
+  create_table "product_recipes", force: :cascade do |t|
+    t.string "name"
+    t.bigint "product_id", null: false
+    t.index ["product_id"], name: "index_product_recipes_on_product_id"
   end
 
   create_table "products", force: :cascade do |t|

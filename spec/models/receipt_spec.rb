@@ -72,6 +72,55 @@ RSpec.describe Receipt, type: :model do
       end
     end
 
+    describe "when the order is a mixed bag" do
+      let(:recipe) { create(:recipe_with_ingredients) }
+      let(:unrelated_product) { create(:product) }
+
+      let!(:order) do
+        new_order = create(:order, external_entity: ee, state: :assigned)
+        create(
+          :inventory_line, inventoried: new_order,
+          product: recipe.product, quantity_desired: 2
+        )
+        create(
+          :inventory_line, inventoried: new_order,
+          product: recipe.ingredients.first.product, quantity_desired: 2
+        )
+
+        create(
+          :inventory_line, inventoried: new_order,
+          product: unrelated_product, quantity_desired: 2
+        )
+        new_order
+      end
+
+      let(:receipt) do
+        new_receipt = create(:receipt, origin: collection_point, destination: ee, state: :delivering)
+        recipe.ingredients.each do |ing|
+          create(
+            :inventory_line,
+            inventoried: new_receipt,
+            quantity_present: 2,
+            product: ing.product
+          )
+        end
+
+        create(
+          :inventory_line,
+          inventoried: new_receipt,
+          product: unrelated_product,
+          quantity_present: 1
+        )
+        new_receipt
+      end
+
+      it "fulfills recipe products" do
+        receipt.complete
+        expect(order.reload.inventory_lines.where(product: recipe.product).first.quantity_present).to eq(2)
+      end
+
+    end
+
     describe "when voiding a completed order" do
       let!(:order) do
         new_order = create(:order, external_entity: ee, state: :assigned)
