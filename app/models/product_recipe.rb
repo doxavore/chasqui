@@ -3,6 +3,7 @@
 class ProductRecipe < ApplicationRecord
   belongs_to :product
   has_many :ingredients, dependent: :destroy
+  accepts_nested_attributes_for :ingredients, allow_destroy: true
 
   def credit_to_line(inventory_line, inv_map)
     max_quantity = find_max_quantity(inv_map)

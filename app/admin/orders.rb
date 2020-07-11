@@ -114,6 +114,7 @@ ActiveAdmin.register Order do
     receipts = orders.map(&:external_entity).uniq.map(&:destination_receipts).flatten
     receipts.each do |receipt|
       next unless receipt.completed?
+
       ActiveRecord::Base.transaction do
         receipt.revert_inventories
         receipt.update_inventories
