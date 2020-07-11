@@ -109,6 +109,20 @@ ActiveAdmin.register Order do
     redirect_to resource_path(resource), notice: t("orders.voided")
   end
 
+  collection_action :reconcile, method: :put do
+    orders = Order.all.includes(external_entity: :destination_receipts)
+    receipts = orders.map(&:external_entity).uniq.map(&:destination_receipts).flatten
+    receipts.each do |receipt|
+      next unless receipt.completed?
+      ActiveRecord::Base.transaction do
+        receipt.revert_inventories
+        receipt.update_inventories
+      end
+    end
+
+    redirect_to collection_path, notice: t("orders.reconciled")
+  end
+
   action_item :approve, only: :show, if: proc { order.pending_approval? } do
     link_to t("orders.approve"), approve_admin_order_path(order), method: :put
   end
@@ -123,5 +137,9 @@ ActiveAdmin.register Order do
 
   action_item :new, only: :index do
     link_to t("orders.new"), new_admin_order_path, method: :get
+  end
+
+  action_item :reconcile, only: :index do
+    link_to t("orders.reconcile"), reconcile_admin_orders_path, method: :put
   end
 end

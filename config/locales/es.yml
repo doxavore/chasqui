@@ -171,6 +171,8 @@ es:
     approved: Pedido Aprobado!
     edit: Editar Pedido
     new: Crear Pedido
+    reconcile: Reconciliar Pedidos
+    reconciled: Todos los pedidos han sido reconciliados
     state:
       assigned: Asignado
       completed: Completado
