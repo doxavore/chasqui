@@ -40,6 +40,7 @@ class ProductRecipe < ApplicationRecord
 
       available = inv_map[ingredient.product_id].to_i
       break unless available.positive?
+
       max_quantity = (available - (available % ingredient.quantity)) / ingredient.quantity
       break unless max_quantity.positive?
     end
