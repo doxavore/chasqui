@@ -19,7 +19,7 @@ class ProductRecipe < ApplicationRecord
   end
 
   def debit_from_line(inventory_line, inv_map)
-    max_quantity = find_max_quantity(inv_map)
+    max_quantity = [find_max_quantity(inv_map), inventory_line.quantity_present].min
 
     return unless max_quantity.positive?
 

@@ -47,6 +47,19 @@ class Order < ApplicationRecord
     end
   end
 
+  def self.reconcile
+    orders = all.includes(external_entity: :destination_receipts)
+    receipts = orders.map(&:external_entity).uniq.map(&:destination_receipts).flatten
+    receipts.each do |receipt|
+      next unless receipt.completed?
+
+      ActiveRecord::Base.transaction do
+        receipt.revert_inventories
+        receipt.update_inventories
+      end
+    end
+  end
+
   def can_complete?
     inventory_lines.inject(true) { |sum, l| sum && l.complete? }
   end

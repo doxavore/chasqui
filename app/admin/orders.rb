@@ -110,16 +110,7 @@ ActiveAdmin.register Order do
   end
 
   collection_action :reconcile, method: :put do
-    orders = Order.all.includes(external_entity: :destination_receipts)
-    receipts = orders.map(&:external_entity).uniq.map(&:destination_receipts).flatten
-    receipts.each do |receipt|
-      next unless receipt.completed?
-
-      ActiveRecord::Base.transaction do
-        receipt.revert_inventories
-        receipt.update_inventories
-      end
-    end
+    Order.reconcile
 
     redirect_to collection_path, notice: t("orders.reconciled")
   end
