@@ -22,8 +22,10 @@ class ProductRecipe < ApplicationRecord
     max_quantity = [find_max_quantity(inv_map), inventory_line.quantity_present].min
 
     return unless max_quantity.positive?
-
+    pp "recipe #{id} - max #{max_quantity}"
     ingredients.each do |ingredient|
+      pp "inv line #{inventory_line.id}"
+      pp "#{inv_map[ingredient.product_id]}"
       inv_map[ingredient.product_id] -= max_quantity * ingredient.quantity
     end
 
