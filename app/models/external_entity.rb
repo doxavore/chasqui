@@ -17,48 +17,48 @@ class ExternalEntity < ApplicationRecord
     "#{name} (#{address&.administrative_area})"
   end
 
-  # this is a special case since we don't want to create orders
+  # this is a special case since we don't want to create inventory lines
   def credit_receipt(receipt)
-    receipt.inventory_lines.each do |r_line|
-      remaining = r_line.quantity_present
+    inv_map = receipt.inventory_lines.map { |i| [i.product_id, i.quantity_present] }.to_h
+    # fullfill orders for recipes first
+    orders_for_receipts.assigned.find_each do |order|
+      order.inventory_lines.each do |o_line|
+        next unless o_line.product.product_recipes.any?
 
-      orders.includes(:inventory_lines).assigned.each do |order|
-        break if remaining.zero?
-
-        order.inventory_lines.each do |o_line|
-          next if o_line.product_id != r_line.product_id
-
-          debit_quantity = [remaining, o_line.quantity_remaining].min
-          next if debit_quantity.zero?
-
-          remaining -= debit_quantity
-          o_line.quantity_present += debit_quantity
-          o_line.save
-        end
-        order.complete! if order.can_complete?
+        o_line.product.credit_to_line(o_line, inv_map)
       end
+      order.complete! if order.can_complete?
+    end
+
+    orders_for_receipts.assigned.find_each do |order|
+      order.inventory_lines.each do |o_line|
+        o_line.product.credit_to_line(o_line, inv_map)
+      end
+      order.complete! if order.can_complete?
     end
   end
 
   def debit_receipt(receipt)
-    receipt.inventory_lines.each do |r_line|
-      remaining = r_line.quantity_present
+    inv_map = receipt.inventory_lines.map { |i| [i.product_id, i.quantity_present] }.to_h
+    # fullfill orders for recipes first
+    orders_for_receipts.where(state: %w[completed assigned]).find_each do |order|
+      order.inventory_lines.each do |o_line|
+        next unless o_line.product.product_recipes.any?
 
-      orders.includes(:inventory_lines).where(state: %w[completed assigned]).find_each do |order|
-        break if remaining.zero?
-
-        order.inventory_lines.each do |o_line|
-          next if o_line.product_id != r_line.product_id
-
-          debit_quantity = [remaining, o_line.quantity_present].min
-          next if debit_quantity.zero?
-
-          remaining -= debit_quantity
-          o_line.quantity_present -= debit_quantity
-          o_line.save
-        end
-        order.uncomplete! if order.completed?
+        o_line.product.debit_from_line(o_line, inv_map)
       end
+      order.uncomplete! if order.completed?
     end
+
+    orders_for_receipts.where(state: %w[completed assigned]).find_each do |order|
+      order.inventory_lines.each do |o_line|
+        o_line.product.debit_from_line(o_line, inv_map)
+      end
+      order.uncomplete! if order.completed?
+    end
+  end
+
+  def orders_for_receipts
+    orders.includes(inventory_lines: { product: { product_recipes: :ingredients } })
   end
 end

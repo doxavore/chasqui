@@ -72,7 +72,82 @@ RSpec.describe Receipt, type: :model do
       end
     end
 
-    describe "when voiding a completed order" do
+    describe "when the order is a mixed bag" do
+      let(:recipe) { create(:recipe_with_ingredients) }
+      let(:unrelated_product) { create(:product) }
+
+      let!(:order) do
+        new_order = create(:order, external_entity: ee, state: :assigned)
+        create(
+          :inventory_line,
+          inventoried: new_order,
+          product: recipe.product,
+          quantity_desired: 2
+        )
+        create(
+          :inventory_line,
+          inventoried: new_order,
+          product: recipe.ingredients.first.product,
+          quantity_desired: 2
+        )
+
+        create(
+          :inventory_line,
+          inventoried: new_order,
+          product: unrelated_product,
+          quantity_desired: 2
+        )
+        new_order
+      end
+
+      let(:receipt) do
+        new_receipt = create(:receipt, origin: collection_point, destination: ee, state: :delivering)
+        recipe.ingredients.each do |ing|
+          create(
+            :inventory_line,
+            inventoried: new_receipt,
+            quantity_present: 2 * ing.quantity,
+            product: ing.product
+          )
+        end
+
+        create(
+          :inventory_line,
+          inventoried: new_receipt,
+          product: unrelated_product,
+          quantity_present: 1
+        )
+        new_receipt
+      end
+
+      it "fulfills recipe products" do
+        receipt.complete
+        expect(order.reload.inventory_lines.where(product: recipe.product).first.quantity_present).to eq(2)
+      end
+
+      it "fulfills non-recipe products" do
+        receipt.complete
+        expect(order.reload.inventory_lines.where(product: unrelated_product).first.quantity_present).to eq(1)
+      end
+
+      it "prioritizes fulfilling recipe products" do
+        receipt.complete
+        ingredient_fulfilled = order.reload.inventory_lines
+                                    .where(product: recipe.ingredients.first.product)
+                                    .first.quantity_present
+        expect(ingredient_fulfilled).to eq(0)
+      end
+
+      it "debits ingredients from the origin" do
+        receipt.complete
+        recipe.ingredients.each do |ing|
+          expect(collection_point.reload.inventory_lines.find_by(product: ing.product).quantity_present)
+            .to eq(-2 * ing.quantity)
+        end
+      end
+    end
+
+    describe "when voiding a completed receipt" do
       let!(:order) do
         new_order = create(:order, external_entity: ee, state: :assigned)
         receipt.inventory_lines.each do |receipt_line|
@@ -85,6 +160,78 @@ RSpec.describe Receipt, type: :model do
         end
 
         new_order
+      end
+
+      before do
+        receipt.complete!
+      end
+
+      it "puts the order quantites back into collection_point inventory" do
+        receipt.void!
+        collection_point.inventory_lines.reload.each do |inv_line|
+          expect(inv_line.quantity_present).to eq(0)
+        end
+      end
+
+      it "unmarks the order as completed" do
+        receipt.void!
+        expect(order.reload.assigned?).to eq(true)
+      end
+
+      it "debits the quantities from the order" do
+        receipt.void!
+        order.inventory_lines.reload.each do |inv_line|
+          expect(inv_line.quantity_present).to eq(0)
+        end
+      end
+    end
+
+    describe "when voiding a completed recipe order" do
+      let(:recipe) { create(:recipe_with_ingredients) }
+      let(:unrelated_product) { create(:product) }
+
+      let!(:order) do
+        new_order = create(:order, external_entity: ee, state: :assigned)
+        create(
+          :inventory_line,
+          inventoried: new_order,
+          product: recipe.product,
+          quantity_desired: 2
+        )
+        create(
+          :inventory_line,
+          inventoried: new_order,
+          product: recipe.ingredients.first.product,
+          quantity_desired: 2
+        )
+
+        create(
+          :inventory_line,
+          inventoried: new_order,
+          product: unrelated_product,
+          quantity_desired: 2
+        )
+        new_order
+      end
+
+      let(:receipt) do
+        new_receipt = create(:receipt, origin: collection_point, destination: ee, state: :delivering)
+        recipe.ingredients.each do |ing|
+          create(
+            :inventory_line,
+            inventoried: new_receipt,
+            quantity_present: 2 * ing.quantity,
+            product: ing.product
+          )
+        end
+
+        create(
+          :inventory_line,
+          inventoried: new_receipt,
+          product: unrelated_product,
+          quantity_present: 1
+        )
+        new_receipt
       end
 
       before do
