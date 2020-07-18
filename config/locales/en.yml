@@ -175,6 +175,7 @@ en:
   collection_point:
     info: Datos
     inventory: Inventario
+    inventory_report: Inventory report
   destination_cp: Entidad Destinatario
   destination_ee: CDA Destinatario
   destination_user: Usuario Destinatario

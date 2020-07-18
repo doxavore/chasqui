@@ -1,0 +1,25 @@
+# frozen_string_literal: true
+
+summary = collection_points.each_with_object({}) do |cp, hsh|
+  cp.inventory_lines.each do |inv_line|
+    hsh[inv_line.product.name] ||= 0
+    hsh[inv_line.product.name] += inv_line.quantity_present
+  end
+end
+
+h1 "Resumen"
+table_for summary.to_a do
+  column("Producto") { |r| r[0] }
+  column("Cantidad") { |r| r[1] }
+end
+
+h2 "Detalle"
+collection_points.each do |cp|
+  h3 do
+    a link_to cp.to_s, admin_collection_point_path(cp)
+  end
+  table_for cp.inventory_lines do
+    column("Producto") { |r| r.product.name }
+    column("Cantidad", &:quantity_present)
+  end
+end

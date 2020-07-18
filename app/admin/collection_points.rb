@@ -147,4 +147,13 @@ ActiveAdmin.register CollectionPoint do
     path_params = { destination_identifier: collection_point.receipt_identifier }
     link_to t("receipts.new_in"), new_admin_receipt_path(path_params), method: :get
   end
+
+  action_item :inventory_report, only: :index do
+    link_to t("collection_point.inventory_report"), inventory_report_admin_collection_points_path
+  end
+
+  collection_action :inventory_report, method: :get do
+    @page_title = t("collection_point.inventory_report")
+    @collection_points = CollectionPoint.all.includes(inventory_lines: :product)
+  end
 end
