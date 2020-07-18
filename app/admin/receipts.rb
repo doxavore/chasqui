@@ -96,7 +96,8 @@ ActiveAdmin.register Receipt do
           inv.input :quantity_present, label: t("quantity")
         end
       end
-    elsif f.object.delivering?
+    end
+    if f.object.delivering?
       f.inputs do
         f.input :image, as: :file
       end
