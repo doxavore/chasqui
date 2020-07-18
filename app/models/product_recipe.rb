@@ -19,7 +19,6 @@ class ProductRecipe < ApplicationRecord
   end
 
   def debit_from_line(inventory_line, inv_map)
-    pp inv_map
     max_quantity = [find_max_quantity(inv_map), inventory_line.quantity_present].min
 
     return unless max_quantity.positive?
@@ -41,9 +40,8 @@ class ProductRecipe < ApplicationRecord
   def max_ingredient(ingredient, inv_map)
     max_quantity = 0
     available = inv_map[ingredient.product_id].to_i
-    if available.positive?
-      max_quantity = (available - (available % ingredient.quantity)) / ingredient.quantity
-    end
+
+    max_quantity = (available - (available % ingredient.quantity)) / ingredient.quantity if available.positive?
 
     max_quantity
   end

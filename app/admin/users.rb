@@ -33,6 +33,7 @@ ActiveAdmin.register User do
   filter :email
   filter :phone
   filter :first_name
+  filter :last_name
   filter :status
   filter :address_administrative_area,
          as: :string,
