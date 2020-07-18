@@ -7,7 +7,6 @@ en:
       call_to_action: Call to action
       welcome: Welcome
     date: Fecha
-    reports: Reportes
   activemodel:
     attributes:
       external_form/order:

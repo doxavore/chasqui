@@ -7,7 +7,6 @@ es:
       call_to_action: Call to action
       welcome: Bienvenido!
     date: Fecha
-    reports: Reportes
   activemodel:
     attributes:
       external_form/order:
@@ -63,8 +62,8 @@ es:
         state/completed: Completado
         state/pending_approval: Esperando Aprobacion
         state/pending_assignment: Esperando Asignacion
-        state/voided: Anulado
         state/total: Total
+        state/voided: Anulado
         tags: Etiquetas
         updated_at: Actualizado
         user: Usuario
@@ -214,6 +213,8 @@ es:
     destination: 'Destinatario: %{destination}'
     edit: Editar Recibo
     new: Emitir Nuevo Recibo
+    new_in: Nuevo Ingreso
+    new_out: Nueva Salida
     origin: 'Origen: %{origin}'
     state:
       completed: Finalizado
@@ -222,8 +223,6 @@ es:
       voided: Anulado
     void: Anular Recibo
     voided: Recibo Anulado
-    new_in: Nuevo Ingreso
-    new_out: Nueva Salida
   reports:
     all: Total
     daily: Hoy
