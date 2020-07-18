@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 module Receipts::Participant
+  def receipt_identifier
+    "#{self.class}-#{id}"
+  end
+
   def credit_receipt(receipt)
     apply_receipt(receipt) do |inv_line, receipt_line|
       inv_line.quantity_present += receipt_line.quantity_present

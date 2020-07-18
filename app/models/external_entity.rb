@@ -17,6 +17,10 @@ class ExternalEntity < ApplicationRecord
     "#{name} (#{address&.administrative_area})"
   end
 
+  def receipt_identifier
+    "#{self.class}-#{id}"
+  end
+
   # this is a special case since we don't want to create inventory lines
   def credit_receipt(receipt)
     inv_map = receipt.inventory_lines.map { |i| [i.product_id, i.quantity_present] }.to_h

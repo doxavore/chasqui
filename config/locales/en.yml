@@ -277,6 +277,8 @@ en:
     destination: 'Destination: %{destination}'
     edit: Editar Recibo
     new: Emitir Nuevo Recibo
+    new_in: Nuevo Ingreso
+    new_out: Nueva Salida
     origin: 'Origin: %{origin}'
     state:
       completed: Finalizado

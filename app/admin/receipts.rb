@@ -134,7 +134,10 @@ ActiveAdmin.register Receipt do
   end
 
   action_item :void, only: :show do
-    link_to t("receipts.void"), void_admin_receipt_path(receipt), method: :put, data: { confirm: t("receipts.confirm_void")}
+    link_to t("receipts.void"),
+            void_admin_receipt_path(receipt),
+            method: :put,
+            data: { confirm: t("receipts.confirm_void") }
   end
 
   member_action :complete, method: :put do
@@ -156,5 +159,14 @@ ActiveAdmin.register Receipt do
     @receipt = Receipt.find(params[:id])
     @versions = PaperTrail::Version.where(item_type: "Receipt", item_id: @receipt.id)
     render "layouts/history"
+  end
+
+  controller do
+    def new
+      @receipt = Receipt.new
+      @receipt.origin_identifier = params.permit(:origin_identifier)[:origin_identifier]
+      @receipt.destination_identifier = params.permit(:destination_identifier)[:destination_identifier]
+      super
+    end
   end
 end

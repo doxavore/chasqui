@@ -220,6 +220,8 @@ es:
       voided: Anulado
     void: Anular Recibo
     voided: Recibo Anulado
+    new_in: Nuevo Ingreso
+    new_out: Nueva Salida
   reports:
     all: Total
     daily: Hoy

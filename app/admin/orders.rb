@@ -115,12 +115,20 @@ ActiveAdmin.register Order do
     redirect_to collection_path, notice: t("orders.reconciled")
   end
 
+  action_item :create_receipt_in, only: :show, if: proc { order.assigned? } do
+    path_params = { destination_identifier: order.external_entity.receipt_identifier }
+    if current_user.collection_points.any?
+      path_params[:origin_identifier] = current_user.collection_points.first.receipt_identifier
+    end
+    link_to t("receipts.new_in"), new_admin_receipt_path(path_params), method: :get
+  end
+
   action_item :approve, only: :show, if: proc { order.pending_approval? } do
     link_to t("orders.approve"), approve_admin_order_path(order), method: :put
   end
 
   action_item :void, only: :show do
-    link_to t("orders.void"), void_admin_order_path(order), method: :put
+    link_to t("orders.void"), void_admin_order_path(order), method: :put, data: { confirm: t("receipts.confirm_void") }
   end
 
   action_item :edit, only: :show do

@@ -135,4 +135,14 @@ ActiveAdmin.register CollectionPoint do
       end
     end
   end
+
+  action_item :create_receipt_out, only: :show do
+    path_params = { origin_identifier: collection_point.receipt_identifier }
+    link_to t("receipts.new_out"), new_admin_receipt_path(path_params), method: :get
+  end
+
+  action_item :create_receipt_in, only: :show do
+    path_params = { destination_identifier: collection_point.receipt_identifier }
+    link_to t("receipts.new_in"), new_admin_receipt_path(path_params), method: :get
+  end
 end

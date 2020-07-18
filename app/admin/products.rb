@@ -23,9 +23,7 @@ ActiveAdmin.register Product do
   index do
     id_column
     column :image do |prod|
-      if prod.image.present?
-        img src: url_for(prod.image.variant(resize_to_limit: [150, 150]))
-      end
+      img src: url_for(prod.image.variant(resize_to_limit: [150, 150])) if prod.image.present?
     end
     column :name
     column :producible
