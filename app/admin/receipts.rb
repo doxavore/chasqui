@@ -87,7 +87,7 @@ ActiveAdmin.register Receipt do
   end
 
   form do |f|
-    if f.object.draft?
+    if f.object.draft? || current_user.admin?
       f.inputs do
         f.input :origin_identifier, collection: Receipt.participants.map { |i| [i.to_s, "#{i.class}-#{i.id}"] }
         f.input :destination_identifier, collection: Receipt.participants.map { |i| [i.to_s, "#{i.class}-#{i.id}"] }
