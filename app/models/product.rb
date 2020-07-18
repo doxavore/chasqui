@@ -8,6 +8,7 @@ class Product < ApplicationRecord
   has_many :external_entities, through: :product_providers
   accepts_nested_attributes_for :product_providers, allow_destroy: true
   has_many :product_recipes, dependent: :destroy
+  has_one_attached :image
 
   def credit_to_line(inventory_line, inv_map)
     if product_recipes.any?

@@ -114,6 +114,7 @@ es:
         address: Ubicacion
         company: Compania
         coordinator: Cordinador
+        created_at: Registrado
         email_confirmation: Confirmación de email
         first_name: Nombres
         last_name: Apellidos
@@ -233,6 +234,7 @@ es:
     all: Todos
     basic: Basicos
     config: Configuracion
+    has_printers: Tiene Impresora?
     info: Datos
     production: Produccion
   voided: Anulados

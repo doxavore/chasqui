@@ -121,16 +121,20 @@ ActiveAdmin.register Receipt do
     link_to t("receipts.deliver"), begin_delivery_admin_receipt_path(receipt), method: :put
   end
 
-  action_item :void, only: :show do
-    link_to t("receipts.void"), void_admin_receipt_path(receipt), method: :put
-  end
-
   action_item :edit, only: :show do
     link_to t("receipts.edit"), edit_admin_receipt_path(receipt), method: :get
   end
 
   action_item :new, only: :index do
     link_to t("receipts.new"), new_admin_receipt_path, method: :get
+  end
+
+  action_item :history, only: :show do
+    link_to t("history"), history_admin_receipt_path(receipt), method: :get
+  end
+
+  action_item :void, only: :show do
+    link_to t("receipts.void"), void_admin_receipt_path(receipt), method: :put, data: { confirm: t("receipts.confirm_void")}
   end
 
   member_action :complete, method: :put do
@@ -145,11 +149,7 @@ ActiveAdmin.register Receipt do
 
   member_action :void, method: :put do
     resource.void!
-    redirect_to resource_path(resource), notice: t("receipts.voided"), data: { confirm: t("receipts.confirm_void") }
-  end
-
-  action_item :history, only: :show do
-    link_to t("history"), history_admin_receipt_path(receipt), method: :get
+    redirect_to resource_path(resource), notice: t("receipts.voided")
   end
 
   member_action :history do

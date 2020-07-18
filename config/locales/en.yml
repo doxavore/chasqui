@@ -299,6 +299,7 @@ en:
     all: Todos
     basic: Basic
     config: Configuration
+    has_printers: Tiene Impresora?
     info: Info
     production: Production
   voided: Anulados

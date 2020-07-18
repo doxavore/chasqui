@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 ActiveAdmin.register User do
-  includes :address, :tags
+  includes :address, :tags, :printers
   scope I18n.t("users.all"), :all, default: true
   scope I18n.t("users.admins"), :admins
   permit_params :email,
@@ -39,6 +39,7 @@ ActiveAdmin.register User do
          as: :string,
          label: proc { I18n.t("activerecord.attributes.address.administrative_area") }
   filter :tags
+  filter :has_printers, as: :boolean, label: proc { I18n.t("users.has_printers") }
 
   index do
     selectable_column
@@ -55,11 +56,16 @@ ActiveAdmin.register User do
     column :email
     column :phone
     column :company
+    column :created_at
     column :tags do |obj|
       obj.tags.each do |tag|
         status_tag(tag.name, style: "background-color: #{tag.color}")
       end
       nil
+    end
+
+    column :printers do |obj|
+      obj.printers.count
     end
   end
 

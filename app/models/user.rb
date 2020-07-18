@@ -25,6 +25,10 @@ class User < ApplicationRecord
   has_many :inventory_lines, as: :inventoried, dependent: :destroy
   accepts_nested_attributes_for :inventory_lines, allow_destroy: true
 
+  ransacker :has_printers do
+    Arel.sql("(select exists (select 1 from printers where printers.user_id = users.id))")
+  end
+
   attr_accessor :phone_confirmation, :email_confirmation, :number_of_printers, :printer_type, :work_area
 
   # validates :phone, presence: true, confirmation: true, length: { minimum: 9 }
