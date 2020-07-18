@@ -89,14 +89,14 @@ ActiveAdmin.register Order do
   csv do
     column :id
     column(t("activerecord.models.external_entity.one"), &:external_entity)
-    column(t("activerecord.attributes.user.phone")) { |order| order.external_entity.user.phone }
-    column(:email) { |order| order.external_entity.user.email }
-    column(t("activerecord.attributes.external_entity.address")) { |order| order.external_entity.address }
+    column(t("activerecord.attributes.user.phone")) { |order| order.user&.phone }
+    column(:email) { |order| order.user&.email }
+    column(t("activerecord.attributes.external_entity.address")) { |order| order.external_entity&.address }
     column(:pedidos) do |order|
-      order.inventory_lines.map { |l| "#{l.product.name} - #{l.quantity_desired}" }.join(", ")
+      order.inventory_lines.map { |l| "#{l.product&.name} - #{l.quantity_desired}" }.join(", ")
     end
     column(:pendientes) do |order|
-      order.inventory_lines.map { |l| "#{l.product.name} - #{l.quantity_remaining}" }.join(", ")
+      order.inventory_lines.map { |l| "#{l.product&.name} - #{l.quantity_remaining}" }.join(", ")
     end
   end
 
