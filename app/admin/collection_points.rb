@@ -125,15 +125,16 @@ ActiveAdmin.register CollectionPoint do
           f.actions
         end
       end
-
-      tab t("collection_point.inventory") do
-        f.inputs do
-          f.has_many :inventory_lines do |ilf|
-            ilf.input :product
-            ilf.input :quantity_present
+      if current_user.admin?
+        tab t("collection_point.inventory") do
+          f.inputs do
+            f.has_many :inventory_lines do |ilf|
+              ilf.input :product
+              ilf.input :quantity_present
+            end
           end
+          f.actions
         end
-        f.actions
       end
     end
   end
