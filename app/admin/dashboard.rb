@@ -4,6 +4,9 @@ ActiveAdmin.register_page "Dashboard" do
   menu priority: 1, label: proc { I18n.t("active_admin.dashboard") }
 
   content title: proc { I18n.t("active_admin.dashboard") } do
+    h1 "Pedidos"
+    render partial: "order_report", locals: { report: Reports::Orders.current(true)[:all] }
+
     h1 "Donaciones"
     tabs do
       Reports::Donation.current.each_pair do |name, data|

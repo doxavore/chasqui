@@ -16,6 +16,7 @@ ActiveAdmin.register Receipt do
 
   filter :state, collection: proc { Receipt.aasm.states.map { |s| [t("receipts.state.#{s}"), s] } }, as: :select
   filter :updated_at, as: :date_range
+  filter :delivered_at, as: :date_range
   filter :origin_of_User_type_id,
          as: :select, collection: -> { User.all }, label: I18n.t("origin_user")
   filter :origin_of_CollectionPoint_type_id,

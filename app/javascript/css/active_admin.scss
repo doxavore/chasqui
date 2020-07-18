@@ -29,3 +29,15 @@ $red_status: #d32f2f;
   &.draft { background: $blue_status; }
   &.delivering { background: $yellow_status; }
 }
+
+tr.even {
+  background-color: #cccccc;
+}
+
+table tr td {
+  vertical-align: middle;
+}
+
+h3.status_tag {
+  font-size: 1.5em;
+}

@@ -9,7 +9,16 @@ table_for report[:products_donated] do
 end
 
 h3 "Entidades Beneficiadas"
-table_for report[:entity_recipients] do
+table_for report[:entity_recipients].to_a do
   column("Entidad") { |r| r[0] }
-  column("Cantidad Donada") { |r| r[1] }
+  column("Donacion") do |r|
+    table do
+      r[1].each_pair do |item, count|
+        tr do
+          td item
+          td count
+        end
+      end
+    end
+  end
 end

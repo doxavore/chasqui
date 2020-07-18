@@ -31,6 +31,18 @@ class ProductRecipe < ApplicationRecord
     inventory_line.save!
   end
 
+  def mutate_inv_map(inv_map)
+    max_quantity = find_max_quantity(inv_map)
+    return unless max_quantity.positive?
+
+    ingredients.each do |ingredient|
+      inv_map[ingredient.product_id] -= max_quantity * ingredient.quantity
+    end
+
+    inv_map[product_id] ||= 0
+    inv_map[product_id] += max_quantity
+  end
+
   private
 
   def find_max_quantity(inv_map)

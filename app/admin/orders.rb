@@ -76,6 +76,7 @@ ActiveAdmin.register Order do
       f.input :external_entity
       f.input :collection_point
       f.input :user
+      f.input :created_at, input_html: { class: "default-select" }
       f.input :tag_ids, as: :tags, collection: Tag.all, label: t("activerecord.attributes.order.tags")
       f.has_many :inventory_lines, allow_destroy: true do |ilf|
         ilf.input :product, collection: Product.all
@@ -127,10 +128,6 @@ ActiveAdmin.register Order do
     link_to t("orders.approve"), approve_admin_order_path(order), method: :put
   end
 
-  action_item :void, only: :show do
-    link_to t("orders.void"), void_admin_order_path(order), method: :put, data: { confirm: t("receipts.confirm_void") }
-  end
-
   action_item :edit, only: :show do
     link_to t("orders.edit"), edit_admin_order_path(order), method: :get
   end
@@ -141,5 +138,9 @@ ActiveAdmin.register Order do
 
   action_item :reconcile, only: :index do
     link_to t("orders.reconcile"), reconcile_admin_orders_path, method: :put
+  end
+
+  action_item :void, only: :show, if: proc { !order.voided? } do
+    link_to t("orders.void"), void_admin_order_path(order), method: :put, data: { confirm: t("receipts.confirm_void") }
   end
 end

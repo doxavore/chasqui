@@ -1,0 +1,27 @@
+# frozen_string_literal: true
+
+columns do
+  column max_width: "300px" do
+    table do
+      report[:summary].each_pair do |key, value|
+        tr do
+          td do
+            h3(class: "status_tag " + key.to_s) do
+              t("activerecord.attributes.order.state/#{key}")
+            end
+          end
+          td do
+            h3 value
+          end
+        end
+      end
+    end
+  end
+end
+
+h3 "Material Pedido"
+table_for report[:material_ordered].values do
+  column("Articulo") { |r| r[:name] }
+  column("Pedidos") { |r| r[:desired] }
+  column("Entregados") { |r| r[:present] }
+end

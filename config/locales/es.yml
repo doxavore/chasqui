@@ -7,6 +7,7 @@ es:
       call_to_action: Call to action
       welcome: Bienvenido!
     date: Fecha
+    reports: Reportes
   activemodel:
     attributes:
       external_form/order:
@@ -63,6 +64,7 @@ es:
         state/pending_approval: Esperando Aprobacion
         state/pending_assignment: Esperando Asignacion
         state/voided: Anulado
+        state/total: Total
         tags: Etiquetas
         updated_at: Actualizado
         user: Usuario

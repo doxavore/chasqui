@@ -4,6 +4,7 @@ ActiveAdmin.register ProductRecipe do
   includes :product, :ingredients
   permit_params :name,
                 :product_id,
+                :priority,
                 ingredients_attributes: %i[
                   id
                   product_id
@@ -30,6 +31,7 @@ ActiveAdmin.register ProductRecipe do
     f.inputs do
       f.input :name
       f.input :product
+      f.input :priority
 
       f.has_many :ingredients,
                  allow_destroy: true,

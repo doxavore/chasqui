@@ -55,7 +55,7 @@ ActiveAdmin.register CollectionPoint do
     end
 
     panel t("activerecord.models.order.other") do
-      table_for collection_point.orders do
+      table_for collection_point.orders.order(:created_at) do
         column :id do |order|
           link_to order.id, admin_order_path(order)
         end
@@ -63,6 +63,7 @@ ActiveAdmin.register CollectionPoint do
         column t("activerecord.attributes.order.state") do |o|
           t("orders.state.#{o.state}")
         end
+        column :created_at
         column :updated_at
       end
     end
@@ -79,6 +80,7 @@ ActiveAdmin.register CollectionPoint do
       column max_width: "300px" do
         h2 t("outlays")
         table_for collection_point.origin_receipts do
+          column :id
           column t("active_admin.date") do |receipt|
             link_to receipt.created_at, admin_receipt_path(receipt)
           end

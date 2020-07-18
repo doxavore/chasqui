@@ -12,19 +12,20 @@ module Reports
     def products_donated
       return @products_donated if defined?(@products_donated)
 
-      @products_donated = inventory_lines.each_with_object({}) do |line, hsh|
-        hsh[line.product.name] ||= 0
-        hsh[line.product.name] += line.quantity_present
+      @products_donated = entity_recipients.values.each_with_object({}) do |line, hsh|
+        line.each_pair do |key, val|
+          hsh[key] ||= 0
+          hsh[key] += val
+        end
       end.to_a
     end
 
     def entity_recipients
       return @entity_recipients if defined?(@entity_recipients)
 
-      @entity_recipients = receipts.each_with_object({}) do |receipt, hsh|
-        hsh[receipt.destination.to_s] ||= 0
-        receipt.inventory_lines.each { |il| hsh[receipt.destination.to_s] += il.quantity_present }
-      end.to_a
+      @entity_recipients = receipts.map(&:destination).uniq.each_with_object({}) do |external_entity, hsh|
+        hsh[external_entity.name] = recipient_donations(external_entity)
+      end
     end
 
     def receipt_count
@@ -43,8 +44,28 @@ module Reports
 
     private
 
-    def inventory_lines
-      @inventory_lines = receipts&.map(&:inventory_lines)&.flatten || []
+    def recipient_donations(external_entity)
+      inv_map = raw_donated(external_entity)
+      ProductRecipe.order(priority: :desc).find_each do |recipe|
+        recipe.mutate_inv_map(inv_map)
+      end
+
+      pretty_map = {}
+      inv_map.each_pair do |key, val|
+        pretty_map[Product.find(key).name] = val if val.positive?
+      end
+      pretty_map
+    end
+
+    def raw_donated(external_entity)
+      inventory_lines(external_entity).each_with_object({}) do |line, hsh|
+        hsh[line.product_id] ||= 0
+        hsh[line.product_id] += line.quantity_present
+      end
+    end
+
+    def inventory_lines(external_entity)
+      @inventory_lines = receipts&.where(destination: external_entity)&.map(&:inventory_lines)&.flatten || []
     end
   end
 end
