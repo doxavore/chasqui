@@ -3,6 +3,7 @@
 module ExternalForm
   class OrderController < ExternalForm::BaseController
     after_action :allow_iframe
+    respond_to :html
 
     def new
       @order = ExternalForm::Order.new
@@ -10,9 +11,12 @@ module ExternalForm
 
     def create
       @order = ExternalForm::Order.new(order_data)
-      @order.register
 
-      respond_with @order
+      if @order.register
+        respond_with @order
+      else
+        render 'new'
+      end
     end
 
     def success; end

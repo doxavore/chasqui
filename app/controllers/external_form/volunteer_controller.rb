@@ -26,9 +26,12 @@ module ExternalForm
         comm.author = User.admins.first
         comm.namespace = "admin"
         comm.save!
+        respond_with @user
+      else
+        render 'new'
       end
 
-      respond_with @user
+
     end
 
     def success; end
