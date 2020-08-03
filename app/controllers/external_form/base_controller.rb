@@ -3,6 +3,7 @@
 module ExternalForm
   class BaseController < ApplicationController
     skip_before_action :authenticate_user!
+    before_action :skip_authorization
     respond_to :html
 
     private
