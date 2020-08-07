@@ -188,6 +188,16 @@ ActiveAdmin.register User do
     f.actions
   end
 
+  csv do
+    column :id
+    column :first_name
+    column :last_name
+    column :email
+    column(:tags) { |u| u.tags.map(&:name).join(" ") }
+    column("Departamento") { |u| u.address&.administrative_area }
+    column :address
+  end
+
   controller do
     def update # rubocop:disable Metrics/AbcSize
       model = :user
