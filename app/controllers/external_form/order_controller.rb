@@ -15,7 +15,7 @@ module ExternalForm
       if @order.register
         respond_with @order
       else
-        render 'new'
+        render "new"
       end
     end
 

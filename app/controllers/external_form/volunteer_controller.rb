@@ -28,10 +28,8 @@ module ExternalForm
         comm.save!
         respond_with @user
       else
-        render 'new'
+        render "new"
       end
-
-
     end
 
     def success; end

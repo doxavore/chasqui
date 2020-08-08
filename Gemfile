@@ -39,8 +39,8 @@ gem "paper_trail"
 gem "paper_trail-association_tracking"
 gem "pundit"
 
-gem "simple_form"
 gem "sentry-raven"
+gem "simple_form"
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", ">= 1.4.2", require: false
