@@ -19,4 +19,6 @@ Rails.application.routes.draw do
     resources :volunteer, only: [:create, :new]
   end
 
+  get "/error", to: "home#error"
+
 end
